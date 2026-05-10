@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { PackagesSection } from '../components/PackagesSection'
 
 const PACKAGES_STYLES = `
 .page-packages {
@@ -118,6 +119,121 @@ const PACKAGES_STYLES = `
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   margin-bottom: 24px;
+}
+.page-packages .pkg.wide {
+  grid-column: 1 / -1;
+  padding: 34px 34px;
+  background:
+    radial-gradient(circle at 20% 40%, rgba(99, 102, 241, 0.22) 0%, transparent 55%),
+    linear-gradient(145deg, rgba(26, 26, 46, 0.95), rgba(79, 70, 229, 0.28));
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow:
+    0 0 0 1px rgba(99, 102, 241, 0.12),
+    0 18px 55px rgba(0, 0, 0, 0.35);
+}
+.page-packages .pkg.wide:hover {
+  transform: translateY(-5px);
+}
+.page-packages .pkg-wide-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.page-packages .pkg-wide-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.page-packages .pkg-wide-pill::before {
+  content: '✦';
+  color: var(--indigo2);
+  font-size: 11px;
+}
+.page-packages .pkg-wide-tier {
+  font-size: 11px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+.page-packages .pkg-wide-body {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 26px;
+  align-items: end;
+}
+.page-packages .pkg-wide-title {
+  font-family: var(--fh);
+  font-size: clamp(34px, 4vw, 56px);
+  font-weight: 700;
+  letter-spacing: -1.6px;
+  line-height: 1.02;
+  color: #fff;
+  margin: 0 0 10px;
+}
+.page-packages .pkg-wide-sub {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  line-height: 1.85;
+  margin-bottom: 16px;
+  max-width: 560px;
+}
+.page-packages .pkg-wide-sub.right {
+  max-width: none;
+  margin-bottom: 14px;
+  text-align: left;
+}
+.page-packages .pkg-wide-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 18px;
+  margin-top: 10px;
+}
+.page-packages .pkg-wide-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 300;
+  line-height: 1.6;
+}
+.page-packages .pkg-wide-item .pkg-ck {
+  color: var(--indigo2);
+}
+.page-packages .pkg-wide-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
+.page-packages .pkg-wide-cta .pkg-btn {
+  margin-top: 0;
+}
+.page-packages .pkg-wide-note {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.7;
+  text-align: center;
+}
+@media (max-width: 960px) {
+  .page-packages .pkg-wide-body {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  .page-packages .pkg-wide-list {
+    grid-template-columns: 1fr;
+  }
 }
 .page-packages .pkg {
   border: 1px solid var(--border);
@@ -268,6 +384,20 @@ const PACKAGES_STYLES = `
   font-size: 13px;
   color: #ffffff;
   margin-top: 20px;
+}
+.page-packages .wa-highlight {
+  color: #25d366;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+.page-packages .wa-highlight:hover {
+  color: #20bf5d;
+}
+.page-packages .wa-highlight:focus-visible {
+  outline: 2px solid rgba(37, 211, 102, 0.6);
+  outline-offset: 4px;
+  border-radius: 6px;
 }
 .page-packages .urgency {
   display: flex;
@@ -457,10 +587,6 @@ export function Packages() {
     setFaqOpen((prev) => ({ ...prev, [index]: !prev[index] }))
   }
 
-  const openWhatsApp = () => {
-    window.open(WA, '_blank', 'noopener,noreferrer')
-  }
-
   return (
     <main className="page-packages app-main">
       <style>{PACKAGES_STYLES}</style>
@@ -481,139 +607,7 @@ export function Packages() {
       </div>
 
       <div className="wrap pkg-section">
-        <div className="pkg-grid">
-          <div className="pkg">
-            <div className="pkg-tier">Basic Presence</div>
-            <div className="pkg-price">
-              $99<sub>–$198</sub>
-            </div>
-            <div className="pkg-cd">
-              ⏱ 3–5 Days &nbsp;·&nbsp; Best for startups & portfolios
-            </div>
-            <hr className="pkg-div" />
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>Professional One-Page Landing
-              Design
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>Fully Responsive (Mobile,
-              Tablet, Desktop)
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>Contact Form Integration
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>Social Media Linking
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>Speed Optimization (Basic)
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>1 Month Free Post-Launch Support
-            </div>
-            <div className="pkg-sp" />
-            <button
-              type="button"
-              className="pkg-btn pkg-btn-ghost"
-              onClick={openWhatsApp}
-            >
-              Get started
-            </button>
-          </div>
-
-          <div className="pkg featured">
-            <div className="pkg-pop">Most popular</div>
-            <div className="pkg-tier">Business Growth</div>
-            <div className="pkg-price">
-              $199<sub>–$298</sub>
-            </div>
-            <div className="pkg-cd">
-              ⏱ 7–12 Days &nbsp;·&nbsp; Best for established businesses
-            </div>
-            <hr className="pkg-div" />
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>Up to 5–7 Custom Pages (Home,
-              About, Services…)
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>Modern UI/UX with Custom
-              Graphics
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>SEO Friendly Structure
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>WhatsApp Chat Integration
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>CMS Access (Manage your own
-              content)
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>1 Month Priority Support + Basic
-              Security Setup
-            </div>
-            <div className="pkg-sp" />
-            <button
-              type="button"
-              className="pkg-btn pkg-btn-white"
-              onClick={openWhatsApp}
-            >
-              Get started →
-            </button>
-          </div>
-
-          <div className="pkg">
-            <div className="pkg-tier">Enterprise Elite</div>
-            <div className="pkg-price">
-              $299<sub>–$399</sub>
-            </div>
-            <div className="pkg-cd">
-              ⏱ 15–25 Days &nbsp;·&nbsp; Best for E-commerce & complex apps
-            </div>
-            <hr className="pkg-div" />
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>Unlimited Pages / Full E-commerce
-              Setup
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>Payment Gateway (Stripe, PayPal,
-              etc.)
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>Custom Functionalities
-              (Dashboards, Booking…)
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>Premium Speed & Performance
-              Optimization
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>NDA Protection for Code & Data
-            </div>
-            <div className="pkg-feat">
-              <span className="pkg-ck">✦</span>1 Month Full Technical Support +
-              Daily Backups
-            </div>
-            <div className="pkg-sp" />
-            <button
-              type="button"
-              className="pkg-btn pkg-btn-ind"
-              onClick={openWhatsApp}
-            >
-              Get started
-            </button>
-          </div>
-        </div>
-
-        <p className="pkg-note">
-          Not sure which plan fits? Message on WhatsApp — I&apos;ll recommend the
-          right one for you.
-        </p>
-        <div className="urgency">
-          <span className="udot" />
-          Currently accepting 3 new monthly clients — spots filling fast
-        </div>
+        <PackagesSection waLink={WA} />
 
         <div className="faq">
           <h2>Frequently asked questions.</h2>

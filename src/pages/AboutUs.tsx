@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
 
 /** All About page styles live in this file (no separate CSS module). Scoped under `.page-about`. */
 const ABOUT_STYLES = `
@@ -253,6 +252,85 @@ const ABOUT_STYLES = `
   border-top: 1px solid var(--border);
   padding-top: 32px;
 }
+.page-about .section-block {
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  padding-top: 32px;
+}
+.page-about .section-subtitle {
+  font-size: 13px;
+  color: #ffffff;
+  margin-top: 10px;
+  line-height: 1.8;
+}
+.page-about .feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+.page-about .fcard {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(30, 30, 45, 1));
+  border: 1px solid rgba(99, 102, 241, 0.18);
+  border-radius: var(--r2);
+  padding: 18px 16px;
+  transition: all 0.25s;
+}
+.page-about .fcard:hover {
+  transform: translateY(-2px);
+  border-color: var(--border2);
+  box-shadow: var(--sh2);
+}
+.page-about .f-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 8px;
+  letter-spacing: -0.2px;
+}
+.page-about .f-desc {
+  font-size: 12px;
+  color: #ffffff;
+  line-height: 1.8;
+}
+.page-about .mv-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+.page-about .mv-card {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: var(--r2);
+  padding: 18px 16px;
+  position: relative;
+  overflow: hidden;
+}
+.page-about .mv-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: radial-gradient(circle at 20% 15%, rgba(99, 102, 241, 0.16), transparent 55%);
+  pointer-events: none;
+}
+.page-about .mv-card > * {
+  position: relative;
+  z-index: 1;
+}
+.page-about .mv-k {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--indigo2);
+  margin-bottom: 8px;
+}
+.page-about .mv-v {
+  font-size: 13px;
+  color: #ffffff;
+  line-height: 1.9;
+}
 .page-about .tl {
   display: flex;
   gap: 18px;
@@ -351,6 +429,12 @@ const ABOUT_STYLES = `
   .page-about .timeline {
     display: none;
   }
+  .page-about .feature-grid {
+    grid-template-columns: 1fr;
+  }
+  .page-about .mv-grid {
+    grid-template-columns: 1fr;
+  }
 }
 `
 
@@ -370,17 +454,17 @@ export function AboutUs() {
 
       <div className="hero">
         <div className="wrap">
-          <div className="label">About Us</div>
-          <h1>Suneel Pirkash.</h1>
+          <div className="label">About Rathisoft</div>
+          <h1>Rathisoft.</h1>
           <p>
-            WordPress Developer · Shopify Expert · Founder of Rathisoft · Based
-            in Lahore, Pakistan
+            A technology partner dedicated to transforming ideas into impactful
+            digital solutions.
           </p>
         </div>
       </div>
 
       <div className="wrap">
-        <div className="stats">
+        {/* <div className="stats">
           <div className="sc">
             <div className="sc-n">
               59<em>+</em>
@@ -405,128 +489,150 @@ export function AboutUs() {
             </div>
             <div className="sc-l">AUS · EUR · UAE</div>
           </div>
-        </div>
+        </div> */}
 
         <div className="about-layout">
           <div className="about-card">
-            <div className="av">SP</div>
-            <div className="av-name">Suneel Pirkash</div>
-            <div className="av-role">
-              WordPress & Shopify Developer · Lahore
-            </div>
+            <div className="av">RS</div>
+            <div className="av-name">Rathisoft</div>
+            <div className="av-role">Technology Partner · Lahore</div>
             <div className="badges">
-              <div className="badge">WordPress Expert</div>
-              <div className="badge">Shopify Developer</div>
-              <div className="badge">5+ Years Experience</div>
-              <div className="badge">UK · US · AUS · EUR</div>
-              <div className="badge">NDA-Ready</div>
-              <div className="badge">24hr Response</div>
+              <div className="badge">Client-first mindset</div>
+              <div className="badge">Agile & transparent process</div>
+              <div className="badge">Scalable & high-performance</div>
+              <div className="badge">User-centric product design</div>
+              <div className="badge">Innovation & excellence</div>
+              <div className="badge">Long-term partnerships</div>
             </div>
           </div>
 
           <div className="body-text">
             <p>
-              I&apos;m <strong>Suneel Pirkash</strong> — a WordPress developer
-              and Shopify expert with 5+ years of experience building fast,
-              beautiful, and conversion-ready websites for businesses around the
-              world.
+              At <strong>Rathisoft</strong>, we are more than just a software
+              development company—we are a technology partner dedicated to
+              transforming ideas into impactful digital solutions.
             </p>
             <p>
-              From custom WordPress themes to fully configured Shopify stores, I
-              handle everything —{' '}
-              <strong>
-                design, development, plugins, payment gateways, SEO setup, and
-                ongoing support.
-              </strong>{' '}
-              My clients get a partner, not just a developer.
+              Founded with a vision to empower businesses through innovation,
+              Rathisoft specializes in building <strong>scalable</strong>,{' '}
+              <strong>high-performance</strong>, and{' '}
+              <strong>user-centric</strong> software products that drive growth
+              in an increasingly digital world.
             </p>
             <p>
-              At Rathisoft, I combine web development with{' '}
-              <strong>digital marketing, branding, and content strategy</strong>{' '}
-              — so your website doesn&apos;t just look great, it actually brings
-              in business.
+              Our approach combines <strong>modern technologies</strong>,{' '}
+              <strong>agile methodologies</strong>, and deep business
+              understanding to create solutions that are not just functional—but
+              transformative.
             </p>
-            <p>
-              I&apos;ve worked with clients across{' '}
-              <strong>UK, US, Australia, Europe, and UAE</strong> — healthcare
-              clinics, real estate agencies, eCommerce brands, and startups.
-              Every project gets my full attention, on time, every time.
-            </p>
+            <h3>What We Do</h3>
+            <p>We design, develop, and deliver cutting-edge solutions across:</p>
 
             <div className="skills-block">
-              <h3>Technical Skills</h3>
               <div className="skill-row">
-                <span className="skill">WordPress</span>
-                <span className="skill">Shopify</span>
-                <span className="skill">WooCommerce</span>
-                <span className="skill">PHP / MySQL</span>
-                <span className="skill">Elementor Pro</span>
-                <span className="skill">Liquid (Shopify)</span>
-                <span className="skill">HTML / CSS</span>
-                <span className="skill">JavaScript</span>
-              </div>
-              <h3>Marketing & Growth</h3>
-              <div className="skill-row">
-                <span className="skill">SEO Optimization</span>
-                <span className="skill">Speed Optimization</span>
-                <span className="skill">Social Media</span>
-                <span className="skill">PPC / Google Ads</span>
-                <span className="skill">Email Marketing</span>
-                <span className="skill">Branding & Design</span>
+                <span className="skill">Custom Software Development</span>
+                <span className="skill">Web & Mobile Applications</span>
+                <span className="skill">Cloud & DevOps Solutions</span>
+                <span className="skill">AI & Data-Driven Systems</span>
+                <span className="skill">UI/UX Design</span>
+                <span className="skill">Product Engineering</span>
               </div>
             </div>
 
             <div className="timeline">
-              <h3>Experience</h3>
+              <h3>Who We Work With</h3>
               <div className="tl">
-                <div className="tl-year">2024 – Now</div>
+                <div className="tl-year">Partners</div>
                 <div className="tl-dot" />
                 <div className="tl-info">
-                  <div className="tl-title">Founder — Rathisoft</div>
+                  <div className="tl-title">Startups, SMEs, and Enterprises</div>
                   <div className="tl-desc">
-                    Building a full-service digital agency offering WordPress,
-                    Shopify, SEO, and marketing to clients worldwide.
+                    We collaborate with startups turning ideas into products,
+                    SMEs scaling operations, and enterprises optimizing digital
+                    ecosystems.
                   </div>
                 </div>
               </div>
               <div className="tl">
-                <div className="tl-year">2021 – 2024</div>
+                <div className="tl-year">Industries</div>
                 <div className="tl-dot" />
                 <div className="tl-info">
-                  <div className="tl-title">
-                    Freelance WordPress & Shopify Developer
-                  </div>
+                  <div className="tl-title">Cross-industry delivery</div>
                   <div className="tl-desc">
-                    50+ projects delivered across UK, US, UAE — custom themes,
-                    eCommerce stores, and digital marketing campaigns.
+                    Fintech, healthcare, e-commerce, education, and more—always
+                    aligned with user needs and business goals.
                   </div>
                 </div>
               </div>
               <div className="tl">
-                <div className="tl-year">2019 – 2021</div>
+                <div className="tl-year">Approach</div>
                 <div className="tl-dot" />
                 <div className="tl-info">
-                  <div className="tl-title">Junior Web Developer</div>
+                  <div className="tl-title">Collaboration, innovation, precision</div>
                   <div className="tl-desc">
-                    Started career building WordPress websites and learning
-                    digital marketing fundamentals.
+                    We partner, not just deliver—focusing on business impact,
+                    quality, scalability, and performance at every stage.
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="btn-row">
-              <Link to="/contact" className="btn-p">
-                Work with me →
-              </Link>
-              <a
-                href="https://wa.me/923342651544"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-g"
-              >
-                💬 WhatsApp me
-              </a>
+            <div className="section-block">
+              <h3>Our Philosophy</h3>
+              <p className="section-subtitle">
+                Inspired by the agility of modern tech leaders, Rathisoft operates on a simple
+                principle: <strong>Clarity over Complexity</strong>. We believe that a digital
+                presence should be seamless, fast, and, above all, profitable. Whether it’s a
+                high-scale Shopify store or a custom React application, our work is defined by clean
+                code and a <strong>Human-First</strong> design approach.
+              </p>
+            </div>
+
+            <div className="section-block">
+              <h3>Why Partners Choose Rathisoft</h3>
+              <div className="feature-grid">
+                <div className="fcard">
+                  <div className="f-title">Performance-Obsessed</div>
+                  <div className="f-desc">
+                    We prioritize speed and SEO. If a site doesn&apos;t load in under 3 seconds,
+                    it’s not a Rathisoft site.
+                  </div>
+                </div>
+                <div className="fcard">
+                  <div className="f-title">A “Partner” Mindset</div>
+                  <div className="f-desc">
+                    We act as your internal tech wing with 24-hour responsiveness and post-launch
+                    maintenance—because long-term success beats one-time delivery.
+                  </div>
+                </div>
+                <div className="fcard">
+                  <div className="f-title">Global Standard, Local Care</div>
+                  <div className="f-desc">
+                    We bring the engineering rigor of Pakistan&apos;s top tech talent to businesses
+                    across the UK, UAE, and beyond—with zero friction and maximum transparency.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="section-block">
+              <h3>Mission &amp; Vision</h3>
+              <div className="mv-grid">
+                <div className="mv-card">
+                  <div className="mv-k">Mission</div>
+                  <div className="mv-v">
+                    To empower eCommerce brands and startups with high-performance digital tools
+                    that bridge the gap between “having a website” and “dominating a market.”
+                  </div>
+                </div>
+                <div className="mv-card">
+                  <div className="mv-k">Vision</div>
+                  <div className="mv-v">
+                    To become the world’s most trusted boutique agency for digital transformation,
+                    where every line of code serves a measurable business goal.
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

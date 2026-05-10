@@ -1,10 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
-
-// ─── Types ───────────────────────────────────────────────────────────────────
-interface BookingDetails {
-  date: Date | null;
-  slot: string | null;
-}
+import { useState } from "react";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const MONTHS = [
@@ -119,7 +113,15 @@ const styles = `
     font-family: var(--fh); font-size: clamp(38px, 5vw, 68px);
     font-weight: 700; line-height: 1.06; letter-spacing: -2px; color: #fff; margin-bottom: 18px;
   }
-  .rathi-hero h1 em { font-style: italic; color: var(--indigo2); }
+  /* Force solid text color for "great together" (removes any gradient/clip text effects). */
+  .rathi-hero h1 em {
+    font-style: italic;
+    color: var(--indigo3);
+    background: none !important;
+    -webkit-text-fill-color: var(--indigo3) !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+  }
   .rathi-hero > .rathi-wrap > p {
     font-size: 16px; color: rgba(255,255,255,0.75);
     max-width: 520px; margin: 0 auto 36px; line-height: 1.85; font-weight: 300;
@@ -556,8 +558,7 @@ function ContactFormPanel() {
       alert("Please fill in your name, email, and message.");
       return;
     }
-    const services = checkedServices.size > 0 ? [...checkedServices].join(", ") : "Not specified";
-    // EmailJS call would go here
+    // EmailJS: pass services: checkedServices.size > 0 ? [...checkedServices].join(", ") : "Not specified"
     // emailjs.send(SERVICE, CONTACT_TEMPLATE, { from_name: cfName, from_email: cfEmail, services, message: cfMessage })
     setSent(true);
   };

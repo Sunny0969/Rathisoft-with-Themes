@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom'
 import './Header.css'
 
 const NAV_LINKS = [
-  { label: 'Services', href: '/services' },
+  // { label: 'Services', href: '/services' },
   { label: 'Work', href: '/work' },
   { label: 'Packages', href: '/packages' },
   { label: 'About Us', href: '/about' },
-  { label: 'Contact', href: '/contact' },
+  // { label: 'Contact', href: '/contact' },
+  { label: 'Team', href: '/team' },
   { label: 'Themes', href: '/themes' },
 ] as const
 
@@ -30,6 +31,12 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  /** Warm full wordmark in memory so first hover/focus doesn’t wait on decode. */
+  useEffect(() => {
+    const img = new Image()
+    img.src = '/logo/RathiSoft.png'
+  }, [])
+
   useEffect(() => {
     if (!mobileOpen) return
     const prev = document.body.style.overflow
@@ -48,11 +55,37 @@ export function Header() {
     <header className="rs-header">
       <nav ref={navRef} id="mainNav">
         <div className="nav-in">
-          <Link to="/" className="logo" title="Rathisoft Home">
-            <div className="logo-box">R</div>
-            <span className="logo-text">
-              Rathi<span>soft</span>
-            </span>
+          {/*
+            Link stays w-9 so nav links don’t shift; wordmark is clipped in a strip at left-9 with overflow-hidden.
+            Hover/focus-within runs translateX(-100%→0) on the img only (will-change + ease-in-out ~450ms) — no width animation.
+          */}
+          <Link
+            to="/"
+            title="Rathisoft Home"
+            className="group relative inline-flex h-9 w-9 shrink-0 items-center justify-center outline-none focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[rgba(19,19,26,0.92)]"
+          >
+            <img
+              src="/logo/simpleR.png"
+              alt="RathiSoft"
+              width={36}
+              height={36}
+              className="relative z-10 h-9 w-9 object-contain"
+              draggable={false}
+            />
+            <div
+              className="pointer-events-none absolute left-9 top-0 z-[1] h-9 w-[min(260px,calc(100vw-8rem))] overflow-hidden sm:w-60"
+              aria-hidden="true"
+            >
+              <img
+                src="/logo/athiSoft.png"
+                alt=""
+                aria-hidden
+                width={260}
+                height={36}
+                draggable={false}
+                className="h-9 w-auto max-w-[260px] origin-left object-contain object-left will-change-transform transition-transform duration-[450ms] ease-in-out -translate-x-full group-hover:translate-x-0 group-focus-within:translate-x-0"
+              />
+            </div>
           </Link>
           <ul className="nav-links">
             {NAV_LINKS.map(({ href, label }) => (

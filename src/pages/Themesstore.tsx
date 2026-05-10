@@ -274,7 +274,7 @@ const ThemesStore: React.FC = () => {
           </div>
 
           <h1>
-            <span className="highlight">Premium</span> Shopify &amp; WordPress<br />
+            <span style={{ color: '#6366f1' }}>Premium</span> Shopify &amp; WordPress<br />
             Themes &amp; Plugins
           </h1>
 

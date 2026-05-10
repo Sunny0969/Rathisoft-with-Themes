@@ -1143,8 +1143,8 @@ export function Work() {
               <span className="stat-label">Service Categories</span>
             </div>
             <div className="stat">
-              <span className="stat-num">🌍</span>
-              <span className="stat-label">Clients Worldwide</span>
+              <span className="stat-num">100%</span>
+              <span className="stat-label">Job Success Score</span>
             </div>
           </div>
         </div>
