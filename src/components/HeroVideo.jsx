@@ -5,6 +5,7 @@
  *   ffmpeg -i hero-section-video.mp4 -vcodec libx264 -crf 28 -preset slow -vf "scale=1280:-2" -an hero-section-video-sm.mp4
  * Optional smaller WebM for Chromium/Firefox (~30% savings): encode WebM then add a `<source type="video/webm" />` above the MP4.
  * Production: prefer CDN (Cloudflare R2, Bunny.net, etc.) instead of `/public` for bandwidth + caching.
+ * LCP poster defaults to `/assets/hero-image.webp` — synced from `public/images/hero-poster.webp` in `scripts/prepare-public-assets.mjs`.
  */
 import { useEffect, useRef, useState } from 'react'
 
@@ -22,7 +23,7 @@ function readMq(query) {
  * Text and CTAs stay in the page — never inside the video.
  */
 export function HeroVideo({
-  posterSrc = '/images/hero-poster.webp',
+  posterSrc = '/assets/hero-image.webp',
   mp4Src = '/images/hero-section-video.mp4',
   posterWidth = 1920,
   posterHeight = 1080,
@@ -34,8 +35,33 @@ export function HeroVideo({
   )
   /** Lazy-mount MP4 only when allowed — after first paint via idle callback */
   const [mountVideo, setMountVideo] = useState(false)
+  /** Defer decoding until hero enters viewport (saves bandwidth when landing below fold) */
+  const [heroVisible, setHeroVisible] = useState(false)
+  const containerRef = useRef(null)
 
   const allowVideo = !isMobile && !reducedMotion
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return undefined
+
+    if (typeof IntersectionObserver === 'undefined') {
+      setHeroVisible(true)
+      return undefined
+    }
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setHeroVisible(true)
+          io.disconnect()
+        }
+      },
+      { rootMargin: '140px', threshold: 0.02 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
 
   useEffect(() => {
     const mq = window.matchMedia(MOBILE_MQ)
@@ -52,7 +78,7 @@ export function HeroVideo({
 
   /** Idle / deferred mount — avoids competing with first paint + main-thread work */
   useEffect(() => {
-    if (!allowVideo) {
+    if (!allowVideo || !heroVisible) {
       setMountVideo(false)
       return undefined
     }
@@ -78,7 +104,7 @@ export function HeroVideo({
       }
       if (timeoutId) window.clearTimeout(timeoutId)
     }
-  }, [allowVideo])
+  }, [allowVideo, heroVisible])
 
   /** Pause when tab hidden — saves CPU / battery; resume when visible */
   useEffect(() => {
@@ -110,6 +136,7 @@ export function HeroVideo({
 
   return (
     <div
+      ref={containerRef}
       className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
       aria-hidden="true"
     >
@@ -119,11 +146,12 @@ export function HeroVideo({
       */}
       <img
         src={posterSrc}
-        alt=""
+        alt="Full-width hero visual behind headline — RathiSoft WordPress and Shopify agency Lahore"
         width={posterWidth}
         height={posterHeight}
         decoding="async"
         fetchPriority="high"
+        loading="eager"
         className="absolute inset-0 z-0 h-full w-full object-cover"
       />
 
@@ -135,7 +163,7 @@ export function HeroVideo({
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="none"
           aria-hidden="true"
           tabIndex={-1}
         >

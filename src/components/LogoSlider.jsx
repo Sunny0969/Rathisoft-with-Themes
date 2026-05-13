@@ -76,8 +76,10 @@ export function LogoSlider() {
               >
                 <img
                   src={logo.src}
-                  alt={primarySet ? logo.alt : ''}
+                  alt={primarySet ? `${logo.alt} — partner logo` : ''}
                   aria-hidden={!primarySet || undefined}
+                  width={160}
+                  height={60}
                   loading="lazy"
                   decoding="async"
                   draggable={false}

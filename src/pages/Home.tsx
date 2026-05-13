@@ -3,7 +3,12 @@ import type { FormEvent } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { HeroVideo } from '../components/HeroVideo'
-import { LogoSlider } from '../components/LogoSlider'
+import { OnPageSeoSection } from '../components/OnPageSeoSection'
+import { Seo } from '../components/Seo'
+import {
+  SITE_TESTIMONIALS,
+  buildOrganizationReviewProperties,
+} from '../data/testimonials'
 // import { PackagesSection } from '../components/PackagesSection'
 import './Home.css'
 
@@ -21,29 +26,29 @@ const MARQUEE_ITEMS = [
 ] as const
 
 const TRUST_AVATARS = [
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face',
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&crop=face',
-  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&crop=face',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face&fm=webp&q=75',
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&crop=face&fm=webp&q=75',
+  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&crop=face&fm=webp&q=75',
 ] as const
 
 /** Unsplash sources: https://unsplash.com/photos/{id} — optimized for card headers */
 const SERVICE_IMAGES = {
-  web: 'https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=800&h=500&fit=crop&auto=format&q=75',
-  seo: 'https://images.unsplash.com/photo-1686061594225-3e92c0cd51b0?w=800&h=500&fit=crop&auto=format&q=75',
-  app: 'https://images.unsplash.com/photo-1618761714954-0b8cd0026356?w=800&h=500&fit=crop&auto=format&q=75',
-  wpShopify: 'https://images.unsplash.com/photo-1560472354-0088b5dc9d8d?w=800&h=500&fit=crop&auto=format&q=75',
-  video: 'https://images.unsplash.com/photo-1605826832916-d0ea9d6fe71e?w=800&h=500&fit=crop&auto=format&q=75',
-  social: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=800&h=500&fit=crop&auto=format&q=75',
-  content: 'https://images.unsplash.com/photo-1519337265831-281ec6cc8514?w=800&h=500&fit=crop&auto=format&q=75',
-  ppc: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&h=500&fit=crop&auto=format&q=75',
-  branding: 'https://images.unsplash.com/photo-1770010735791-f7c377534c1c?w=800&h=500&fit=crop&auto=format&q=75',
-  genAi: 'https://images.unsplash.com/photo-1677691824304-279660ceece3?w=800&h=500&fit=crop&auto=format&q=75',
-  dynamicsErp: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=800&h=500&fit=crop&auto=format&q=75',
-  cyber: 'https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?w=800&h=500&fit=crop&auto=format&q=75',
-  gameDev: 'https://images.unsplash.com/photo-1556438064-2d7646166914?w=800&h=500&fit=crop&auto=format&q=75',
-  saas: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=500&fit=crop&auto=format&q=75',
-  support: 'https://images.unsplash.com/photo-1758780691544-d11ce61aae47?w=800&h=500&fit=crop&auto=format&q=75',
-  automation: 'https://images.unsplash.com/photo-1607292803026-3b9d9b3d0fe7?w=800&h=500&fit=crop&auto=format&q=75',
+  web: 'https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=800&h=500&fit=crop&fm=webp&q=75',
+  seo: 'https://images.unsplash.com/photo-1686061594225-3e92c0cd51b0?w=800&h=500&fit=crop&fm=webp&q=75',
+  app: 'https://images.unsplash.com/photo-1618761714954-0b8cd0026356?w=800&h=500&fit=crop&fm=webp&q=75',
+  wpShopify: 'https://images.unsplash.com/photo-1560472354-0088b5dc9d8d?w=800&h=500&fit=crop&fm=webp&q=75',
+  video: 'https://images.unsplash.com/photo-1605826832916-d0ea9d6fe71e?w=800&h=500&fit=crop&fm=webp&q=75',
+  social: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=800&h=500&fit=crop&fm=webp&q=75',
+  content: 'https://images.unsplash.com/photo-1519337265831-281ec6cc8514?w=800&h=500&fit=crop&fm=webp&q=75',
+  ppc: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&h=500&fit=crop&fm=webp&q=75',
+  branding: 'https://images.unsplash.com/photo-1770010735791-f7c377534c1c?w=800&h=500&fit=crop&fm=webp&q=75',
+  genAi: 'https://images.unsplash.com/photo-1677691824304-279660ceece3?w=800&h=500&fit=crop&fm=webp&q=75',
+  dynamicsErp: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=800&h=500&fit=crop&fm=webp&q=75',
+  cyber: 'https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?w=800&h=500&fit=crop&fm=webp&q=75',
+  gameDev: 'https://images.unsplash.com/photo-1556438064-2d7646166914?w=800&h=500&fit=crop&fm=webp&q=75',
+  saas: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=500&fit=crop&fm=webp&q=75',
+  support: 'https://images.unsplash.com/photo-1758780691544-d11ce61aae47?w=800&h=500&fit=crop&fm=webp&q=75',
+  automation: 'https://images.unsplash.com/photo-1607292803026-3b9d9b3d0fe7?w=800&h=500&fit=crop&fm=webp&q=75',
 } as const
 
 const SERVICES = [
@@ -77,6 +82,71 @@ const TRUST_CARDS = [
 ] as const
 
 const WA = 'https://wa.me/923342651544'
+
+const HOME_META_TITLE = 'RathiSoft — Software Agency in Lahore | Web & Digital Solutions'
+const HOME_META_DESCRIPTION =
+  'RathiSoft is a premier software agency in Lahore, Pakistan. We build custom web apps, mobile solutions, WordPress/Shopify stores, and deliver ROI-driven digital marketing. Get a free quote today.'
+const HOME_KEYWORDS =
+  'software agency Lahore, software development company Pakistan, web development Lahore, digital marketing agency Pakistan, IT company Lahore'
+
+const HOME_STRUCTURED_DATA = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      name: 'RathiSoft',
+      url: 'https://rathisoft.com',
+      logo: 'https://rathisoft.com/assets/logo.png',
+      description:
+        'RathiSoft is a software development and digital marketing agency based in Lahore, Pakistan, serving clients globally.',
+      foundingDate: '2020',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Johar Town',
+        addressLocality: 'Lahore',
+        addressRegion: 'Punjab',
+        postalCode: '54000',
+        addressCountry: 'PK',
+      },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: '+923342651544',
+        contactType: 'customer service',
+        availableLanguage: ['English', 'Urdu'],
+      },
+      sameAs: [
+        'https://www.linkedin.com/company/rathisoft',
+        'https://www.facebook.com/rathisoft',
+        'https://twitter.com/rathisoft',
+        'https://www.instagram.com/rathisoft',
+      ],
+      areaServed: ['PK', 'US', 'GB', 'AE', 'SA'],
+      serviceType: [
+        'Software Development',
+        'Web Development',
+        'Mobile App Development',
+        'Digital Marketing',
+        'SEO',
+        'WordPress Development',
+        'Shopify Development',
+      ],
+      ...buildOrganizationReviewProperties(SITE_TESTIMONIALS),
+    },
+    {
+      '@type': 'WebSite',
+      name: 'RathiSoft',
+      url: 'https://rathisoft.com',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: 'https://rathisoft.com/search?q={search_term_string}',
+        },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+  ],
+}
 
 const CONTACT_REGION_OPTIONS = [
   'Pakistan',
@@ -114,113 +184,107 @@ function ContactLeadForm({
 
   return (
     <form className={formClassName} onSubmit={onSubmit} noValidate>
-      <div className="fg">
-        <label className="flbl" htmlFor={fieldId('fullname')}>
-          Full name <span aria-hidden="true">*</span>
-        </label>
-        <input
-          id={fieldId('fullname')}
-          name="fullName"
-          className="finput"
-          type="text"
-          autoComplete="name"
-          placeholder="John Smith"
-          required
-        />
+      <div className="fcta-field-row">
+        <div className="fg">
+          <label className="flbl" htmlFor={fieldId('fullname')}>
+            Full name <span aria-hidden="true">*</span>
+          </label>
+          <input
+            id={fieldId('fullname')}
+            name="fullName"
+            className="finput"
+            type="text"
+            autoComplete="name"
+            placeholder="Your name"
+            required
+          />
+        </div>
+        <div className="fg">
+          <label className="flbl" htmlFor={fieldId('email')}>
+            Email
+          </label>
+          <input
+            id={fieldId('email')}
+            name="email"
+            className="finput"
+            type="email"
+            autoComplete="email"
+            placeholder="you@company.com"
+          />
+        </div>
       </div>
-      <div className="fg">
-        <label className="flbl" htmlFor={fieldId('email')}>
-          Email
-        </label>
-        <input
-          id={fieldId('email')}
-          name="email"
-          className="finput"
-          type="email"
-          autoComplete="email"
-          placeholder="john@yourbusiness.com"
-        />
+      <div className="fcta-field-row">
+        <div className="fg">
+          <label className="flbl" htmlFor={fieldId('phone')}>
+            Phone
+          </label>
+          <input
+            id={fieldId('phone')}
+            name="phone"
+            className="finput"
+            type="tel"
+            autoComplete="tel"
+            placeholder="+92 300 0000000"
+          />
+        </div>
+        <div className="fg">
+          <label className="flbl" htmlFor={fieldId('region')}>
+            Region
+          </label>
+          <select
+            id={fieldId('region')}
+            name="region"
+            className="finput finput-select"
+            defaultValue=""
+          >
+            <option value="">Select…</option>
+            {CONTACT_REGION_OPTIONS.map((r) => (
+              <option key={r} value={r}>
+                {r}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-      <div className="fg">
-        <label className="flbl" htmlFor={fieldId('phone')}>
-          Phone number
-        </label>
-        <input
-          id={fieldId('phone')}
-          name="phone"
-          className="finput"
-          type="tel"
-          autoComplete="tel"
-          placeholder="+92 300 0000000"
-        />
+      <div className="fcta-field-row">
+        <div className="fg">
+          <label className="flbl" htmlFor={fieldId('company')}>
+            Company <span className="fcta-opt">optional</span>
+          </label>
+          <input
+            id={fieldId('company')}
+            name="companyName"
+            className="finput"
+            type="text"
+            autoComplete="organization"
+            placeholder="Company name"
+          />
+        </div>
+        <div className="fg">
+          <label className="flbl" htmlFor={fieldId('url')}>
+            Website <span className="fcta-opt">optional</span>
+          </label>
+          <input
+            id={fieldId('url')}
+            name="companyUrl"
+            className="finput"
+            type="url"
+            autoComplete="url"
+            placeholder="https://…"
+          />
+        </div>
       </div>
-      <div className="fg">
-        <label className="flbl" htmlFor={fieldId('company')}>
-          Company name <span className="fcta-opt">(optional)</span>
-        </label>
-        <input
-          id={fieldId('company')}
-          name="companyName"
-          className="finput"
-          type="text"
-          autoComplete="organization"
-          placeholder="Your company legal name"
-        />
-      </div>
-      <div className="fg">
-        <label className="flbl" htmlFor={fieldId('url')}>
-          Company URL <span className="fcta-opt">(optional)</span>
-        </label>
-        <input
-          id={fieldId('url')}
-          name="companyUrl"
-          className="finput"
-          type="url"
-          autoComplete="url"
-          placeholder="https://example.com"
-        />
-      </div>
-      <div className="fg">
-        <label className="flbl" htmlFor={fieldId('region')}>
-          Region
-        </label>
-        <select
-          id={fieldId('region')}
-          name="region"
-          className="finput finput-select"
-          defaultValue=""
-        >
-          <option value="">Select region</option>
-          {CONTACT_REGION_OPTIONS.map((r) => (
-            <option key={r} value={r}>
-              {r}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="fg">
-        <label className="flbl" htmlFor={fieldId('services')}>
-          Services you are looking for
-        </label>
-        <p id={fieldId('services-hint')} className="fcta-field-hint">
-          Hold <kbd className="fcta-kbd">Ctrl</kbd> /{' '}
-          <kbd className="fcta-kbd">⌘</kbd> to select more than one.
-        </p>
-        <select
-          id={fieldId('services')}
-          name="services"
-          className="finput finput-multiselect"
-          multiple
-          size={8}
-          aria-describedby={fieldId('services-hint')}
-        >
+      <fieldset className="fg fcta-services-fieldset">
+        <legend className="flbl">Services</legend>
+        <div className="fcta-service-checks" role="group" aria-label="Services you need">
           {CONTACT_SERVICE_MULTI_OPTIONS.map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
+            <label key={s} className="fcta-check">
+              <input type="checkbox" name="services" value={s} />
+              <span>{s}</span>
+            </label>
           ))}
-        </select>
-      </div>
+        </div>
+      </fieldset>
       <div className="fg">
         <label className="flbl" htmlFor={fieldId('details')}>
           Project details <span aria-hidden="true">*</span>
@@ -228,9 +292,9 @@ function ContactLeadForm({
         <textarea
           id={fieldId('details')}
           name="projectDetails"
-          className="finput"
-          rows={4}
-          placeholder="Goals, timeline, budget range, tech stack…"
+          className="finput finput-textarea-sm"
+          rows={3}
+          placeholder="Brief scope, timeline, or budget…"
           required
         />
       </div>
@@ -241,7 +305,24 @@ function ContactLeadForm({
   )
 }
 
+function usePrefersReducedMotion(): boolean {
+  const [reduced, setReduced] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const onChange = () => setReduced(mq.matches)
+    setReduced(mq.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+  return reduced
+}
+
 export function Home() {
+  const prefersReducedMotion = usePrefersReducedMotion()
   const rootRef = useRef<HTMLDivElement>(null)
   const cursorRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
@@ -255,15 +336,6 @@ export function Home() {
 
   const onContactLeadSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-  }, [])
-
-  useEffect(() => {
-    const prev = document.title
-    document.title =
-      'Rathisoft — WordPress & Shopify Expert | Digital Agency Lahore'
-    return () => {
-      document.title = prev
-    }
   }, [])
 
   const heroEntrance = useCallback(() => {
@@ -452,6 +524,11 @@ export function Home() {
 
   return (
     <main className="app-main">
+      <Seo title={HOME_META_TITLE} description={HOME_META_DESCRIPTION} keywords={HOME_KEYWORDS} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_STRUCTURED_DATA) }}
+      />
       {showPreloader ? (
         <div id="preloader">
           <div className="pre-logo">
@@ -486,14 +563,13 @@ export function Home() {
               Scale Your Brand · High-Performance Web · Global Reach
             </div>
             <h1 id="hero-heading" className="hero-h">
-              Websites that work.
-              <br />
-              Stores that <span>actually sell.</span>
+              Trusted Software Agency — <br></br>Built for Results
             </h1>
             <p className="hero-p">
-              Expert WordPress development, Shopify store builds, and full
-              digital marketing — for businesses ready to dominate online.
-              Based in Lahore, trusted by clients worldwide.
+              RathiSoft is a software agency in Lahore, Pakistan, delivering custom web apps,
+              mobile solutions, WordPress and Shopify commerce builds, and ROI-led digital
+              marketing for teams that want clarity, speed, and measurable outcomes—trusted by
+              clients worldwide from our Lahore studio.
             </p>
             <div className="hero-btns">
               <a href="#contact" className="btn-primary">
@@ -505,12 +581,12 @@ export function Home() {
             </div>
             <div className="hero-trust">
               <div className="avs">
-                {TRUST_AVATARS.map((src) => (
+                {TRUST_AVATARS.map((src, i) => (
                   <img
                     key={src}
                     className="av-img"
                     src={src}
-                    alt=""
+                    alt={`Representative client portrait ${i + 1} for trusted-by businesses row`}
                     width={32}
                     height={32}
                     loading="lazy"
@@ -571,7 +647,10 @@ export function Home() {
             <div className="prob-layout">
               <div className="prob-left">
                 <div className="home-label">The Problem</div>
-                <h2>Your business deserves better than a broken website.</h2>
+                <h2>Custom Software Development in Lahore</h2>
+                <p className="home-lead prob-lead">
+                  Your business deserves better than a broken website.
+                </p>
               </div>
               <div className="prob-right">
                 <div className="prob-box">
@@ -613,14 +692,16 @@ export function Home() {
           <div className="home-wrap">
             <div className="home-section-head">
               <div className="home-label">What We Do</div>
-              <h2>
-                {SERVICES.length} services. One team.
-                <br />
-                <i>Infinite possibilities.</i>
-              </h2>
+              <h2>Web &amp; Mobile App Development</h2>
               <p className="home-lead">
-                Full-stack digital services for businesses that want to grow
-                online — from strategy to execution, design to deployment.
+                Full-stack digital builds — responsive websites, plugins,
+                integrations, and mobile-ready experiences — delivered with clean
+                code and measurable performance.
+              </p>
+              <h2 className="home-h2-follow">Digital Marketing That Drives Real Revenue</h2>
+              <p className="home-lead">
+                SEO, PPC, social, and content that turns traffic into leads and
+                sales — aligned with your goals and tuned for ROI.
               </p>
             </div>
             <div className="svc-grid">
@@ -663,14 +744,10 @@ export function Home() {
           <div className="home-wrap">
             <div className="home-section-head">
               <div className="home-label">Why Trust Us</div>
-              <h2>
-                Built on proof,
-                <br />
-                not promises.
-              </h2>
+              <h2>Why Businesses Choose RathiSoft</h2>
               <p className="home-lead">
-                Every claim is backed by real client work, clean code, and 6+
-                years of consistent delivery.
+                Every claim is backed by real client work, clean code, and years
+                of consistent delivery — proof over promises.
               </p>
             </div>
             <div className="tc-grid">
@@ -679,7 +756,7 @@ export function Home() {
                   <div className="tc-icon" style={{ background: c.bg }}>
                     {c.icon}
                   </div>
-                  <h4>{c.title}</h4>
+                  <h3>{c.title}</h3>
                   <p>{c.text}</p>
                 </div>
               ))}
@@ -709,67 +786,112 @@ export function Home() {
           <div className="home-wrap">
             <div className="home-section-head">
               <div className="home-label">Reviews</div>
-              <h2>What clients say.</h2>
+              <h2>Our Work Speaks for Itself</h2>
               <p className="home-lead">
-                Verified reviews from real clients — businesses we&apos;ve helped
-                grow online.
+                Verified feedback from clients — WordPress, Shopify, apps, and more.
               </p>
             </div>
-            <div className="rev-grid">
-              <div className="rv">
-                <div className="rv-stars">★★★★★</div>
-                <p className="rv-q">
-                  We recently hired Suneel to handle our Google posts, Instagram,
-                  and Facebook — and the results have been outstanding.
-                </p>
-                <div className="rv-author">
-                  <div className="rv-av">CO</div>
-                  <div>
-                    <div className="rv-name">City Orthopaedics & Sports Medicine</div>
-                    <div className="rv-role">New Jersey, USA · Healthcare</div>
+            <div
+              className={
+                prefersReducedMotion
+                  ? 'rev-slider-outer rev-slider-outer-scroll'
+                  : 'rev-slider-outer'
+              }
+              aria-label="Client reviews carousel"
+            >
+              <div
+                className={
+                  prefersReducedMotion ? 'rev-slider-track rev-slider-track-static' : 'rev-slider-track'
+                }
+              >
+                {(prefersReducedMotion
+                  ? [...SITE_TESTIMONIALS]
+                  : [...SITE_TESTIMONIALS, ...SITE_TESTIMONIALS]
+                ).map((r, i) => (
+                  <div key={`${r.name}-${i}`} className="rv rv-slide">
+                    <div className="rv-stars">{r.stars}</div>
+                    <p className="rv-q">{r.quote}</p>
+                    <div className="rv-author">
+                      <div className="rv-av">{r.initials}</div>
+                      <div>
+                        <div className="rv-name">{r.name}</div>
+                        <div className="rv-role">{r.role}</div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="rv">
-                <div className="rv-stars">★★★★★</div>
-                <p className="rv-q">
-                  He did a wonderful job, was SO fast and responsive. Very
-                  grateful for his help and easy-going personality.
-                </p>
-                <div className="rv-author">
-                  <div className="rv-av">U</div>
-                  <div>
-                    <div className="rv-name">Upwork Client</div>
-                    <div className="rv-role">Verified review · 5 stars</div>
-                  </div>
-                </div>
-              </div>
-              <div className="rv">
-                <div className="rv-stars">★★★★★</div>
-                <p className="rv-q">
-                  Followed the brief perfectly and constantly checked in to
-                  ensure designs were on track. Will 100% work again.
-                </p>
-                <div className="rv-author">
-                  <div className="rv-av">U</div>
-                  <div>
-                    <div className="rv-name">Upwork Client</div>
-                    <div className="rv-role">Verified review · 5 stars</div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
+        <OnPageSeoSection
+          theme="boxed"
+          eyebrow="About how we work"
+          sectionId="home-on-page-seo"
+          heading="Lahore-based builds — websites, Shopify & WordPress, and marketing that converts"
+          lead={
+            <>
+              <p>
+                <strong>RathiSoft</strong> is a software agency in <strong>Johar Town, Lahore</strong>.
+                We design and ship responsive websites, WordPress and Shopify stores, mobile-friendly
+                experiences, and ongoing SEO and paid social support for founders and teams in
+                Pakistan and overseas. You get clear milestones, staging links before go-live, and
+                direct WhatsApp access — not endless ticket queues.
+              </p>
+              <p>
+                Typical projects include branding-led landing pages, WooCommerce or Shopify
+                checkouts, speed and Core Web Vitals improvements, and integrations with tools you
+                already use (analytics, forms, CRMs). Whether you are launching something new or
+                fixing a slow or broken site, we scope work upfront so budgets and timelines stay
+                understandable.
+              </p>
+            </>
+          }
+          links={[
+            {
+              to: '/services',
+              label: 'See services — web, apps, SEO & digital marketing',
+            },
+            {
+              to: '/work',
+              label: 'View portfolio — WordPress, Shopify & real launches',
+            },
+            {
+              to: '/about',
+              label: 'About RathiSoft — team, values & how we operate',
+            },
+            {
+              to: '/packages',
+              label: 'Packages & pricing — retainers and project bundles',
+            },
+          ]}
+        >
+          <p>
+            Quality matters more than buzzwords: semantic HTML where it helps SEO, responsive
+            layouts, accessible controls, and performance-conscious assets so pages stay fast on
+            phones and desktops. When it fits your roadmap we also build or wire APIs, React
+            front-ends, WooCommerce automation, and email flows — always tied to outcomes you can
+            measure (leads, sales, sign-ups), not vanity metrics alone.
+          </p>
+          <p>
+            Before you hire anyone, ask how they handle hosting, backups, updates after launch, and
+            what happens if something breaks. We spell that out for{' '}
+            <Link to="/packages">packages</Link> and custom work alike, and we stay reachable after
+            delivery — many clients come back for iterations and new phases.
+          </p>
+          <p>
+            Next step: scroll to the <a href="#contact">contact section</a> on this page, or{' '}
+            <Link to="/contact">open the contact page</Link> for booking and detailed enquiries —
+            we aim to respond within one business day.
+          </p>
+        </OnPageSeoSection>
+
         <div className="fcta" id="contact">
-          <h2>
-            Stop losing clients
-            <br />
-            to a <i>bad website.</i>
-          </h2>
+          <h2>Trusted by Clients Across Pakistan &amp; Globally</h2>
           <p className="fcta-sub">
-            Your competitors are online and growing. Don&apos;t get left behind.
+            Stop losing leads to a weak site — your competitors are online and
+            growing. Don&apos;t get left behind.
           </p>
 
           <div className="fcta-row">
@@ -780,7 +902,9 @@ export function Home() {
               </p>
               <div className="ct-item">
                 <div className="ct-icon">📧</div>
-                <a href="mailto:info@rathisoft.com">info@rathisoft.com</a>
+                <a href="mailto:info@rathisoft.com" rel="noopener noreferrer">
+                  info@rathisoft.com
+                </a>
               </div>
               <div className="ct-item">
                 <div className="ct-icon">📱</div>
@@ -798,7 +922,7 @@ export function Home() {
             </div>
             <ContactLeadForm
               idPrefix="home-d"
-              formClassName="fcta-form-card"
+              formClassName="fcta-form-card fcta-form-compact"
               onSubmit={onContactLeadSubmit}
             />
           </div>
@@ -806,7 +930,7 @@ export function Home() {
           <div className="fcta-mobile-contact">
             <ContactLeadForm
               idPrefix="home-m"
-              formClassName="fcta-mobile-inner"
+              formClassName="fcta-mobile-inner fcta-form-compact"
               onSubmit={onContactLeadSubmit}
             />
           </div>

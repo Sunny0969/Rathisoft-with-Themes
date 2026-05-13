@@ -17,9 +17,6 @@
     --rs-font-body: "DM Sans", "Segoe UI", sans-serif;
   }
   
-  /* ─── Google Fonts ───────────────────────────────────────────────────────────── */
-  @import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap");
-  
   /* ─── Section Layout ─────────────────────────────────────────────────────────── */
   .team-section {
     background: var(--rs-bg);
@@ -64,6 +61,20 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* Bridges H1 → H3 member cards without adding visible clutter */
+  .team-roster-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
   }
   
   .section-subtitle {

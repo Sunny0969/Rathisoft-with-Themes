@@ -1,5 +1,7 @@
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Breadcrumbs } from '../components/Breadcrumbs'
+import { Seo } from '../components/Seo'
 
 const WA = 'https://wa.me/923342651544'
 
@@ -69,6 +71,7 @@ const WORK_STYLES = `
   --fh: 'Poppins', system-ui, sans-serif;
   --fb: 'Poppins', system-ui, sans-serif;
   --r2: 18px;
+  --r3: 24px;
   --sh2: 0 8px 40px rgba(0, 0, 0, 0.35);
 }
 .page-work,
@@ -394,6 +397,183 @@ const WORK_STYLES = `
   width: 9px;
   height: 9px;
 }
+.page-work .work-evidence {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 72px 0 80px;
+}
+.page-work .work-evidence h2 {
+  max-width: 920px;
+  margin-bottom: 20px;
+  line-height: 1.12;
+}
+.page-work .work-evidence-shell {
+  background: linear-gradient(145deg, rgba(99, 102, 241, 0.06), rgba(30, 30, 45, 0.92));
+  border: 1px solid rgba(99, 102, 241, 0.22);
+  border-radius: var(--r3);
+  padding: 28px 26px 30px;
+  position: relative;
+  overflow: hidden;
+}
+.page-work .work-evidence-shell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--indigo), var(--indigo3), transparent);
+  opacity: 0.85;
+  pointer-events: none;
+}
+.page-work .work-evidence-shell > * {
+  position: relative;
+  z-index: 1;
+}
+.page-work .work-evidence-lead {
+  font-size: 14px;
+  line-height: 1.85;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0;
+  max-width: 720px;
+}
+.page-work .work-evidence-lead strong {
+  font-weight: 500;
+  color: #fff;
+}
+.page-work .work-evidence-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+.page-work .work-evidence-pillar {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 18px 16px 20px;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.page-work .work-evidence-pillar:hover {
+  border-color: var(--border2);
+  transform: translateY(-2px);
+  box-shadow: var(--sh2);
+}
+.page-work .work-evidence-pillar-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--indigo2);
+  margin-bottom: 10px;
+}
+.page-work .work-evidence-pillar h3 {
+  font-family: var(--fh);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  line-height: 1.3;
+  letter-spacing: -0.3px;
+  color: var(--white);
+}
+.page-work .work-evidence-pillar ul {
+  margin: 0;
+  padding: 0 0 0 18px;
+  font-size: 12px;
+  line-height: 1.75;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.82);
+}
+.page-work .work-evidence-pillar li {
+  margin-bottom: 8px;
+}
+.page-work .work-evidence-pillar li:last-child {
+  margin-bottom: 0;
+}
+.page-work .work-evidence-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+  max-width: 920px;
+}
+.page-work .work-evidence-nav a {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
+}
+.page-work .work-evidence-nav a::before {
+  content: '→';
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-weight: 600;
+  color: var(--indigo2);
+}
+.page-work .work-evidence-nav a:hover {
+  border-color: var(--border2);
+  transform: translateY(-3px);
+  box-shadow: var(--sh2);
+  color: #fff;
+}
+.page-work .work-evidence-nav a:focus-visible {
+  outline: 2px solid var(--indigo2);
+  outline-offset: 3px;
+}
+.page-work .work-evidence-foot {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 22px;
+}
+.page-work .work-evidence-ref {
+  font-size: 11px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+}
+.page-work .work-evidence-ref a {
+  color: var(--indigo2);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.page-work .work-evidence-ref a:hover {
+  color: #c7d2fe;
+}
+.page-work a.work-evidence-ref-inline {
+  color: var(--indigo2);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.page-work a.work-evidence-ref-inline:hover {
+  color: #c7d2fe;
+}
+.page-work .work-evidence-about-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--indigo2);
+}
+.page-work .work-evidence-about-link:hover {
+  color: #c7d2fe;
+}
 .page-work .cta {
   background: var(--bg2);
   border-top: 1px solid var(--border);
@@ -472,6 +652,10 @@ const WORK_STYLES = `
   .page-work .stat-label {
     font-size: 9px;
   }
+  .page-work .work-evidence-pillars,
+  .page-work .work-evidence-nav {
+    grid-template-columns: 1fr;
+  }
 }
 @media (max-width: 600px) {
   .page-work .port-grid {
@@ -528,9 +712,11 @@ function ProjectCard({
             className="screenshot"
             src={src}
             alt={card.alt}
+            width={800}
+            height={500}
             loading={imgLoading}
             decoding="async"
-            fetchPriority={imgLoading === 'eager' ? 'high' : 'low'}
+            fetchPriority={imgLoading === 'eager' ? 'high' : undefined}
             onError={onImgErr}
           />
           {!card.emojiThumb && <div className="overlay">View Live Site ↗</div>}
@@ -579,7 +765,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'custom',
         href: 'https://www.karvaantours.com/',
-        img: '/images/karvaantours.jpg',
+        img: '/images/karvaantours.webp',
         imgFallback: PLACEHOLDER('Karvaan Tours'),
         alt: 'Karvaan Tours',
         tags: [
@@ -653,7 +839,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'custom',
         href: 'https://www.londondaily.news/',
-        img: '/images/londonDaily.png',
+        img: '/images/londonDaily.webp',
         imgFallback: PLACEHOLDER('London Daily News'),
         alt: 'London Daily News',
         tags: [
@@ -683,7 +869,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'custom',
         href: 'https://tripsadora.com/',
-        img: '/images/TripsAdora.jpg',
+        img: '/images/TripsAdora.webp',
         imgFallback: PLACEHOLDER('Tripsadora'),
         alt: 'Tripsadora',
         tags: [
@@ -704,7 +890,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'wordpress',
         href: 'https://www.openpr.com/',
-        img: '/images/OpenPR.jpg',
+        img: '/images/OpenPR.webp',
         imgFallback: PLACEHOLDER('OpenPR'),
         alt: 'OpenPR',
         tags: [
@@ -801,7 +987,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'shopify',
         href: 'https://deseomarketing.com/',
-        img: '/images/deseomarketing.jpg',
+        img: '/images/deseomarketing.webp',
         imgFallback: PLACEHOLDER('Deseo Marketing'),
         alt: 'Deseo Marketing',
         tags: [
@@ -837,7 +1023,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'graphics',
         href: 'https://www.instagram.com/darachaharbagh?igsh=MTE3c3Q4aTlzMWk2Ng==',
-        img: '/images/deraDeveloper.jpg',
+        img: '/images/deraDeveloper.webp',
         imgFallback: PLACEHOLDER('Urban Real Estate'),
         alt: 'Dara Chahar Bagh',
         tags: [
@@ -852,7 +1038,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'graphics',
         href: 'https://www.instagram.com/digiladderpk?igsh=MWJ1MHYwMjFnbGM4dw==',
-        img: '/images/digiladder.jpg',
+        img: '/images/digiladder.webp',
         imgFallback: PLACEHOLDER('DigiLadder'),
         alt: 'DigiLadder Marketing Portfolio',
         tags: [
@@ -867,7 +1053,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'graphics',
         href: 'https://www.instagram.com/ikraharismalikoffical?igsh=MThpamJvc3IxNjEwNw==',
-        img: '/images/ikraHaris.jpg',
+        img: '/images/ikraHaris.webp',
         imgFallback: PLACEHOLDER('Ikra Haris'),
         alt: 'Elegant Ethnic Fashion',
         tags: [
@@ -882,7 +1068,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'graphics',
         href: 'https://www.instagram.com/karvaantours/?hl=en',
-        img: '/images/karvaantourssocialmedia.jpg',
+        img: '/images/karvaantourssocialmedia.webp',
         imgFallback: PLACEHOLDER('Karvaan Social'),
         alt: 'Karvaan Tours Social Media',
         tags: [
@@ -904,7 +1090,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'uiux',
         href: 'https://www.figma.com/design/7oHf4FtxzhakOx1sele4Gq/Tech-Online-Store-Design?node-id=0-1&p=f',
-        img: '/images/techonlinestoredesign.jpg',
+        img: '/images/techonlinestoredesign.webp',
         imgFallback: PLACEHOLDER('Tech Online Store UI'),
         alt: 'Tech Online Store Design',
         tags: [
@@ -919,7 +1105,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'uiux',
         href: 'https://www.figma.com/design/q3QRXfWXfOXk9encNClTpH/Well-Nest-Diagnosis?node-id=1-2679',
-        img: '/images/well%20nest.jpg',
+        img: '/images/well%20nest.webp',
         imgFallback: PLACEHOLDER('Well Nest UI'),
         alt: 'Well Nest Diagnosis UI',
         tags: [
@@ -934,7 +1120,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'uiux',
         href: 'https://www.figma.com/design/w7FpArCXnLbOtsDRko2aPw/Dalel-admin-panel?node-id=0-1&p=f',
-        img: '/images/dalelkuwait.jpg',
+        img: '/images/dalelkuwait.webp',
         imgFallback:
           'https://www.figma.com/design/w7FpArCXnLbOtsDRko2aPw/Dalel-admin-panel?node-id=0-1&p=f',
         alt: 'Dalel Admin Panel',
@@ -950,7 +1136,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'uiux',
         href: 'https://www.figma.com/design/oRqAIzKRR9lVlAH0NBpFw8/Trips-Adora?node-id=4119-1781&p=f&t=Bcq4el3K5Jdsh88H-0',
-        img: '/images/TripsAdora.jpg',
+        img: '/images/TripsAdora.webp',
         imgFallback:
           'https://www.figma.com/design/oRqAIzKRR9lVlAH0NBpFw8/Trips-Adora?node-id=4119-1781&p=f&t=Bcq4el3K5Jdsh88H-0',
         alt: 'Trips Adora UI',
@@ -966,7 +1152,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'uiux',
         href: 'https://www.figma.com/proto/oRqAIzKRR9lVlAH0NBpFw8/Trips-Adora?node-id=4119-2031&t=Bcq4el3K5Jdsh88H-0&scaling=min-zoom&content-scaling=fixed&page-id=4119%3A1781',
-        img: '/images/motorcar.jpg',
+        img: '/images/motorcar.webp',
         imgFallback:
           'https://www.figma.com/proto/oRqAIzKRR9lVlAH0NBpFw8/Trips-Adora?node-id=4119-2031&t=Bcq4el3K5Jdsh88H-0&scaling=min-zoom&content-scaling=fixed&page-id=4119%3A1781',
         alt: 'Car Rental UI',
@@ -989,8 +1175,8 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'video-editing',
         href: 'https://www.youtube.com/watch?v=_CUuQvN3tl4',
-        img: 'https://img.youtube.com/vi/_CUuQvN3tl4/maxresdefault.jpg',
-        imgFallback: 'https://img.youtube.com/vi/_CUuQvN3tl4/hqdefault.jpg',
+        img: 'https://i.ytimg.com/vi_webp/_CUuQvN3tl4/maxresdefault.webp',
+        imgFallback: 'https://i.ytimg.com/vi_webp/_CUuQvN3tl4/hqdefault.webp',
         alt: 'YouTube Thumbnail',
         tags: [
           { cls: 'tag-video-editing', label: 'Video Editing' },
@@ -1004,8 +1190,8 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'video-editing',
         href: 'https://www.youtube.com/shorts/wGtUwJcUODs',
-        img: 'https://img.youtube.com/vi/wGtUwJcUODs/maxresdefault.jpg',
-        imgFallback: 'https://img.youtube.com/vi/wGtUwJcUODs/hqdefault.jpg',
+        img: 'https://i.ytimg.com/vi_webp/wGtUwJcUODs/maxresdefault.webp',
+        imgFallback: 'https://i.ytimg.com/vi_webp/wGtUwJcUODs/hqdefault.webp',
         alt: 'YouTube Thumbnail',
         tags: [
           { cls: 'tag-video-editing', label: 'Video Editing' },
@@ -1019,8 +1205,8 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'video-editing',
         href: 'https://www.youtube.com/shorts/7W2sHCOSisA',
-        img: 'https://img.youtube.com/vi/7W2sHCOSisA/maxresdefault.jpg',
-        imgFallback: 'https://img.youtube.com/vi/7W2sHCOSisA/hqdefault.jpg',
+        img: 'https://i.ytimg.com/vi_webp/7W2sHCOSisA/maxresdefault.webp',
+        imgFallback: 'https://i.ytimg.com/vi_webp/7W2sHCOSisA/hqdefault.webp',
         alt: 'YouTube Thumbnail',
         tags: [
           { cls: 'tag-video-editing', label: 'Video Editing' },
@@ -1041,7 +1227,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'seo',
         href: 'https://powerhousepilates.com/',
-        img: '/images/powerhouse.jpg',
+        img: '/images/powerhouse.webp',
         imgFallback: PLACEHOLDER('Powerhouse Pilates'),
         alt: 'Strategic SEO Growth for Health & Fitness Brand',
         tags: [
@@ -1056,7 +1242,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'seo',
         href: 'https://charfen.co.uk/',
-        img: '/images/charfen.jpg',
+        img: '/images/charfen.webp',
         imgFallback: PLACEHOLDER('Charfen UK'),
         alt: 'Scaling Organic Traffic for UK-Based E-Commerce',
         tags: [
@@ -1071,7 +1257,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'seo',
         href: 'https://www.the-qrcode-generator.com/',
-        img: '/images/QR_Generator.jpg',
+        img: '/images/QR_Generator.webp',
         imgFallback: PLACEHOLDER('QR Generator'),
         alt: 'Global SEO Management for SaaS Productivity Tools.',
         tags: [
@@ -1086,7 +1272,7 @@ const SECTIONS: WorkSection[] = [
       {
         cat: 'seo',
         href: 'https://calculatethevat.co.uk/',
-        img: '/images/vatcalculator.jpg',
+        img: '/images/vatcalculator.webp',
         imgFallback: PLACEHOLDER('VAT Calculator'),
         alt: 'Off-Page SEO & Backlink Strategy for Financial Tools',
         tags: [
@@ -1106,12 +1292,7 @@ export function Work() {
   const [filter, setFilter] = useState('all')
 
   useEffect(() => {
-    const prev = document.title
-    document.title = 'Our Work — Rathisoft'
     window.scrollTo(0, 0)
-    return () => {
-      document.title = prev
-    }
   }, [])
 
   const sectionsVisible = useMemo(() => {
@@ -1123,6 +1304,16 @@ export function Work() {
 
   return (
     <main className="page-work app-main">
+      <Breadcrumbs
+        items={[
+          { name: 'Home', path: '/' },
+          { name: 'Work', path: '/work' },
+        ]}
+      />
+      <Seo
+        title="Portfolio & Case Studies | RathiSoft | Lahore"
+        description="Explore RathiSoft's client work — WordPress, Shopify, web apps, and digital projects delivered for businesses in Lahore and worldwide."
+      />
       <style>{WORK_STYLES}</style>
 
       <div className="hero">
@@ -1130,8 +1321,8 @@ export function Work() {
           <div className="label">Our Work</div>
           <h1>Work that wins clients.</h1>
           <p>
-            Real projects. Real results. Custom web deployments, WordPress,
-            Shopify, UI/UX, and AI automation — worldwide.
+            Explore launches stewarded by RathiSoft, a software agency in Lahore—covering custom web deployments,
+            multilingual WordPress estates, Shopify commerce experiments, UI/UX refreshes, and AI-assisted automation shipped for worldwide stakeholders.
           </p>
           <div className="stats-bar">
             <div className="stat">
@@ -1181,6 +1372,107 @@ export function Work() {
           </Fragment>
         ))}
       </div>
+
+      <section className="work-evidence" aria-labelledby="work-evidence-heading">
+        <div className="wrap">
+          <div className="label">Portfolio proof</div>
+          <h2 id="work-evidence-heading">
+            Beyond screenshots — how Lahore squads document portfolio-grade releases
+          </h2>
+          <div className="work-evidence-shell">
+            <p className="work-evidence-lead">
+              Work shown here is curated for <strong>engineering evidence</strong>, not decoration.
+              Procurement reviewers increasingly ask for receipts—proof that UX or platform changes moved{' '}
+              <strong>funnel metrics</strong>, <strong>Core Web Vitals</strong>, or reclaimed hours for teams
+              stuck in brittle spreadsheets.
+            </p>
+            <div className="work-evidence-pillars">
+              <div className="work-evidence-pillar">
+                <div className="work-evidence-pillar-tag">01 · Metrics</div>
+                <h3>Measurable deltas</h3>
+                <ul>
+                  <li>UX adjustments tied to abandonment, conversion, or funnel steps—not vanity screenshots.</li>
+                  <li>LCP, CLS, and related shifts after performance passes.</li>
+                  <li>Operational impact where automation replaces manual workflows.</li>
+                </ul>
+              </div>
+              <div className="work-evidence-pillar">
+                <div className="work-evidence-pillar-tag">02 · Evidence pack</div>
+                <h3>What backs each story</h3>
+                <ul>
+                  <li>Annotated architecture snapshots for Shopify, WooCommerce, WordPress, or headless stacks.</li>
+                  <li>Anonymised analytics excerpts where NDAs allow.</li>
+                  <li>Governance and experimentation notes as SEO foundations stabilise.</li>
+                </ul>
+              </div>
+              <div className="work-evidence-pillar">
+                <div className="work-evidence-pillar-tag">03 · Bar</div>
+                <h3>Polish vs reproducibility</h3>
+                <ul>
+                  <li>
+                    We contrast one-off polish with delivery you can repeat—systems that stay fast, secure,
+                    and searchable after launch.
+                  </li>
+                  <li>
+                    Benchmarks align with{' '}
+                    <a
+                      href="https://developers.google.com/search/docs/essentials"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="work-evidence-ref-inline"
+                    >
+                      Search Essentials
+                    </a>{' '}
+                    and{' '}
+                    <a
+                      href="https://web.dev/articles/vitals"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="work-evidence-ref-inline"
+                    >
+                      Core Web Vitals
+                    </a>{' '}
+                    guidance—not screenshot theatre alone.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <nav className="work-evidence-nav" aria-label="Related pages">
+              <Link to="/services">
+                Map portfolio lanes back to formal Lahore service menus
+              </Link>
+              <Link to="/about">
+                Read how we document transparency and delivery ethos
+              </Link>
+              <Link to="/packages">
+                Turn admired work into scoped pilots via packaged engagements
+              </Link>
+              <Link to="/contact">
+                Start discovery — reference case IDs from this portfolio
+              </Link>
+            </nav>
+            <div className="work-evidence-foot">
+              <span className="work-evidence-ref">
+                Public references we ship against:{' '}
+                <a
+                  href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Google&apos;s SEO Starter Guide
+                </a>
+                {' · '}
+                <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer">
+                  Core Web Vitals on web.dev
+                </a>
+              </span>
+              <Link to="/about" className="work-evidence-about-link">
+                Our documentation philosophy on About →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div className="cta">
         <h2>Have a project in mind?</h2>

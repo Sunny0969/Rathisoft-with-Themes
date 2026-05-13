@@ -1,4 +1,25 @@
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { Breadcrumbs } from '../components/Breadcrumbs'
+import { Seo } from '../components/Seo'
+import { TEAM_MEMBERS } from '../data/teamMembers'
+
+const ABOUT_META_TITLE = 'About RathiSoft | Software Development Agency — Lahore, Pakistan'
+const ABOUT_META_DESCRIPTION =
+  'Meet the team behind RathiSoft — a software development agency in Lahore building scalable web, mobile, and digital solutions for businesses across Pakistan and worldwide.'
+
+const ABOUT_STRUCTURED_DATA = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'About RathiSoft',
+  url: 'https://rathisoft.com/about',
+  description:
+    'Learn about RathiSoft, a software development and digital marketing agency based in Lahore, Pakistan.',
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': 'https://rathisoft.com/about',
+  },
+}
 
 /** All About page styles live in this file (no separate CSS module). Scoped under `.page-about`. */
 const ABOUT_STYLES = `
@@ -154,6 +175,112 @@ const ABOUT_STYLES = `
   align-items: start;
   padding: 60px 0 80px;
 }
+.page-about .body-text > h2:first-of-type {
+  margin-bottom: 14px;
+}
+.page-about .section-block > h2 {
+  margin-bottom: 12px;
+}
+.page-about .body-text .section-block a:not(.about-mini-card) {
+  color: var(--indigo2);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.page-about .about-team-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+.page-about a.about-mini-card {
+  display: block;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 14px 12px;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.page-about a.about-mini-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-2px);
+  box-shadow: var(--sh2);
+}
+.page-about a.about-mini-card:focus-visible {
+  outline: 2px solid var(--indigo2);
+  outline-offset: 2px;
+}
+.page-about .about-mini-top {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.page-about .about-mini-av {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--border2);
+}
+.page-about .about-mini-meta {
+  min-width: 0;
+  flex: 1;
+}
+.page-about .about-mini-name {
+  font-family: var(--fh);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white);
+  margin: 0 0 5px;
+  line-height: 1.25;
+  letter-spacing: -0.2px;
+}
+.page-about .about-mini-role {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--indigo2);
+  margin: 0;
+  line-height: 1.35;
+}
+.page-about .about-mini-bio {
+  margin: 10px 0 0;
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+.page-about .about-mini-skills {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 10px;
+}
+.page-about .about-mini-tag {
+  font-size: 9px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 100px;
+  background: var(--isoft);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: var(--indigo2);
+  align-self: flex-start;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.page-about .about-mini-foot {
+  margin-top: 10px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.65);
+}
 .page-about .about-card {
   background: var(--card);
   border: 1px solid var(--border2);
@@ -163,19 +290,17 @@ const ABOUT_STYLES = `
   position: sticky;
   top: 80px;
 }
-.page-about .av {
+.page-about .about-rs-logo {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--indigo), var(--indigo3));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--fh);
-  font-size: 36px;
-  font-weight: 700;
-  color: #fff;
+  object-fit: contain;
+  object-position: center;
+  background: var(--bg);
+  padding: 6px;
+  display: block;
   margin: 0 auto 18px;
+  border: 1px solid var(--border2);
   box-shadow: 0 8px 32px var(--iglow);
 }
 .page-about .av-name {
@@ -409,6 +534,125 @@ const ABOUT_STYLES = `
   background: #20bf5d;
   transform: translateY(-2px);
 }
+.page-about .about-doc-block {
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  padding-top: 36px;
+}
+.page-about .about-doc-shell {
+  background: linear-gradient(145deg, rgba(99, 102, 241, 0.06), rgba(30, 30, 45, 0.92));
+  border: 1px solid rgba(99, 102, 241, 0.22);
+  border-radius: var(--r3);
+  padding: 28px 26px 30px;
+  position: relative;
+  overflow: hidden;
+}
+.page-about .about-doc-shell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--indigo), var(--indigo3), transparent);
+  opacity: 0.85;
+  pointer-events: none;
+}
+.page-about .about-doc-shell > * {
+  position: relative;
+  z-index: 1;
+}
+.page-about .about-doc-lead {
+  font-size: 14px;
+  line-height: 1.85;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 12px 0 0;
+  max-width: 720px;
+}
+.page-about .about-doc-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+.page-about .about-doc-pillar {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 18px 16px 20px;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.page-about .about-doc-pillar:hover {
+  border-color: var(--border2);
+  transform: translateY(-2px);
+  box-shadow: var(--sh2);
+}
+.page-about .about-doc-pillar-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--indigo2);
+  margin-bottom: 10px;
+}
+.page-about .about-doc-pillar h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  line-height: 1.3;
+  letter-spacing: -0.3px;
+}
+.page-about .about-doc-pillar ul {
+  margin: 0;
+  padding: 0 0 0 18px;
+  font-size: 12px;
+  line-height: 1.75;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.82);
+}
+.page-about .about-doc-pillar li {
+  margin-bottom: 8px;
+}
+.page-about .about-doc-pillar li:last-child {
+  margin-bottom: 0;
+}
+.page-about .about-doc-foot {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 22px;
+}
+.page-about .about-doc-ref {
+  font-size: 11px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+}
+.page-about .about-doc-ref a {
+  color: var(--indigo2);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.page-about .about-doc-ref a:hover {
+  color: #c7d2fe;
+}
+.page-about .about-doc-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--indigo2);
+  font-family: var(--fb);
+}
+.page-about .about-doc-cta:hover {
+  color: #c7d2fe;
+}
 @media (max-width: 960px) {
   .page-about .wrap {
     padding-left: 24px;
@@ -435,30 +679,52 @@ const ABOUT_STYLES = `
   .page-about .mv-grid {
     grid-template-columns: 1fr;
   }
+  .page-about .about-team-mini-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .page-about .about-doc-pillars {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 520px) {
+  .page-about .about-team-mini-grid {
+    grid-template-columns: 1fr;
+  }
 }
 `
 
+function teamBioPreview(bio: string): string {
+  const firstLine = bio.split(/\n/).find((l) => l.trim()) ?? bio
+  return firstLine.trim()
+}
+
 export function AboutUs() {
   useEffect(() => {
-    const prev = document.title
-    document.title = 'About Us — Rathisoft'
     window.scrollTo(0, 0)
-    return () => {
-      document.title = prev
-    }
   }, [])
 
   return (
     <main className="page-about app-main">
+      <Breadcrumbs
+        items={[
+          { name: 'Home', path: '/' },
+          { name: 'About', path: '/about' },
+        ]}
+      />
+      <Seo title={ABOUT_META_TITLE} description={ABOUT_META_DESCRIPTION} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ABOUT_STRUCTURED_DATA) }}
+      />
       <style>{ABOUT_STYLES}</style>
 
       <div className="hero">
         <div className="wrap">
           <div className="label">About Rathisoft</div>
-          <h1>Rathisoft.</h1>
+          <h1>About RathiSoft — Our Mission, Team &amp; Story</h1>
           <p>
-            A technology partner dedicated to transforming ideas into impactful
-            digital solutions.
+            RathiSoft is a software agency in Lahore building scalable web, mobile, and digital
+            solutions for businesses across Pakistan and worldwide—with engineering discipline shaped by global clients.
           </p>
         </div>
       </div>
@@ -493,7 +759,14 @@ export function AboutUs() {
 
         <div className="about-layout">
           <div className="about-card">
-            <div className="av">RS</div>
+            <img
+              src="/images/logo/simpleR.webp"
+              alt="RathiSoft"
+              className="about-rs-logo"
+              width={100}
+              height={100}
+              decoding="async"
+            />
             <div className="av-name">Rathisoft</div>
             <div className="av-role">Technology Partner · Lahore</div>
             <div className="badges">
@@ -507,10 +780,10 @@ export function AboutUs() {
           </div>
 
           <div className="body-text">
+            <h2>Who We Are</h2>
             <p>
-              At <strong>Rathisoft</strong>, we are more than just a software
-              development company—we are a technology partner dedicated to
-              transforming ideas into impactful digital solutions.
+              As a software agency in Lahore, <strong>RathiSoft</strong> is more than a vendor—we are a technology partner translating leadership intent into measurable releases:
+              cloud-ready architectures, conversion-aware UX, and accountable growth programmes for founders who demand clarity.
             </p>
             <p>
               Founded with a vision to empower businesses through innovation,
@@ -578,7 +851,138 @@ export function AboutUs() {
             </div>
 
             <div className="section-block">
-              <h3>Our Philosophy</h3>
+              <h2>Our Vision &amp; Mission</h2>
+              <div className="mv-grid">
+                <div className="mv-card">
+                  <div className="mv-k">Mission</div>
+                  <div className="mv-v">
+                    To empower eCommerce brands and startups with high-performance digital tools
+                    that bridge the gap between “having a website” and “dominating a market.”
+                  </div>
+                </div>
+                <div className="mv-card">
+                  <div className="mv-k">Vision</div>
+                  <div className="mv-v">
+                    To become the world’s most trusted boutique agency for digital transformation,
+                    where every line of code serves a measurable business goal.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="section-block">
+              <h2>The Team Behind RathiSoft</h2>
+              <p className="section-subtitle">
+                Led by experienced builders and strategists — tap a card for full bios on our{' '}
+                <Link to="/team">team page</Link>.
+              </p>
+              <div className="about-team-mini-grid">
+                {TEAM_MEMBERS.map((member) => (
+                  <Link key={member.id} to="/team" className="about-mini-card">
+                    <div className="about-mini-top">
+                      <img
+                        src={member.image}
+                        alt={`${member.name}, ${member.role}`}
+                        className="about-mini-av"
+                        width={52}
+                        height={52}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <div className="about-mini-meta">
+                        <h3 className="about-mini-name">{member.name}</h3>
+                        <p className="about-mini-role">{member.role}</p>
+                      </div>
+                    </div>
+                    <p className="about-mini-bio">{teamBioPreview(member.bio)}</p>
+                    <div className="about-mini-skills">
+                      {member.skills.slice(0, 3).map((skill) => (
+                        <span key={skill} className="about-mini-tag">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="about-mini-foot">📍 {member.location}</div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="section-block about-doc-block">
+              <div className="label">Documentation</div>
+              <h2>Beyond the interface — engineering evidence</h2>
+              <div className="about-doc-shell">
+                <p className="about-doc-lead">
+                  In Lahore&apos;s tech market, procurement increasingly asks for{' '}
+                  <strong>receipts</strong>—not only polished screens. We document releases around{' '}
+                  <strong>measurable outcomes</strong> and artefacts your finance or engineering leads can
+                  revisit quarter to quarter, alongside elite delivery norms you&apos;d expect from
+                  top-tier firms.
+                </p>
+                <div className="about-doc-pillars">
+                  <div className="about-doc-pillar">
+                    <div className="about-doc-pillar-num">01 · Metrics</div>
+                    <h3>Measurable deltas</h3>
+                    <ul>
+                      <li>Funnel impact — e.g. cart abandonment after Shopify UX fixes.</li>
+                      <li>
+                        Core Web Vitals — where LCP and CLS moved from poor toward good after
+                        optimisation.
+                      </li>
+                      <li>
+                        Operational wins — hours reclaimed when spreadsheets become workflows or ERP
+                        touches.
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="about-doc-pillar">
+                    <div className="about-doc-pillar-num">02 · Architecture</div>
+                    <h3>What we put on paper</h3>
+                    <ul>
+                      <li>Stack and data-flow snapshots for headless, WordPress, or hybrid setups.</li>
+                      <li>Anonymised analytics excerpts where NDAs allow.</li>
+                      <li>Governance notes for multilingual content and stable SEO.</li>
+                    </ul>
+                  </div>
+                  <div className="about-doc-pillar">
+                    <div className="about-doc-pillar-num">03 · Systems</div>
+                    <h3>Repeatable delivery</h3>
+                    <ul>
+                      <li>
+                        We prioritise reproducibility over one-off polish—so launches stay fast,
+                        secure, and searchable.
+                      </li>
+                      <li>
+                        Delivery aligns with public benchmarks your stakeholders already trust (see
+                        links below).
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="about-doc-foot">
+                  <span className="about-doc-ref">
+                    References:{' '}
+                    <a
+                      href="https://developers.google.com/search/docs/essentials"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Google Search Essentials
+                    </a>
+                    {' · '}
+                    <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer">
+                      Core Web Vitals (web.dev)
+                    </a>
+                  </span>
+                  <Link to="/work" className="about-doc-cta">
+                    View portfolio &amp; case context →
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="section-block">
+              <h2>Our Values</h2>
               <p className="section-subtitle">
                 Inspired by the agility of modern tech leaders, Rathisoft operates on a simple
                 principle: <strong>Clarity over Complexity</strong>. We believe that a digital
@@ -589,7 +993,7 @@ export function AboutUs() {
             </div>
 
             <div className="section-block">
-              <h3>Why Partners Choose Rathisoft</h3>
+              <h2>Why Work With Us</h2>
               <div className="feature-grid">
                 <div className="fcard">
                   <div className="f-title">Performance-Obsessed</div>
@@ -610,26 +1014,6 @@ export function AboutUs() {
                   <div className="f-desc">
                     We bring the engineering rigor of Pakistan&apos;s top tech talent to businesses
                     across the UK, UAE, and beyond—with zero friction and maximum transparency.
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="section-block">
-              <h3>Mission &amp; Vision</h3>
-              <div className="mv-grid">
-                <div className="mv-card">
-                  <div className="mv-k">Mission</div>
-                  <div className="mv-v">
-                    To empower eCommerce brands and startups with high-performance digital tools
-                    that bridge the gap between “having a website” and “dominating a market.”
-                  </div>
-                </div>
-                <div className="mv-card">
-                  <div className="mv-k">Vision</div>
-                  <div className="mv-v">
-                    To become the world’s most trusted boutique agency for digital transformation,
-                    where every line of code serves a measurable business goal.
                   </div>
                 </div>
               </div>

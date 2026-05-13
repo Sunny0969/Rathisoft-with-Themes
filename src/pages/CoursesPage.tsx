@@ -1,0 +1,192 @@
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Seo } from '../components/Seo';
+import coursesJson from '../data/courses.json';
+import type { Course, CourseLevel } from '../types/lms';
+
+const courses = coursesJson as Course[];
+
+const CATEGORY_EMOJI: Record<string, string> = {
+  'Web Development': '💻',
+  'Digital Marketing': '📈',
+};
+
+function categoryEmoji(category: string): string {
+  return CATEGORY_EMOJI[category] ?? '📚';
+}
+
+function categoryHeadClass(category: string): string {
+  const base = 'lms-course-card-head';
+  if (category === 'Web Development') return `${base} lms-cat-head--web`;
+  if (category === 'Digital Marketing') return `${base} lms-cat-head--dm`;
+  return `${base} lms-cat-head--default`;
+}
+
+function truncateDescription(text: string, maxChars: number): string {
+  const trimmed = text.trim();
+  if (trimmed.length <= maxChars) return trimmed;
+  return `${trimmed.slice(0, maxChars).trimEnd()}…`;
+}
+
+function levelTagClass(level: CourseLevel): string {
+  switch (level) {
+    case 'Beginner':
+      return 'lms-tag lms-tag--beginner';
+    case 'Intermediate':
+      return 'lms-tag lms-tag--intermediate';
+    case 'Advanced':
+      return 'lms-tag lms-tag--advanced';
+  }
+}
+
+function matchesSearch(course: Course, query: string): boolean {
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  const inTags = course.tags.some((t) => t.toLowerCase().includes(q));
+  return (
+    course.title.toLowerCase().includes(q) ||
+    course.description.toLowerCase().includes(q) ||
+    inTags
+  );
+}
+
+export function CoursesPage() {
+  const [search, setSearch] = useState('');
+  const [activeCategory, setActiveCategory] = useState<string>('All');
+
+  const categoryList = useMemo(() => {
+    const unique = new Set(courses.map((c) => c.category));
+    return Array.from(unique).sort((a, b) => a.localeCompare(b));
+  }, []);
+
+  const filteredCourses = useMemo(() => {
+    return courses.filter((c) => {
+      const catOk =
+        activeCategory === 'All' || c.category === activeCategory;
+      return catOk && matchesSearch(c, search);
+    });
+  }, [activeCategory, search]);
+
+  return (
+    <>
+      <Seo
+        title="Free Courses — RathiSoft"
+        description="Learn web development, SEO, and more with free courses from RathiSoft. Certificates included."
+        keywords="free courses, web development, SEO, online learning, RathiSoft"
+      />
+      <main className="lms-page">
+        <div className="lms-container">
+          <header className="lms-hero-block">
+            <h1 className="lms-heading-xl">
+              Free Courses — Learn & Grow 🚀
+            </h1>
+            <p className="lms-lead lms-lead--center">
+              Self-paced lessons built like Udemy and Coursera — clear structure,
+              practical topics, and zero tuition. Pick a course, enroll free,
+              and track your progress at your own pace.
+            </p>
+
+            <div className="lms-input-wrap">
+              <label htmlFor="courses-search" className="lms-sr-only">
+                Search courses
+              </label>
+              <input
+                id="courses-search"
+                type="search"
+                placeholder="Search by title, description, or tags…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="lms-input"
+              />
+            </div>
+          </header>
+
+          <div className="lms-filter-row">
+            <button
+              type="button"
+              onClick={() => setActiveCategory('All')}
+              className={
+                activeCategory === 'All'
+                  ? 'lms-pill lms-pill--active'
+                  : 'lms-pill'
+              }
+            >
+              All
+            </button>
+            {categoryList.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setActiveCategory(cat)}
+                className={
+                  activeCategory === cat
+                    ? 'lms-pill lms-pill--active'
+                    : 'lms-pill'
+                }
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          <div className="lms-stat-grid">
+            <div>
+              <p className="lms-stat-value">{courses.length}</p>
+              <p className="lms-stat-label">Total courses</p>
+            </div>
+            <div className="lms-stat-grid__mid">
+              <p className="lms-stat-accent">100% Free Forever</p>
+              <p className="lms-stat-label">No hidden fees</p>
+            </div>
+            <div>
+              <p className="lms-stat-title">Certificate Included</p>
+              <p className="lms-stat-label">Finish & celebrate</p>
+            </div>
+          </div>
+
+          <ul className="lms-course-grid">
+            {filteredCourses.map((course) => (
+              <li key={course.id}>
+                <Link
+                  to={`/courses/${course.id}`}
+                  className="lms-course-card"
+                >
+                  <div className={categoryHeadClass(course.category)}>
+                    <span aria-hidden className="drop-shadow-md">
+                      {categoryEmoji(course.category)}
+                    </span>
+                    <span className="lms-badge-free">FREE</span>
+                  </div>
+
+                  <div className="lms-course-card-body">
+                    <span className={levelTagClass(course.level)}>
+                      {course.level}
+                    </span>
+                    <h2 className="lms-course-title">{course.title}</h2>
+                    <p className="lms-course-desc">
+                      {truncateDescription(course.description, 90)}
+                    </p>
+                    <div className="lms-course-meta">
+                      <span>
+                        {course.totalLectures}{' '}
+                        {course.totalLectures === 1 ? 'lecture' : 'lectures'}
+                      </span>
+                      <span aria-hidden>·</span>
+                      <span>{course.duration}</span>
+                    </div>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {filteredCourses.length === 0 ? (
+            <p className="lms-empty">
+              No courses match your search. Try another keyword or category.
+            </p>
+          ) : null}
+        </div>
+      </main>
+    </>
+  );
+}

@@ -1,5 +1,15 @@
 "use client";
 
+import { useEffect } from "react";
+import { Link, Navigate, useParams } from "react-router-dom";
+import { Breadcrumbs, type BreadcrumbTrailItem } from "../components/Breadcrumbs";
+import { OnPageSeoSection } from "../components/OnPageSeoSection";
+import { Seo, SITE_ORIGIN } from "../components/Seo";
+import {
+  SITE_TESTIMONIALS,
+  buildOrganizationReviewProperties,
+} from "../data/testimonials";
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface Service {
   num: string;
@@ -29,63 +39,97 @@ const SERVICES: Service[] = [
     num: "01", icon: "💻", title: "Web Development",
     desc: "Fast, responsive, conversion-optimized websites built with clean code. Custom themes, landing pages, and full multi-page sites tailored to your brand.",
     tags: ["UI/UX", "HTML/CSS", "JavaScript"],
-    href: "/web-development",
+    href: "/services/web-development",
   },
   {
     num: "02", icon: "🔍", title: "SEO Optimization",
     desc: "Rank higher on Google with proven on-page and technical SEO strategies. Keyword research, speed optimization, and structured data — all included.",
     tags: ["On-Page", "Technical", "Local SEO"],
-    href: "/seo-optimization",
+    href: "/services/seo-optimization",
   },
   {
     num: "03", icon: "📲", title: "App Development",
     desc: "Custom mobile apps for iOS and Android. From simple tools to fully featured platforms — built with performance and user experience at the core.",
     tags: ["iOS", "Android", "React Native"],
-    href: "/app-development",
+    href: "/services/app-development",
   },
   {
     num: "04", icon: "🛒", title: "WordPress & Shopify",
     desc: "Stores that look great and convert visitors into buyers. Full setup — theme, plugins, payment gateways, product pages, and ongoing support included.",
     tags: ["WordPress", "Shopify", "WooCommerce"],
-    href: "/wordpress-shopify",
+    href: "/services/wordpress-shopify",
   },
   {
     num: "05", icon: "🎬", title: "Video Editing",
     desc: "Reels, ads, YouTube videos, and short-form clips that stop the scroll. Professional cuts, captions, transitions, and brand-consistent visuals.",
     tags: ["Reels", "Ads", "YouTube"],
-    href: "/video-editing",
+    href: "/services/video-editing",
   },
   {
     num: "06", icon: "📱", title: "Social Media Marketing",
     desc: "Done-for-you monthly content strategy and posting across all platforms. Graphics, captions, scheduling, and analytics — we handle it all.",
     tags: ["Instagram", "Facebook", "LinkedIn"],
-    href: "/social-media-marketing",
+    href: "/services/social-media-marketing",
   },
   {
     num: "07", icon: "✍️", title: "Content Marketing",
     desc: "Strategic blogs, web copy, and long-form content that attracts traffic and converts readers into leads. SEO-optimized writing for every industry.",
     tags: ["Blogs", "Copywriting", "Web Copy"],
-    href: "/content-marketing",
+    href: "/services/content-marketing",
   },
   {
     num: "08", icon: "🎯", title: "PPC Advertising",
     desc: "High-converting paid campaigns on Google and Meta. Precise targeting, compelling ad copy, and constant A/B testing to maximise your ROI.",
     tags: ["Google Ads", "Meta Ads", "Retargeting"],
-    href: "/ppc-advertising",
+    href: "/services/ppc-advertising",
   },
   {
     num: "09", icon: "📧", title: "Email Marketing",
     desc: "Automated email sequences that nurture leads and drive repeat sales. Welcome flows, drip campaigns, newsletters, and list management all handled.",
     tags: ["Automation", "Campaigns", "Klaviyo"],
-    href: "/email-marketing",
+    href: "/services/email-marketing",
   },
   {
     num: "10", icon: "🎨", title: "Branding & Design",
     desc: "Logos, brand kits, colour palettes, and complete visual identity systems that leave a lasting impression and build brand trust from first glance.",
     tags: ["Logo", "Brand Kit", "UI Design"],
-    href: "/branding-design",
+    href: "/services/branding-design",
   },
 ];
+
+/** Slug segments for `/services/{slug}` routes and legacy redirects */
+export const SERVICE_SLUGS: string[] = SERVICES.map((s) =>
+  s.href.replace(/^\/services\//, ""),
+);
+
+const SERVICE_SLUG_SET = new Set(SERVICE_SLUGS);
+
+function absoluteUrl(pathFromRoot: string): string {
+  return `${SITE_ORIGIN}${pathFromRoot}`;
+}
+
+const SERVICES_JSON_LD = {
+  "@context": "https://schema.org",
+  "@graph": SERVICES.map((svc) => ({
+    "@type": "Service",
+    serviceType: svc.title,
+    provider: {
+      "@type": "Organization",
+      name: "RathiSoft",
+      url: SITE_ORIGIN,
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "Pakistan",
+    },
+    description: svc.desc,
+    url: absoluteUrl(svc.href),
+    offers: {
+      "@type": "Offer",
+      availability: "https://schema.org/InStock",
+    },
+  })),
+};
 
 const PROCESS: ProcessStep[] = [
   { step: "Step 01", title: "Discovery Call", desc: "We start with a free consultation to understand your goals, business, target audience, and timeline. No commitment required — just a conversation." },
@@ -107,8 +151,6 @@ const WHY_CARDS: WhyCard[] = [
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Inter:wght@300;400;500&display=swap');
-
   :root {
     --bg:     #13131a;
     --bg2:    #1c1c27;
@@ -203,6 +245,7 @@ const styles = `
     border-radius: var(--r3); padding: 32px 28px;
     transition: all 0.3s; position: relative; overflow: hidden;
     cursor: pointer; display: block; color: inherit; text-decoration: none;
+    scroll-margin-top: 96px;
   }
   .svc-card::before {
     content: ''; position: absolute; inset: 0;
@@ -267,8 +310,37 @@ const styles = `
     display: flex; align-items: center; justify-content: center;
     font-size: 20px; margin-bottom: 14px;
   }
-  .why-card h4 { font-family: var(--fh); font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+  .why-card h3 { font-family: var(--fh); font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 8px; }
   .why-card p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.7; font-weight: 300; }
+
+  /* TESTIMONIALS */
+  .svc-testimonials { padding: 72px 0; border-top: 1px solid var(--border); background: linear-gradient(180deg, var(--bg), var(--bg2)); }
+  .svc-testimonials #svc-testimonials-heading {
+    font-family: var(--fh); font-size: clamp(26px, 3vw, 40px); font-weight: 600; color: #fff;
+    letter-spacing: -0.5px; margin-top: 14px;
+  }
+  .svc-testimonials-lead { margin-top: 14px; max-width: 520px; color: rgba(255,255,255,0.7); font-weight: 300; line-height: 1.85; font-size: 15px; }
+  .svc-testimonials-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 40px;
+  }
+  .svc-testimonial-card {
+    margin: 0; padding: 22px 20px; background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--r2); display: flex; flex-direction: column; gap: 12px;
+  }
+  .svc-t-stars { font-size: 13px; letter-spacing: 2px; color: var(--gold); }
+  .svc-t-quote { font-size: 13px; color: rgba(255,255,255,0.72); line-height: 1.75; font-weight: 300; flex: 1; margin: 0; }
+  .svc-testimonial-card footer {
+    display: flex; align-items: center; gap: 12px; padding-top: 8px;
+    border-top: 1px solid var(--border); margin-top: auto;
+  }
+  .svc-t-av {
+    width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+    background: var(--isoft); border: 1px solid rgba(99,102,241,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--indigo2);
+  }
+  .svc-t-name { font-style: normal; font-family: var(--fh); font-size: 13px; font-weight: 600; color: #fff; display: block; }
+  .svc-t-role { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 2px; }
 
   /* CTA SECTION */
   .cta-section {
@@ -321,6 +393,8 @@ const styles = `
     .process-grid { grid-template-columns: 1fr; }
     .why-section { padding: 48px 0; }
     .why-grid { grid-template-columns: 1fr 1fr; }
+    .svc-testimonials { padding: 48px 0; }
+    .svc-testimonials-grid { grid-template-columns: 1fr; }
     .cta-section { padding: 52px 20px; }
     .hero-stats { gap: 24px; flex-wrap: nowrap; }
     .hs { flex: 1; min-width: 0; }
@@ -346,8 +420,63 @@ function WhatsAppIcon() {
 
 // ─── Main Page Component ──────────────────────────────────────────────────────
 export default function ServicesPage() {
+  const { slug } = useParams<{ slug?: string }>();
+  const slugNorm = slug?.toLowerCase();
+
+  useEffect(() => {
+    if (!slugNorm || !SERVICE_SLUG_SET.has(slugNorm)) return;
+    const id = `service-${slugNorm}`;
+    const t = window.setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+    return () => window.clearTimeout(t);
+  }, [slugNorm]);
+
+  if (slugNorm && !SERVICE_SLUG_SET.has(slugNorm)) {
+    return <Navigate to="/services" replace />;
+  }
+
+  const breadcrumbItems: BreadcrumbTrailItem[] =
+    slugNorm && SERVICE_SLUG_SET.has(slugNorm)
+      ? (() => {
+          const svc = SERVICES.find((s) => s.href === `/services/${slugNorm}`);
+          return [
+            { name: "Home", path: "/" },
+            { name: "Services", path: "/services" },
+            {
+              name: svc?.title ?? "Service",
+              path: `/services/${slugNorm}`,
+            },
+          ];
+        })()
+      : [
+          { name: "Home", path: "/" },
+          { name: "Services", path: "/services" },
+        ];
+
+  const reviewsLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "RathiSoft",
+    url: SITE_ORIGIN,
+    ...buildOrganizationReviewProperties(SITE_TESTIMONIALS),
+  };
+
   return (
     <>
+      <Seo
+        title="Web Development & Digital Marketing Services in Lahore | RathiSoft"
+        description="Explore RathiSoft's full range of services: WordPress development, Shopify development, SEO, web design, and digital marketing. Based in Lahore, serving clients globally."
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(SERVICES_JSON_LD) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsLd) }}
+      />
+      <Breadcrumbs items={breadcrumbItems} />
       <style>{styles}</style>
 
       {/* ── HERO ── */}
@@ -359,8 +488,9 @@ export default function ServicesPage() {
             <span>One team.</span>
           </h1>
           <p>
-            Full-stack digital services for businesses ready to grow online — from strategy to execution,
-            design to deployment. Based in Lahore, trusted worldwide.
+            RathiSoft is a software agency in Lahore that bundles discovery, UX design, full-stack
+            engineering, analytics instrumentation, and always-on optimisation for founders who want one
+            accountable partner—from polished WordPress and Shopify storefronts to multilingual SaaS and AI-assisted workflows trusted worldwide.
           </p>
           <div className="hero-stats">
             <div className="hs"><span className="hs-num">10+</span><span className="hs-label">Services Offered</span></div>
@@ -383,22 +513,30 @@ export default function ServicesPage() {
           </div>
 
           <div className="svc-grid">
-            {SERVICES.map((svc) => (
-              <a key={svc.num} className="svc-card" href={svc.href}>
-                <div className="svc-card-top">
-                  <div className="svc-icon-wrap">{svc.icon}</div>
-                  <span className="svc-num">{svc.num}</span>
-                </div>
-                <h3>{svc.title}</h3>
-                <p>{svc.desc}</p>
-                <div className="svc-tags">
-                  {svc.tags.map((t) => (
-                    <span key={t} className="svc-tag">{t}</span>
-                  ))}
-                </div>
-                <span className="svc-link">View service details →</span>
-              </a>
-            ))}
+            {SERVICES.map((svc) => {
+              const cardSlug = svc.href.replace(/^\/services\//, "");
+              return (
+                <Link
+                  key={svc.num}
+                  id={`service-${cardSlug}`}
+                  className="svc-card"
+                  to={svc.href}
+                >
+                  <div className="svc-card-top">
+                    <div className="svc-icon-wrap">{svc.icon}</div>
+                    <span className="svc-num">{svc.num}</span>
+                  </div>
+                  <h3>{svc.title}</h3>
+                  <p>{svc.desc}</p>
+                  <div className="svc-tags">
+                    {svc.tags.map((t) => (
+                      <span key={t} className="svc-tag">{t}</span>
+                    ))}
+                  </div>
+                  <span className="svc-link">View service details →</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -433,7 +571,7 @@ export default function ServicesPage() {
             {WHY_CARDS.map((w) => (
               <div key={w.title} className="why-card">
                 <div className="why-icon" style={{ background: w.bg }}>{w.icon}</div>
-                <h4>{w.title}</h4>
+                <h3>{w.title}</h3>
                 <p>{w.desc}</p>
               </div>
             ))}
@@ -441,13 +579,81 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      <section className="svc-testimonials" aria-labelledby="svc-testimonials-heading">
+        <div className="rs-wrap">
+          <div className="rs-label">Reviews</div>
+          <h2 id="svc-testimonials-heading">What clients say</h2>
+          <p className="svc-testimonials-lead">
+            Verified feedback from engagements worldwide — aligned with the testimonials on our homepage.
+          </p>
+          <div className="svc-testimonials-grid">
+            {SITE_TESTIMONIALS.map((t) => (
+              <blockquote key={`${t.initials}-${t.name}`} className="svc-testimonial-card">
+                <div className="svc-t-stars" aria-hidden>
+                  {t.stars}
+                </div>
+                <p className="svc-t-quote">{t.quote}</p>
+                <footer>
+                  <span className="svc-t-av" aria-hidden>
+                    {t.initials}
+                  </span>
+                  <div>
+                    <cite className="svc-t-name">{t.name}</cite>
+                    <div className="svc-t-role">{t.role}</div>
+                  </div>
+                </footer>
+              </blockquote>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <OnPageSeoSection
+        sectionId="services-on-page-seo"
+        heading={`How RathiSoft's Lahore software teams scope engagements end-to-end`}
+        lead={
+          <>
+            <p>
+              Choosing a software agency in Lahore is rarely about hourly spreadsheets—it is about
+              assembling architects who translate fuzzy objectives into measurable KPIs. RathiSoft&apos;s pods combine technical SEO engineers,
+              paid-media analysts, motion editors, and product-minded developers who rehearse risks early instead of discovering blockers after invoices pile up.
+            </p>
+            <p>
+              Our Lahore delivery hub stays timezone-friendly for Pakistan and Gulf brands while matching UK and North American cadences through overlap windows,
+              shared Notion roadmaps, and recorded walkthroughs. Every statement of work enumerates environments, QA cycles, regression expectations, and what &quot;done&quot;
+              means for marketing automation, ERP touches, or custom storefront logic—eliminating surprise phases that derail boutique engagements.
+            </p>
+          </>
+        }
+        links={[
+          { to: "/about", label: "Understand our mission-led Lahore software culture" },
+          { to: "/work", label: "Inspect verified Lahore-led deliveries across industries" },
+          { to: "/packages", label: "Compare sprint-ready pricing bundles before contracting" },
+          { to: "/contact", label: "Schedule a roadmap workshop with senior practitioners" },
+        ]}
+      >
+        <p>
+          Keyword stuffing fails audiences faster than outdated frameworks, so we weave latent semantic themes—progressive enhancement,
+          structured snippets for FAQs and articles, accessibility conformance (WCAG-minded QA), fraud-conscious Shopify integrations,
+          consent-aware tagging stacks—directly into build specifications. That discipline keeps editorial, engineering, and media teams aligned when leadership asks for attribution clarity.
+        </p>
+        <p>
+          Retainers inherit versioned dependency policies, uptime expectations for commerce workloads, and change-management etiquette every stakeholder signs during onboarding.
+          That mirrors recommendations surfaced publicly inside authoritative guides such as Google’s Starter Guide and web.dev’s performance canon cited below—proof points stakeholders recognise instantly during procurement reviews.
+        </p>
+        <p>
+          Whether you need Laravel tooling beside Shopify Hydrogen experiments or multilingual brochure sites synced with CRM schemas,
+          ask how prospective vendors differentiate experimentation lanes from production governance—the gap reveals mature Lahore software agencies from staffing brokers peddling resumes alone.
+        </p>
+      </OnPageSeoSection>
+
       {/* ── CTA ── */}
       <div className="cta-section">
         <h2>Ready to start<br />your project?</h2>
         <p>Get a free consultation — no commitment. We'll discuss your goals and recommend the right services for your business.</p>
         <div className="cta-btns">
-          <a href="/contact" className="btn-p">Get a free quote →</a>
-          <a href="https://wa.me/923342651544" target="_blank" rel="noreferrer" className="btn-g">
+          <Link to="/contact" className="btn-p">Get a free quote →</Link>
+          <a href="https://wa.me/923342651544" target="_blank" rel="noopener noreferrer" className="btn-g">
             💬 WhatsApp us now
           </a>
         </div>

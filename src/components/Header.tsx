@@ -8,8 +8,8 @@ const NAV_LINKS = [
   { label: 'Packages', href: '/packages' },
   { label: 'About Us', href: '/about' },
   // { label: 'Contact', href: '/contact' },
-  { label: 'Team', href: '/team' },
   { label: 'Themes', href: '/themes' },
+  { label: 'E-Learning', href: '/courses' },
 ] as const
 
 export function Header() {
@@ -34,7 +34,7 @@ export function Header() {
   /** Warm full wordmark in memory so first hover/focus doesn’t wait on decode. */
   useEffect(() => {
     const img = new Image()
-    img.src = '/logo/RathiSoft.png'
+    img.src = '/logo/RathiSoft.webp'
   }, [])
 
   useEffect(() => {
@@ -65,10 +65,11 @@ export function Header() {
             className="group relative inline-flex h-9 w-9 shrink-0 items-center justify-center outline-none focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[rgba(19,19,26,0.92)]"
           >
             <img
-              src="/logo/simpleR.png"
-              alt="RathiSoft"
+              src="/logo/simpleR.webp"
+              alt="RathiSoft logo — Lahore web development agency"
               width={36}
               height={36}
+              decoding="async"
               className="relative z-10 h-9 w-9 object-contain"
               draggable={false}
             />
@@ -77,11 +78,13 @@ export function Header() {
               aria-hidden="true"
             >
               <img
-                src="/logo/athiSoft.png"
-                alt=""
+                src="/logo/athiSoft.webp"
+                alt="RathiSoft wordmark"
                 aria-hidden
                 width={260}
                 height={36}
+                loading="lazy"
+                decoding="async"
                 draggable={false}
                 className="h-9 w-auto max-w-[260px] origin-left object-contain object-left will-change-transform transition-transform duration-[450ms] ease-in-out -translate-x-full group-hover:translate-x-0 group-focus-within:translate-x-0"
               />

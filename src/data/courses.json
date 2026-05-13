@@ -1,0 +1,300 @@
+[
+  {
+    "id": "web-dev-101",
+    "title": "Complete Web Development Course",
+    "description": "Learn the foundations of modern web development with HTML structure, CSS styling, and JavaScript interactivity in one structured path.",
+    "thumbnail": "/images/courses/web-dev-101.jpg",
+    "category": "Web Development",
+    "level": "Beginner",
+    "duration": "12 hours",
+    "totalLectures": 3,
+    "instructor": "RathiSoft Team",
+    "tags": ["HTML", "CSS", "JavaScript"],
+    "lectures": [
+      {
+        "id": "web-dev-101-l1",
+        "title": "HTML Foundations — Structure & Semantics",
+        "description": "Documents, headings, lists, links, images, and semantic HTML for accessible pages.",
+        "duration": "4 hours",
+        "driveFileId": "1lh-iKYer8yFm5eUDkERia6kR4iyBkxLH",
+        "order": 1
+      },
+      {
+        "id": "web-dev-101-l2",
+        "title": "CSS Essentials — Layout & Styling",
+        "description": "Selectors, the box model, Flexbox, responsive basics, and consistent typography.",
+        "duration": "4 hours",
+        "driveFileId": "1x83q59-bXpVLBMlMmzb27h6vX9Yl8fYH",
+        "order": 2
+      },
+      {
+        "id": "web-dev-101-l3",
+        "title": "JavaScript Basics — Interactivity",
+        "description": "Variables, DOM manipulation, events, and small interactive components.",
+        "duration": "4 hours",
+        "driveFileId": "1lh-iKYer8yFm5eUDkERia6kR4iyBkxLH",
+        "order": 3
+      }
+    ],
+    "quiz": {
+      "passingScore": 70,
+      "questions": [
+        {
+          "id": "web-dev-101-q1",
+          "question": "Which HTML element is most appropriate for the main heading of a page?",
+          "options": ["<heading>", "<h1>", "<head>", "<title>"],
+          "correctAnswer": 1,
+          "explanation": "Use a single <h1> for the primary heading; <title> is metadata and appears in the tab."
+        },
+        {
+          "id": "web-dev-101-q2",
+          "question": "In CSS, which property controls the space inside an element, between content and border?",
+          "options": ["margin", "padding", "outline", "gap"],
+          "correctAnswer": 1,
+          "explanation": "Padding is inside the border; margin is outside."
+        },
+        {
+          "id": "web-dev-101-q3",
+          "question": "Which selector targets an element by its id attribute?",
+          "options": [".name", "#name", "*name", ":name"],
+          "correctAnswer": 1,
+          "explanation": "The # prefix denotes an ID selector in CSS."
+        },
+        {
+          "id": "web-dev-101-q4",
+          "question": "What does CSS Flexbox primarily help you arrange?",
+          "options": [
+            "Database queries",
+            "Items along one dimension (row or column)",
+            "Server-side routes",
+            "JSON parsing"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Flexbox is a one-dimensional layout method for aligning and distributing space among items."
+        },
+        {
+          "id": "web-dev-101-q5",
+          "question": "Which HTML attribute provides alternative text for images (accessibility & SEO)?",
+          "options": ["title", "src", "alt", "href"],
+          "correctAnswer": 2,
+          "explanation": "The alt attribute describes the image when it cannot be displayed or for screen readers."
+        }
+      ]
+    }
+  },
+  {
+    "id": "seo-mastery",
+    "title": "SEO Mastery — Rank #1 on Google",
+    "description": "Master keyword strategy, on-page optimization, technical SEO basics, and measuring performance to improve organic visibility.",
+    "thumbnail": "/images/courses/seo-mastery.jpg",
+    "category": "Digital Marketing",
+    "level": "Intermediate",
+    "duration": "8 hours",
+    "totalLectures": 3,
+    "instructor": "RathiSoft Team",
+    "tags": ["SEO", "Google", "Keywords"],
+    "lectures": [
+      {
+        "id": "seo-mastery-l1",
+        "title": "Keyword Research & Search Intent",
+        "description": "Finding topics, mapping intent, and prioritizing keywords your audience actually searches.",
+        "duration": "2.5 hours",
+        "driveFileId": "1x83q59-bXpVLBMlMmzb27h6vX9Yl8fYH",
+        "order": 1
+      },
+      {
+        "id": "seo-mastery-l2",
+        "title": "On-Page SEO — Content & Meta",
+        "description": "Titles, headings, internal linking, and structured content that search engines understand.",
+        "duration": "2.5 hours",
+        "driveFileId": "1lh-iKYer8yFm5eUDkERia6kR4iyBkxLH",
+        "order": 2
+      },
+      {
+        "id": "seo-mastery-l3",
+        "title": "Technical SEO Basics & Measurement",
+        "description": "Crawlability, Core Web Vitals overview, Search Console, and tracking meaningful SEO KPIs.",
+        "duration": "3 hours",
+        "driveFileId": "1x83q59-bXpVLBMlMmzb27h6vX9Yl8fYH",
+        "order": 3
+      }
+    ],
+    "quiz": {
+      "passingScore": 70,
+      "questions": [
+        {
+          "id": "seo-mastery-q1",
+          "question": "What does ‘search intent’ refer to?",
+          "options": [
+            "How fast your server responds",
+            "Why a user runs a query and what result they expect",
+            "Your ad budget on Google Ads",
+            "The number of backlinks you have"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Aligning content with intent (informational, navigational, transactional, etc.) improves relevance and rankings."
+        },
+        {
+          "id": "seo-mastery-q2",
+          "question": "Which practice best describes a primary keyword?",
+          "options": [
+            "A hidden keyword only bots can see",
+            "The main topic phrase you want a page to rank for",
+            "Any word repeated 50 times on the page",
+            "A keyword only used in image filenames"
+          ],
+          "correctAnswer": 1,
+          "explanation": "The primary keyword reflects the core topic; use it naturally in title, headings, and body."
+        },
+        {
+          "id": "seo-mastery-q3",
+          "question": "What is a meta description primarily used for?",
+          "options": [
+            "To replace your page title in rankings",
+            "To summarize the page in search snippets (can influence click-through)",
+            "To block Google from indexing the page",
+            "To set your canonical URL"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Meta descriptions can appear under the blue link in results and encourage clicks when compelling."
+        },
+        {
+          "id": "seo-mastery-q4",
+          "question": "Why are internal links important for SEO?",
+          "options": [
+            "They replace the need for backlinks",
+            "They help discovery, distribute authority, and clarify site structure",
+            "They hide pages from crawlers",
+            "They increase server load for better rankings"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Internal linking connects related pages and helps users and crawlers navigate your site."
+        },
+        {
+          "id": "seo-mastery-q5",
+          "question": "Google Search Console is mainly useful for:",
+          "options": [
+            "Hosting your website files",
+            "Buying keywords",
+            "Insights on indexing, queries, and technical coverage issues",
+            "Designing CSS layouts"
+          ],
+          "correctAnswer": 2,
+          "explanation": "Search Console shows how Google sees your property: coverage, queries, and actionable diagnostics."
+        }
+      ]
+    }
+  },
+  {
+    "id": "digital-marketing-complete",
+    "title": "Complete Digital Marketing Course",
+    "description": "Learn Social Media Marketing, Content Creation, Facebook & Instagram Ads, Twitter strategy, and Audit Reports. Practical sessions with real examples.",
+    "thumbnail": "",
+    "category": "Digital Marketing",
+    "level": "Beginner",
+    "duration": "6 hours",
+    "totalLectures": 6,
+    "instructor": "RathiSoft Team",
+    "tags": ["Digital Marketing", "Social Media", "Facebook", "Instagram", "Content Creation"],
+    "lectures": [
+      {
+        "id": "lec-1",
+        "title": "Digital Marketing Introduction",
+        "description": "Getting started with digital marketing fundamentals",
+        "duration": "45 min",
+        "driveFileId": "1lh-iKYer8yFm5eUDkERia6kR4iyBkxLH",
+        "order": 1
+      },
+      {
+        "id": "lec-2",
+        "title": "Marketing Strategy Session",
+        "description": "Building your marketing strategy from scratch",
+        "duration": "50 min",
+        "driveFileId": "1x83q59-bXpVLBMlMmzb27h6vX9Yl8fYH",
+        "order": 2
+      },
+      {
+        "id": "lec-3",
+        "title": "Advanced Marketing Techniques",
+        "description": "Deep dive into advanced digital marketing methods",
+        "duration": "55 min",
+        "driveFileId": "1oYIotjQmaVXPWXvPElDbmHZkqd5_O4Qh",
+        "order": 3
+      },
+      {
+        "id": "lec-4",
+        "title": "Social Media Marketing",
+        "description": "Facebook, Instagram and Twitter marketing strategies",
+        "duration": "60 min",
+        "driveFileId": "1wgneCh8Wk4y-MNjZTFPY95PsfAXBsgQ8",
+        "order": 4
+      },
+      {
+        "id": "lec-5",
+        "title": "Facebook, Instagram & Twitter Audit Report",
+        "description": "How to create and analyze social media audit reports",
+        "duration": "50 min",
+        "driveFileId": "1rFQHnjL2xOM0_iaDJgHC9vB9StkwScP4",
+        "order": 5
+      },
+      {
+        "id": "lec-6",
+        "title": "Content Creation Masterclass",
+        "description": "Creating engaging content for all social media platforms",
+        "duration": "55 min",
+        "driveFileId": "18S-0AkFurxIgEPu8tpXtVgMuSauAJLTX",
+        "order": 6
+      }
+    ],
+    "quiz": {
+      "passingScore": 70,
+      "questions": [
+        {
+          "id": "q1",
+          "question": "What is Digital Marketing?",
+          "options": [
+            "Marketing products through digital channels like internet and social media",
+            "Selling products door to door",
+            "Only email marketing",
+            "Only SEO"
+          ],
+          "correctAnswer": 0,
+          "explanation": "Digital marketing covers all marketing efforts that use the internet or electronic devices including social media, email, SEO, and paid ads."
+        },
+        {
+          "id": "q2",
+          "question": "Which platform has the most monthly active users?",
+          "options": ["Twitter", "LinkedIn", "Facebook", "Pinterest"],
+          "correctAnswer": 2,
+          "explanation": "Facebook has over 3 billion monthly active users, making it the largest social media platform."
+        },
+        {
+          "id": "q3",
+          "question": "What is a Social Media Audit?",
+          "options": [
+            "Deleting old social media accounts",
+            "A review of your social media presence, performance and strategy",
+            "Creating new social media profiles",
+            "Buying followers"
+          ],
+          "correctAnswer": 1,
+          "explanation": "A social media audit is a review process where you examine all your social media accounts to evaluate performance, consistency, and strategy."
+        },
+        {
+          "id": "q4",
+          "question": "What does CTR stand for in digital marketing?",
+          "options": ["Content To Revenue", "Click Through Rate", "Customer Total Reach", "Campaign Targeting Result"],
+          "correctAnswer": 1,
+          "explanation": "CTR (Click Through Rate) is the percentage of people who click on your ad or link after seeing it."
+        },
+        {
+          "id": "q5",
+          "question": "What is the best type of content for Instagram engagement?",
+          "options": ["Long text posts", "Visual content — images and short videos", "Only hashtags", "Links to websites"],
+          "correctAnswer": 1,
+          "explanation": "Instagram is a visual platform. High-quality images, Reels, and short videos consistently get the highest engagement rates."
+        }
+      ]
+    }
+  }
+]

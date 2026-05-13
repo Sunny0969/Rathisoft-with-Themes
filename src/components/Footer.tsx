@@ -17,7 +17,7 @@ export function Footer() {
               branding. Based in Lahore — serving clients worldwide.
             </p>
             <div className="ft-contacts">
-              <a href="mailto:info@rathisoft.com" className="ft-clink">
+              <a href="mailto:info@rathisoft.com" rel="noopener noreferrer" className="ft-clink">
                 <div className="ft-clink-icon">📧</div>
                 info@rathisoft.com
               </a>
@@ -38,25 +38,25 @@ export function Footer() {
           </div>
 
           <div className="ft-col">
-            <h5>Services</h5>
-            <Link to="/web-development">Web Development</Link>
-            <Link to="/seo-optimization">SEO Optimization</Link>
-            <Link to="/app-development">App Development</Link>
-            <Link to="/wordpress-shopify">WordPress & Shopify</Link>
-            <Link to="/video-editing">Video Editing</Link>
+            <p className="ft-col-title">Services</p>
+            <Link to="/services/web-development">Web Development</Link>
+            <Link to="/services/seo-optimization">SEO Optimization</Link>
+            <Link to="/services/app-development">App Development</Link>
+            <Link to="/services/wordpress-shopify">WordPress & Shopify</Link>
+            <Link to="/services/video-editing">Video Editing</Link>
           </div>
 
           <div className="ft-col">
-            <h5>More Services</h5>
-            <Link to="/social-media-marketing">Social Media</Link>
-            <Link to="/content-marketing">Content Marketing</Link>
-            <Link to="/ppc-advertising">PPC Advertising</Link>
-            <Link to="/email-marketing">Email Marketing</Link>
-            <Link to="/branding-design">Branding & Design</Link>
+            <p className="ft-col-title">More Services</p>
+            <Link to="/services/social-media-marketing">Social Media</Link>
+            <Link to="/services/content-marketing">Content Marketing</Link>
+            <Link to="/services/ppc-advertising">PPC Advertising</Link>
+            <Link to="/services/email-marketing">Email Marketing</Link>
+            <Link to="/services/branding-design">Branding & Design</Link>
           </div>
 
           <div className="ft-col">
-            <h5>Company</h5>
+            <p className="ft-col-title">Company</p>
             <Link to="/about">About Us</Link>
             <Link to="/work">Portfolio</Link>
             <Link to="/packages">Packages</Link>
@@ -72,6 +72,7 @@ export function Footer() {
           <div className="ft-soc">
             <a
               href="mailto:info@rathisoft.com"
+              rel="noopener noreferrer"
               className="ft-soc-link"
               title="Email"
             >

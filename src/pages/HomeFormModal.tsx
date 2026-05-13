@@ -165,7 +165,7 @@ export function HomeFormModal({ open, onClose }: HomeFormModalProps) {
       className="form-overlay show"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="home-form-title"
+      aria-labelledby="home-form-heading"
       onClick={overlayClick}
     >
       <div className="form-modal" onClick={(e) => e.stopPropagation()}>
@@ -177,6 +177,10 @@ export function HomeFormModal({ open, onClose }: HomeFormModalProps) {
         >
           ✕
         </button>
+
+        <h2 id="home-form-heading" className="home-form-sr-heading">
+          Start your project
+        </h2>
 
         {!submitted ? (
           <>
@@ -191,7 +195,7 @@ export function HomeFormModal({ open, onClose }: HomeFormModalProps) {
                 <span>
                   Step {step} of {TOTAL_STEPS}
                 </span>
-                <span id="home-form-title">{STEP_TITLES[step - 1]}</span>
+                <span>{STEP_TITLES[step - 1]}</span>
               </div>
               <div className="step-dots">
                 {[1, 2, 3, 4].map((i) => (

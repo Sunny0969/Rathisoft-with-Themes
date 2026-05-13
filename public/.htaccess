@@ -2,9 +2,24 @@
   Options -MultiViews
 </IfModule>
 
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+
+  # 301: all HTTP → HTTPS, and www → apex https://rathisoft.com
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} ^www\.rathisoft\.com$ [NC]
+  RewriteRule ^ https://rathisoft.com%{REQUEST_URI} [R=301,L,QSA]
+
+  # Paths only: drop trailing slash except site root (matches canonical URLs)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_URI} ^/(.+)/$
+  RewriteRule .* /%1 [R=301,L,QSA]
 
   # Let Apache serve real files and folders directly.
   RewriteRule ^index\.html$ - [L]
@@ -12,6 +27,29 @@
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
-  # Send all other routes to the SPA entry point.
-  RewriteRule . /index.html [L]
+  # Legacy service URLs → descriptive /services/{slug} (lowercase, hyphenated)
+  RewriteRule ^web-development$ /services/web-development [R=301,L,NC]
+  RewriteRule ^seo-optimization$ /services/seo-optimization [R=301,L,NC]
+  RewriteRule ^app-development$ /services/app-development [R=301,L,NC]
+  RewriteRule ^wordpress-shopify$ /services/wordpress-shopify [R=301,L,NC]
+  RewriteRule ^video-editing$ /services/video-editing [R=301,L,NC]
+  RewriteRule ^social-media-marketing$ /services/social-media-marketing [R=301,L,NC]
+  RewriteRule ^content-marketing$ /services/content-marketing [R=301,L,NC]
+  RewriteRule ^ppc-advertising$ /services/ppc-advertising [R=301,L,NC]
+  RewriteRule ^email-marketing$ /services/email-marketing [R=301,L,NC]
+  RewriteRule ^branding-design$ /services/branding-design [R=301,L,NC]
+
+  # SPA routes only → index.html (HTTP 200). Unknown paths fall through → real 404 + ErrorDocument below.
+  RewriteRule ^$ /index.html [L]
+  RewriteRule ^about/?$ /index.html [L]
+  RewriteRule ^packages/?$ /index.html [L]
+  RewriteRule ^work/?$ /index.html [L]
+  RewriteRule ^contact/?$ /index.html [L]
+  RewriteRule ^themes/?$ /index.html [L]
+  RewriteRule ^team/?$ /index.html [L]
+  RewriteRule ^services/?$ /index.html [L]
+  RewriteRule ^services/(web-development|seo-optimization|app-development|wordpress-shopify|video-editing|social-media-marketing|content-marketing|ppc-advertising|email-marketing|branding-design)/?$ /index.html [L,NC]
 </IfModule>
+
+# Real HTTP 404 for unknown URLs while still serving the SPA shell (React Router shows NotFound).
+ErrorDocument 404 /index.html

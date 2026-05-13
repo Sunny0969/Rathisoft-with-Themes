@@ -1,0 +1,57 @@
+.rs-breadcrumb-bar {
+  background: rgba(19, 19, 26, 0.96);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.rs-breadcrumb-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 10px 52px;
+}
+
+.rs-breadcrumb-nav ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.rs-breadcrumb-nav li {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rs-breadcrumb-nav li:not(:last-child)::after {
+  content: '/';
+  color: rgba(255, 255, 255, 0.22);
+  font-weight: 300;
+  pointer-events: none;
+}
+
+.rs-breadcrumb-nav a {
+  color: rgba(129, 140, 248, 0.95);
+  text-decoration: none;
+}
+
+.rs-breadcrumb-nav a:hover {
+  color: #a5b4fc;
+  text-decoration: underline;
+}
+
+.rs-breadcrumb-current {
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .rs-breadcrumb-inner {
+    padding: 10px 20px;
+  }
+}

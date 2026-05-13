@@ -1,6 +1,9 @@
+import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Breadcrumbs } from '../components/Breadcrumbs'
 import { PackagesSection } from '../components/PackagesSection'
+import { Seo } from '../components/Seo'
 
 const PACKAGES_STYLES = `
 .page-packages {
@@ -113,6 +116,15 @@ const PACKAGES_STYLES = `
 }
 .page-packages .pkg-section {
   padding: 64px 0 80px;
+}
+.page-packages .pkg-major-heading {
+  font-family: var(--fh);
+  font-size: clamp(22px, 2.8vw, 34px);
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: -0.5px;
+  margin: 0 0 28px;
+  max-width: 720px;
 }
 .page-packages .pkg-grid {
   display: grid;
@@ -479,6 +491,15 @@ const PACKAGES_STYLES = `
 .page-packages .faq-item.open .faq-a {
   display: block;
 }
+.page-packages .faq-a a {
+  color: var(--indigo2);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.page-packages .faq-a a:hover {
+  color: #c7d2fe;
+}
 .page-packages .cta-wrap {
   background: var(--bg2);
   border-top: 1px solid var(--border);
@@ -546,7 +567,7 @@ const PACKAGES_STYLES = `
 }
 `
 
-const FAQ_ITEMS: { q: string; a: string }[] = [
+const FAQ_ITEMS: { q: string; a: ReactNode }[] = [
   {
     q: "What's included in the price?",
     a: 'Everything listed in the package — design, development, testing, and post-launch support. No hidden charges.',
@@ -566,6 +587,50 @@ const FAQ_ITEMS: { q: string; a: string }[] = [
   {
     q: 'Do you provide ongoing support after launch?',
     a: 'Yes — every package includes 1 month of post-launch support. Extended support plans are also available.',
+  },
+  {
+    q: 'How do Lahore retainers stay auditable quarter to quarter?',
+    a: 'Bundles from our Lahore studio mirror roadmap artefacts executives already use — discovery dossiers, wire approval checkpoints, Shopify or WordPress theme variance budgets, and regression tied to analytics verification — instead of vague “silver tier” wording with no acceptance metrics.',
+  },
+  {
+    q: 'How do you handle hosting, licences, and sandbox vs production?',
+    a: 'Finance teams get itemised hosting assumptions, transparent licence passthrough, and a clear split between experimentation sandboxes and production workloads. Production changes follow conventions engineers peer-review weekly (including Infrastructure-as-Code practices where relevant).',
+  },
+  {
+    q: 'Why reference SEO guides and Core Web Vitals in fixed-price work?',
+    a: 'Velocity without observability rarely satisfies boards. We anchor discoverability hygiene to Google’s SEO Starter Guide and performance budgets to Core Web Vitals guidance on web.dev so stakeholders immediately understand why certain optimisations stay non-negotiable — even under compressed timelines.',
+  },
+  {
+    q: 'Where can I read those Google resources directly?',
+    a: (
+      <>
+        Start with{' '}
+        <a
+          href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Google&apos;s SEO Starter Guide
+        </a>{' '}
+        and{' '}
+        <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer">
+          Core Web Vitals guidance on web.dev
+        </a>
+        .
+      </>
+    ),
+  },
+  {
+    q: 'What if our pilot outgrows a catalogue bundle?',
+    a: (
+      <>
+        We step into bespoke scope with the same clarity. Review{' '}
+        <Link to="/services">all services</Link>, benchmark outcomes on our{' '}
+        <Link to="/work">portfolio</Link>, read{' '}
+        <Link to="/about">how we operate</Link>, or{' '}
+        <Link to="/contact">contact us</Link> for procurement questionnaires, signatures, or NDAs.
+      </>
+    ),
   },
 ]
 
@@ -589,6 +654,16 @@ export function Packages() {
 
   return (
     <main className="page-packages app-main">
+      <Breadcrumbs
+        items={[
+          { name: 'Home', path: '/' },
+          { name: 'Packages', path: '/packages' },
+        ]}
+      />
+      <Seo
+        title="Pricing & Packages | WordPress & Shopify | RathiSoft"
+        description="Transparent pricing for WordPress, Shopify, SEO, and digital marketing packages from RathiSoft — Lahore-based agency serving clients worldwide."
+      />
       <style>{PACKAGES_STYLES}</style>
 
       <div className="hero">
@@ -600,13 +675,16 @@ export function Packages() {
             No surprises.
           </h1>
           <p>
-            Pick the plan that fits your business. Everything included — design,
-            development, and strategy. No hidden fees, ever.
+            RathiSoft is a software agency in Lahore offering transparent retainers—each bundle lists design,
+            engineering, QA, analytics setup, and post-launch care so procurement teams avoid surprise invoices mid-flight.
           </p>
         </div>
       </div>
 
       <div className="wrap pkg-section">
+        <h2 id="packages-pricing-heading" className="pkg-major-heading">
+          Package tiers &amp; what&apos;s included
+        </h2>
         <PackagesSection waLink={WA} />
 
         <div className="faq">

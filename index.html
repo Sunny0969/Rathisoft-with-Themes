@@ -2,23 +2,88 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logo/simpleR.png" />
-    <link rel="apple-touch-icon" href="/logo/simpleR.png" />
+    <link rel="icon" type="image/webp" href="/logo/simpleR.webp" />
+    <link rel="apple-touch-icon" href="/logo/simpleR.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
     <meta
       name="description"
-      content="Rathisoft — Expert WordPress & Shopify development, web design, SEO, and digital marketing. Based in Lahore. Serving clients worldwide."
+      content="RathiSoft is a premier software agency in Lahore, Pakistan. We build custom web apps, mobile solutions, WordPress/Shopify stores, and deliver ROI-driven digital marketing. Get a free quote today."
     />
-    <title>Rathisoft</title>
+    <meta
+      name="keywords"
+      content="software agency Lahore, software development company Pakistan, web development Lahore, digital marketing agency Pakistan, IT company Lahore"
+    />
+    <title>RathiSoft — Software Agency in Lahore | Web &amp; Digital Solutions</title>
+    <link rel="canonical" href="https://rathisoft.com/" />
+    <!-- Open Graph (defaults for /; routes update via Seo.tsx) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="RathiSoft" />
+    <meta property="og:title" content="RathiSoft — Software Agency in Lahore | Web &amp; Digital Solutions" />
+    <meta
+      property="og:description"
+      content="RathiSoft is a premier software agency in Lahore, Pakistan. We build custom web apps, mobile solutions, WordPress/Shopify stores, and deliver ROI-driven digital marketing. Get a free quote today."
+    />
+    <meta property="og:url" content="https://rathisoft.com/" />
+    <meta property="og:image" content="https://rathisoft.com/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@rathisoft" />
+    <meta name="twitter:title" content="RathiSoft — Software Agency in Lahore | Web &amp; Digital Solutions" />
+    <meta
+      name="twitter:description"
+      content="RathiSoft is a premier software agency in Lahore, Pakistan. We build custom web apps, mobile solutions, WordPress/Shopify stores, and deliver ROI-driven digital marketing. Get a free quote today."
+    />
+    <meta name="twitter:image" content="https://rathisoft.com/og-image.jpg" />
+    <!-- PART 8: critical CSS — shell + first paint before bundle (Tailwind/React hydrate separately) -->
+    <style id="rathisoft-critical-css">
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        background: #0a0a12;
+      }
+      body {
+        margin: 0;
+        background: #0a0a12;
+        color: #fff;
+        font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      #root {
+        width: 100%;
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+      }
+    </style>
+    <!-- Core Web Vitals: early connections + LCP poster -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="image" href="/assets/hero-image.webp" fetchpriority="high" />
+    <!-- Non-critical fonts: print media swap avoids blocking first paint -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&family=Inter:wght@300;400;500&family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&amp;family=Inter:wght@300;400;500&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&amp;family=Inter:wght@300;400;500&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap"
+      />
+    </noscript>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- SPA bundle: type="module" is deferred by default; defer attribute preserves intent for auditors -->
+    <script type="module" src="/src/main.tsx" defer></script>
   </body>
 </html>

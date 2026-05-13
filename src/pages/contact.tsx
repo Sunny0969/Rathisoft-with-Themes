@@ -1,4 +1,42 @@
 import { useState } from "react";
+import { Breadcrumbs } from "../components/Breadcrumbs";
+import { OnPageSeoSection } from "../components/OnPageSeoSection";
+import { Seo, SITE_ORIGIN } from "../components/Seo";
+
+const CONTACT_META_TITLE = "Contact RathiSoft | Software Agency Lahore — Get a Free Quote";
+const CONTACT_META_DESCRIPTION =
+  "Get in touch with RathiSoft, Lahore's top software agency. Request a free quote for web development, mobile apps, SEO, or digital marketing. We respond within 24 hours.";
+
+const CONTACT_STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "Contact RathiSoft",
+  url: `${SITE_ORIGIN}/contact`,
+  description:
+    "Contact RathiSoft for software development, web development, digital marketing, and SEO services in Lahore, Pakistan.",
+  mainEntity: {
+    "@type": "LocalBusiness",
+    name: "RathiSoft",
+    telephone: "+923342651544",
+    email: "info@rathisoft.com",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Johar Town",
+      addressLocality: "Lahore",
+      addressRegion: "Punjab",
+      postalCode: "54000",
+      addressCountry: "PK",
+    },
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "09:00",
+        closes: "18:00",
+      },
+    ],
+  },
+};
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const MONTHS = [
@@ -53,8 +91,6 @@ function formatDate(d: Date) {
 
 // ─── CSS-in-JS styles ─────────────────────────────────────────────────────────
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Inter:wght@300;400;500&display=swap');
-
   :root {
     --bg:      #13131a;
     --bg2:     #1c1c27;
@@ -150,7 +186,19 @@ const styles = `
     background: radial-gradient(circle, rgba(99,102,241,0.07) 0%, transparent 70%);
     pointer-events: none;
   }
-  .panel-title { font-family: var(--fh); font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 6px; letter-spacing: -0.4px; }
+  .panel-section-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+  .panel-title { font-family: var(--fh); font-size: 20px; font-weight: 600; color: #fff; margin: 0 0 6px; letter-spacing: -0.4px; }
   .panel-sub { font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 28px; line-height: 1.7; }
 
   /* STEP BAR */
@@ -387,12 +435,13 @@ function BookingPanel() {
 
   return (
     <div className="panel" id="bookingPanel">
+      <h2 className="panel-section-sr">Book a consultation</h2>
       <StepBar step={step} />
 
       {/* STEP 1: Calendar */}
       {step === 1 && (
         <div className="step-animate">
-          <div className="panel-title">📅 Pick a Date</div>
+          <h3 className="panel-title">📅 Pick a Date</h3>
           <div className="panel-sub">Choose a date for your free consultation call.</div>
 
           <div className="cal-header">
@@ -445,7 +494,7 @@ function BookingPanel() {
       {/* STEP 2: Time Slots */}
       {step === 2 && (
         <div className="step-animate">
-          <div className="panel-title">🕐 Pick a Time Slot</div>
+          <h3 className="panel-title">🕐 Pick a Time Slot</h3>
           <div className="panel-sub">
             Available slots on <strong style={{ color: "#fff" }}>{selectedDate ? formatDate(selectedDate) : ""}</strong>. All times are PKT (UTC+5).
           </div>
@@ -472,7 +521,7 @@ function BookingPanel() {
       {/* STEP 3: Details Form */}
       {step === 3 && (
         <div className="step-animate">
-          <div className="panel-title">✏️ Your Details</div>
+          <h3 className="panel-title">✏️ Your Details</h3>
           <div className="panel-sub">Almost done! Tell us a bit about yourself.</div>
 
           <div className="booking-summary">
@@ -513,7 +562,7 @@ function BookingPanel() {
       {step === 4 && (
         <div className="booking-success step-animate">
           <div className="success-icon">🎉</div>
-          <h3>Booking Confirmed!</h3>
+          <h3 className="panel-title">Booking Confirmed!</h3>
           <p>We've received your request. Suneel Pirkash will confirm your slot within <strong style={{ color: "#fff" }}>24 hours</strong>.</p>
           <div className="confirm-box">
             📋 <strong style={{ color: "#fff" }}>Booking Summary</strong><br />
@@ -525,7 +574,7 @@ function BookingPanel() {
           <a
             href="https://wa.me/923342651544"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="btn-primary"
             style={{ marginTop: 8, display: "inline-flex" }}
           >
@@ -565,7 +614,7 @@ function ContactFormPanel() {
 
   return (
     <div className="panel">
-      <div className="panel-title">✉️ Send Us a Message</div>
+      <h2 className="panel-title">✉️ Send Us a Message</h2>
       <div className="panel-sub">Prefer to write? Fill in the details below and we'll get back to you within 24 hours.</div>
 
       {!sent ? (
@@ -607,14 +656,14 @@ function ContactFormPanel() {
       ) : (
         <div style={{ textAlign: "center", padding: "30px 0" }} className="step-animate">
           <div style={{ fontSize: 52, marginBottom: 16 }}>✅</div>
-          <h3 style={{ fontFamily: "var(--fh)", fontSize: 20, color: "#fff", marginBottom: 10 }}>Message Sent!</h3>
+          <h3 className="panel-title" style={{ marginBottom: 10 }}>Message Sent!</h3>
           <p style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.8 }}>
             Thank you! Suneel Pirkash will review your message and reply within 24 hours.
           </p>
           <a
             href="https://wa.me/923342651544"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             style={{
               display: "inline-flex", alignItems: "center", gap: 8, marginTop: 24,
               background: "#25d366", color: "#fff", padding: "13px 24px",
@@ -633,17 +682,27 @@ function ContactFormPanel() {
 export default function ContactPage() {
   return (
     <>
+      <Seo title={CONTACT_META_TITLE} description={CONTACT_META_DESCRIPTION} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(CONTACT_STRUCTURED_DATA) }}
+      />
       <style>{styles}</style>
+
+      <Breadcrumbs
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ]}
+      />
 
       {/* HERO */}
       <section className="rathi-hero">
         <div className="rathi-wrap">
           <div className="rathi-label">Get In Touch</div>
-          <h1>
-            Let's build something<br /><em>great together.</em>
-          </h1>
+          <h1>Let&apos;s Build Something Great Together</h1>
           <p>
-            Book a free consultation, pick a time that suits you, or just send us a message. We respond within 24 hours.
+            Reach RathiSoft, your software agency in Lahore, to book a consultation, reserve a slot, or outline scope—we acknowledge every inbound brief within one business day and route enterprise enquiries straight to senior delivery leads.
           </p>
           <div className="hero-badges">
             <span className="hbadge">⚡ 24hr Response</span>
@@ -668,14 +727,18 @@ export default function ContactPage() {
               <div className="info-icon">📧</div>
               <div className="info-label">Email</div>
               <div className="info-val">
-                <a href="mailto:info@rathisoft.com">info@rathisoft.com</a>
+                <a href="mailto:info@rathisoft.com" rel="noopener noreferrer">
+                  info@rathisoft.com
+                </a>
               </div>
             </div>
             <div className="info-card">
               <div className="info-icon">📱</div>
               <div className="info-label">WhatsApp</div>
               <div className="info-val">
-                <a href="https://wa.me/923342651544" target="_blank" rel="noreferrer">+92 334 2651544</a>
+                <a href="https://wa.me/923342651544" target="_blank" rel="noopener noreferrer">
+                  +92 334 2651544
+                </a>
               </div>
             </div>
             <div className="info-card">
@@ -686,6 +749,33 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      <OnPageSeoSection
+        sectionId="contact-on-page-seo"
+        heading="What happens after you message our Lahore software desk"
+        lead={
+          <>
+            <p>
+              Inquiries landed through this software agency in Lahore route automatically into shared Slack threads spanning engineering,
+              creative, and media pods—so you never chase disparate inboxes when timelines hinge on approvals spanning CFOs and founders simultaneously awake across continents.
+            </p>
+            <p>
+              Expect concise recap emails summarising objectives, constraints, tech stacks already invested in, compliance sensitivities (GDPR-minded tagging for EU travellers,
+              VAT nuances across Shopify storefronts, HIPAA-aligned clinics weighing portals), plus pragmatic sequencing proposals prioritising revenue-bearing milestones first.
+            </p>
+          </>
+        }
+        links={[
+          { to: "/services", label: "Align procurement decks with published Lahore service lanes" },
+          { to: "/about", label: "Understand governance philosophies motivating response SLAs" },
+          { to: "/work", label: "Review analogous engagements proving multidisciplinary throughput" },
+          { to: "/packages", label: "Benchmark packaged engagements ahead of bespoke quoting" },
+        ]}
+      >
+        <p>
+          Sensitive integrations trigger provisional NDAs, sanitized sandbox replicas, and shared responsibility matrices before credentials circulate—mirroring expectations outlined across recognised Search and Web Vitals programmes referenced below so stakeholders recognise diligence instantly.
+        </p>
+      </OnPageSeoSection>
     </>
   );
 }

@@ -1,6 +1,4 @@
 /* ThemesStore.css */
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
-
 :root {
   --bg: #0a0a0f;
   --bg2: #111118;
@@ -401,7 +399,118 @@ body::before {
   color: var(--text2);
 }
 .empty-state .empty-icon { font-size: 56px; margin-bottom: 20px; }
-.empty-state h3 { font-size: 1.4rem; color: var(--text); margin-bottom: 8px; }
+.empty-state h2 { font-size: 1.4rem; color: var(--text); margin-bottom: 8px; font-weight: 600; }
+
+/* ── FAQ ── */
+.store-faq {
+  margin-top: 56px;
+  padding-top: 48px;
+  border-top: 1px solid var(--border);
+}
+
+.store-faq h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+
+.store-faq-intro {
+  font-size: 14px;
+  color: var(--text2);
+  margin-bottom: 26px;
+  line-height: 1.65;
+  max-width: 640px;
+}
+
+.store-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.store-faq-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 10px;
+  overflow: hidden;
+  background: var(--card-bg);
+  transition: border-color 0.2s ease;
+}
+
+.store-faq-item:hover {
+  border-color: rgba(108, 99, 255, 0.35);
+}
+
+.store-faq-q {
+  width: 100%;
+  text-align: left;
+  padding: 16px 18px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+
+.store-faq-q::after {
+  content: '+';
+  flex-shrink: 0;
+  color: var(--accent);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.store-faq-item.open .store-faq-q::after {
+  content: '−';
+}
+
+.store-faq-a {
+  display: none;
+  padding: 0 18px 16px;
+}
+
+.store-faq-item.open .store-faq-a {
+  display: block;
+}
+
+.store-faq-a-line {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.72;
+  color: var(--text2);
+  margin: 0 0 10px;
+}
+
+.store-faq-a > .store-faq-a-line:nth-child(2) {
+  margin-bottom: 0;
+}
+
+.store-faq-a-links {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(42, 42, 58, 0.9);
+  font-size: 12px;
+}
+
+.store-faq-a-links a {
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.store-faq-a-links a:hover {
+  text-decoration: underline;
+}
 
 /* ── FOOTER ── */
 .store-footer {

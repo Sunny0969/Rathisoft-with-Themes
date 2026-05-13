@@ -6,6 +6,10 @@
 
 import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import './Themesstore.css';
+import { Breadcrumbs } from '../components/Breadcrumbs';
+import { Seo, SITE_ORIGIN } from '../components/Seo';
+import { THEMES_STORE_FONT_STYLESHEET } from '../constants/deferredFontUrls';
+import { injectDeferredStylesheet } from '../utils/deferredStylesheet';
 
 import {
   STORE_ITEMS,
@@ -29,6 +33,60 @@ const FILTER_ORDER: StoreFilter[] = [
   'shopify-theme',
   'wordpress-theme',
   'wordpress-plugin',
+];
+
+type StoreFaqItem = {
+  q: string;
+  lines: readonly [string, string];
+  /** Optional outbound citations under the two-line answer */
+  authorityLinks?: boolean;
+};
+
+/** Theme-store FAQs — two short lines each, scoped to Shopify/WP catalogue use */
+const STORE_FAQ_ITEMS: StoreFaqItem[] = [
+  {
+    q: 'Why test themes and plugins on staging before sending paid traffic?',
+    lines: [
+      'Liquid sections, block themes, and plugins can change checkout, schema, and accessibility in ways screenshots do not reveal.',
+      'Mirror production on staging, run smoke tests on payments and forms, then promote only when rollback steps are documented.',
+    ],
+  },
+  {
+    q: 'How do we handle breaking updates from Shopify or WordPress vendors?',
+    lines: [
+      'Upstream releases land often—pin compatible versions in your notes and keep a known-good branch or backup ZIP.',
+      'If a promotion is live, pause theme updates until QA finishes; rollback paths protect revenue when vendors ship regressions.',
+    ],
+  },
+  {
+    q: 'Can I use every download here on a production store without buying licences?',
+    lines: [
+      'Files here support learning and evaluation; production storefronts normally require licences from the original authors.',
+      'Buy official licences before you scale revenue—use downloads here to shortlist stacks before budget approvals.',
+    ],
+  },
+  {
+    q: 'What keeps theme experiments from hurting SEO or Core Web Vitals?',
+    lines: [
+      'Ship meaningful titles, excerpts, and FAQ markup; avoid duplicate templates that bloat HTML and drag LCP or CLS.',
+      'Pair content hygiene with third-party references your procurement team already trusts—we link the trio we cite in workshops below.',
+    ],
+    authorityLinks: true,
+  },
+  {
+    q: 'Should WordPress plugins and Shopify themes share one update policy?',
+    lines: [
+      'Treat PHP Composer or WP CLI workflows separately from Shopify CLI or Theme Kit—each stack ships on its own cadence.',
+      'Log which extensions touch checkout or cart scripts so two “minor” bumps cannot collide without a documented owner.',
+    ],
+  },
+  {
+    q: 'Who helps when pilots need custom engineering beyond these downloads?',
+    lines: [
+      'Our Lahore squad scopes migrations, integrations, and retained QA once catalogue assets stop covering edge cases.',
+      'Review Services for capability maps, Portfolio for proof, then Contact with staging URLs and compliance notes for faster quoting.',
+    ],
+  },
 ];
 
 // ── HELPER: Build Google Drive direct download URL ─────────────────
@@ -131,7 +189,9 @@ const ItemCard: React.FC<CardProps> = ({ item, delay }) => {
           <img
             className="card-thumb-icon-img"
             src={item.icon}
-            alt=""
+            alt={`${item.name} — WordPress or Shopify product thumbnail`}
+            width={72}
+            height={72}
             loading="lazy"
             decoding="async"
           />
@@ -211,7 +271,12 @@ const ThemesStore: React.FC = () => {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<StoreFilter>('all');
   const [toast, setToast] = useState<string | null>(null);
+  const [faqOpen, setFaqOpen] = useState<Record<number, boolean>>({});
   const searchRef = useRef<HTMLInputElement>(null);
+
+  const toggleFaq = useCallback((index: number) => {
+    setFaqOpen((prev) => ({ ...prev, [index]: !prev[index] }));
+  }, []);
 
   // Filter + Search logic
   const filtered = useMemo(() => {
@@ -239,8 +304,18 @@ const ThemesStore: React.FC = () => {
     return () => window.removeEventListener('keydown', handler);
   }, []);
 
+  useEffect(() => {
+    injectDeferredStylesheet(THEMES_STORE_FONT_STYLESHEET, 'rathisoft-deferred-fonts-themes');
+  }, []);
+
+  const themesStoreUrl = `${SITE_ORIGIN}/themes`;
+
   return (
     <>
+      <Seo
+        title="WordPress Themes & Plugins Store | RathiSoft"
+        description="Browse premium WordPress themes, Shopify themes, and WordPress plugins from RathiSoft — curated marketplace with downloads for your next project."
+      />
       {/* ── SEO: JSON-LD Structured Data ── */}
       <script
         type="application/ld+json"
@@ -248,13 +323,13 @@ const ThemesStore: React.FC = () => {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'WebSite',
-            name: 'Shopify & WordPress Themes and Plugins',
+            name: 'RathiSoft — Shopify & WordPress Themes and Plugins',
             description:
               'Shopify themes, WordPress themes, and WordPress plugins — curated library with instant download links.',
-            url: typeof window !== 'undefined' ? window.location.origin : '',
+            url: themesStoreUrl,
             potentialAction: {
               '@type': 'SearchAction',
-              target: `${typeof window !== 'undefined' ? window.location.origin : ''}?q={search_term_string}`,
+              target: `${themesStoreUrl}?q={search_term_string}`,
               'query-input': 'required name=search_term_string',
             },
           }),
@@ -267,6 +342,12 @@ const ThemesStore: React.FC = () => {
       <div className="bg-blob bg-blob-3" aria-hidden="true" />
 
       <main className="store-wrapper">
+        <Breadcrumbs
+          items={[
+            { name: 'Home', path: '/' },
+            { name: 'Themes store', path: '/themes' },
+          ]}
+        />
         {/* ── HEADER ── */}
         <header className="store-header">
           <div className="badge" role="note">
@@ -279,8 +360,8 @@ const ThemesStore: React.FC = () => {
           </h1>
 
           <p className="subtitle">
-            {STORE_ITEMS.length}+ items — Shopify paid themes, WordPress paid themes, and WordPress paid plugins.
-            Connect your Google Drive file IDs in the catalog data file for downloads.
+            RathiSoft is a software agency in Lahore curating {STORE_ITEMS.length}+ Shopify themes, WordPress themes,
+            and plugins—download-ready assets plus guardrails so engineering squads avoid licensing drift while iterating storefront experiences responsibly.
           </p>
 
           <div className="stats-row" role="region" aria-label="Library statistics">
@@ -353,7 +434,7 @@ const ThemesStore: React.FC = () => {
           {filtered.length === 0 ? (
             <div className="empty-state" role="status">
               <div className="empty-icon">🔍</div>
-              <h3>Nothing found</h3>
+              <h2>Nothing found</h2>
               <p>Try a different keyword or remove the filter.</p>
             </div>
           ) : (
@@ -365,12 +446,65 @@ const ThemesStore: React.FC = () => {
           )}
         </section>
 
+        <section className="store-faq" aria-labelledby="store-faq-heading">
+          <h2 id="store-faq-heading">Theme &amp; plugin FAQs</h2>
+          <p className="store-faq-intro">
+            Quick answers for teams using this Shopify and WordPress library—staging, licensing, updates, and SEO hygiene.
+          </p>
+          <div className="store-faq-list">
+            {STORE_FAQ_ITEMS.map((item, i) => (
+              <div
+                key={item.q}
+                className={`store-faq-item${faqOpen[i] ? ' open' : ''}`}
+              >
+                <button
+                  type="button"
+                  className="store-faq-q"
+                  onClick={() => toggleFaq(i)}
+                  aria-expanded={!!faqOpen[i]}
+                >
+                  {item.q}
+                </button>
+                <div className="store-faq-a" role="region">
+                  <p className="store-faq-a-line">{item.lines[0]}</p>
+                  <p className="store-faq-a-line">{item.lines[1]}</p>
+                  {item.authorityLinks ? (
+                    <p className="store-faq-a-links">
+                      <a
+                        href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        SEO Starter Guide
+                      </a>
+                      <span aria-hidden> · </span>
+                      <a
+                        href="https://developers.google.com/search/docs/essentials"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Search Essentials
+                      </a>
+                      <span aria-hidden> · </span>
+                      <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer">
+                        Core Web Vitals (web.dev)
+                      </a>
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* ── FOOTER ── */}
         <footer className="store-footer">
           <p>
             All files are shared for <strong>educational purposes</strong>. 
             Support developers by purchasing official licenses. &nbsp;|&nbsp;
-            <a href="mailto:your@email.com">Contact Us</a>
+            <a href="mailto:your@email.com" rel="noopener noreferrer">
+              Contact Us
+            </a>
           </p>
         </footer>
       </main>

@@ -87,13 +87,14 @@
   border-color: rgba(99, 102, 241, 0.3);
 }
 
-.rs-footer-block .ft-col h5 {
+.rs-footer-block .ft-col-title {
   font-size: 9px;
   color: #ffffff;
   letter-spacing: 3px;
   text-transform: uppercase;
   font-weight: 600;
   margin-bottom: 18px;
+  margin-top: 0;
 }
 
 .rs-footer-block .ft-col a {
@@ -248,7 +249,7 @@
     margin-bottom: 6px;
   }
 
-  .rs-footer-block .ft-col h5 {
+  .rs-footer-block .ft-col-title {
     font-size: 7px;
     letter-spacing: 2px;
     margin-bottom: 8px;

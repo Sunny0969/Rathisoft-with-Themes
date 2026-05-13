@@ -17,6 +17,69 @@
   --heading: 'Poppins', system-ui, 'Segoe UI', sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
+  /** LMS / e-learning (aligned with marketing inner pages + Header CTA indigo) */
+  --color-primary: #0f6e56;
+  --color-primary-bright: #1d9e75;
+  --color-primary-deep: #063d32;
+  --color-primary-soft: rgba(15, 110, 86, 0.14);
+  --color-primary-ring: rgba(15, 110, 86, 0.35);
+
+  --lms-page-bg: #13131a;
+  --lms-elevated: #1e1e2d;
+  --lms-elevated-2: #1c1c27;
+  --lms-body: rgba(255, 255, 255, 0.88);
+  --lms-muted: rgba(255, 255, 255, 0.6);
+  --lms-muted-2: rgba(255, 255, 255, 0.45);
+  --lms-border: rgba(255, 255, 255, 0.07);
+  --lms-border-strong: rgba(99, 102, 241, 0.35);
+  --lms-shadow: 0 8px 40px rgba(0, 0, 0, 0.35);
+  --lms-radius: 18px;
+  --lms-radius-sm: 12px;
+  --lms-radius-full: 9999px;
+
+  --btn-primary-bg: #6366f1;
+  --btn-primary-hover: #4f46e5;
+  --btn-primary-shadow: 0 0 20px rgba(99, 102, 241, 0.22);
+  --brand-violet: #8b5cf6;
+  --lms-beginner-text: #a7f3d0;
+
+  --lms-gradient-hero: linear-gradient(
+    135deg,
+    #4f46e5 0%,
+    #6366f1 45%,
+    #8b5cf6 100%
+  );
+  --lms-gradient-bar: linear-gradient(
+    90deg,
+    #4f46e5 0%,
+    #6366f1 50%,
+    #8b5cf6 100%
+  );
+
+  --lms-correct-soft: rgba(15, 110, 86, 0.18);
+  --lms-correct-border: rgba(15, 110, 86, 0.55);
+  --lms-wrong-soft: rgba(239, 68, 68, 0.12);
+  --lms-wrong-border: rgba(239, 68, 68, 0.45);
+
+  --lms-cert-paper: #ffffff;
+  --lms-cert-ink: #1a1a1a;
+  --lms-cert-ink-soft: #444444;
+  --lms-cert-inner-border: rgba(15, 110, 86, 0.35);
+  --lms-cert-serif: Georgia, 'Times New Roman', serif;
+
+  --lms-warn-soft: rgba(245, 158, 11, 0.12);
+  --lms-warn-border: rgba(245, 158, 11, 0.38);
+  --lms-warn-text: #fcd34d;
+  --lms-danger-soft: rgba(239, 68, 68, 0.12);
+  --lms-danger-border: rgba(239, 68, 68, 0.42);
+  --lms-danger-text: #fca5a5;
+  --lms-danger-strong: #dc2626;
+
+  --lms-link: #818cf8;
+  --lms-link-bright: #c7d2fe;
+  --lms-stat-highlight: #a5b4fc;
+  --lms-chrome-white: #ffffff;
+
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
   color-scheme: light dark;
@@ -47,9 +110,6 @@
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
   }
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
 }
 
 #root {
@@ -97,15 +157,11 @@ p {
   margin: 0;
 }
 
-code,
-.counter {
+code {
   font-family: var(--mono);
   display: inline-flex;
   border-radius: 4px;
   color: var(--text-h);
-}
-
-code {
   font-size: 15px;
   line-height: 135%;
   padding: 4px 8px;
