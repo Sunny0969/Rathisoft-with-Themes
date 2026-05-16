@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { OnPageSeoSection } from "../components/OnPageSeoSection";
 import { Seo, SITE_ORIGIN } from "../components/Seo";
 
-const CONTACT_META_TITLE = "Contact RathiSoft | Software Agency Lahore — Get a Free Quote";
+const CONTACT_META_TITLE = "Contact Us | Get a Free Quote | RathiSoft";
 const CONTACT_META_DESCRIPTION =
-  "Get in touch with RathiSoft, Lahore's top software agency. Request a free quote for web development, mobile apps, SEO, or digital marketing. We respond within 24 hours.";
+  "Contact RathiSoft for web, Shopify, SEO, or app quotes. Book a slot or send a brief—most replies within one business day. NDA on request.";
 
 const CONTACT_STRUCTURED_DATA = {
   "@context": "https://schema.org",
@@ -700,9 +701,13 @@ export default function ContactPage() {
       <section className="rathi-hero">
         <div className="rathi-wrap">
           <div className="rathi-label">Get In Touch</div>
-          <h1>Let&apos;s Build Something Great Together</h1>
+          <h1>Get in Touch</h1>
           <p>
-            Reach RathiSoft, your software agency in Lahore, to book a consultation, reserve a slot, or outline scope—we acknowledge every inbound brief within one business day and route enterprise enquiries straight to senior delivery leads.
+            Book a consultation, pick a time, or send your brief—RathiSoft routes every message to
+            the people who will actually build your{' '}
+            <Link to="/services/web-development">web</Link>, store, or{' '}
+            <Link to="/services/seo-optimization">SEO</Link> work. Most enquiries get a reply within
+            one business day.
           </p>
           <div className="hero-badges">
             <span className="hbadge">⚡ 24hr Response</span>
@@ -752,28 +757,43 @@ export default function ContactPage() {
 
       <OnPageSeoSection
         sectionId="contact-on-page-seo"
-        heading="What happens after you message our Lahore software desk"
+        heading="What happens after you contact RathiSoft"
         lead={
           <>
             <p>
-              Inquiries landed through this software agency in Lahore route automatically into shared Slack threads spanning engineering,
-              creative, and media pods—so you never chase disparate inboxes when timelines hinge on approvals spanning CFOs and founders simultaneously awake across continents.
+              Your note goes to our delivery team—not a generic inbox. Engineering, design,
+              and marketing leads see the same thread so you are not repeating yourself to three
+              vendors.
             </p>
             <p>
-              Expect concise recap emails summarising objectives, constraints, tech stacks already invested in, compliance sensitivities (GDPR-minded tagging for EU travellers,
-              VAT nuances across Shopify storefronts, HIPAA-aligned clinics weighing portals), plus pragmatic sequencing proposals prioritising revenue-bearing milestones first.
+              Expect a short recap of goals, timeline, and stack (WordPress, Shopify, custom web, or
+              ads), plus a suggested first milestone. Review our{' '}
+              <Link to="/work">portfolio</Link> anytime while you wait for the reply.
             </p>
           </>
         }
         links={[
-          { to: "/services", label: "Align procurement decks with published Lahore service lanes" },
+          { to: "/services", label: "Align procurement decks with our published service lanes" },
           { to: "/about", label: "Understand governance philosophies motivating response SLAs" },
           { to: "/work", label: "Review analogous engagements proving multidisciplinary throughput" },
           { to: "/packages", label: "Benchmark packaged engagements ahead of bespoke quoting" },
         ]}
       >
         <p>
-          Sensitive integrations trigger provisional NDAs, sanitized sandbox replicas, and shared responsibility matrices before credentials circulate—mirroring expectations outlined across recognised Search and Web Vitals programmes referenced below so stakeholders recognise diligence instantly.
+          Need an NDA first? Say so in your message. We can share sandbox access and a responsibility
+          matrix before credentials move—aligned with common{' '}
+          <a
+            href="https://developers.google.com/search/docs/essentials"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            search quality
+          </a>{' '}
+          and{' '}
+          <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer">
+            performance
+          </a>{' '}
+          practices we follow on live builds.
         </p>
       </OnPageSeoSection>
     </>

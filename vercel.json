@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "rathisoft.com" }],
+      "destination": "https://www.rathisoft.com/$1",
+      "permanent": true
+    }
+  ]
+}

@@ -22,11 +22,49 @@ export interface StoreItem {
   /** Zip size, e.g. "12.4 MB". Google Drive → file → Details se copy karein. Khali chhorne par UI Drive link dikhayega. */
   fileSize: string
   driveFileId: string
+  /**
+   * Live preview for the modal. Use a URL that allows embedding when possible:
+   * Theme Store demos: `https://{handle}-theme.myshopify.com/` (same pattern as Turbo).
+   * Avoid `*-demo.myshopify.com` for in-page iframe — Shopify blocks those on external sites;
+   * the UI will offer “open in new tab” instead.
+   * `https://themes.shopify.com/themes/{handle}/…` is rewritten to `{handle}-theme.myshopify.com`.
+   */
+  demoUrl?: string
   tags: string[]
 }
 
 // ── Shopify paid themes ───────────────────────────────────────────
 const SHOPIFY_THEMES: StoreItem[] = [
+  
+  {
+    id: 'shopify-adeline',
+    name: 'Adeline',
+    slug: 'shopify-adeline-theme',
+    category: 'shopify-theme',
+    description:
+      'Premium Shopify template by bitcode.com, designed for fashion collections with integrated lookbook sections and promotional layouts.',
+    icon: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=640&q=80',
+    version: '1.x',
+    /** Google Drive ID based on provided file */
+    fileSize: 'Not specified',
+    driveFileId: '146E9Jye7_2vCTR3aZKzU_-AoDSzpZjoF',
+    demoUrl: 'https://adeline-demo-01.myshopify.com/',
+    tags: ['shopify', 'fashion', 'lookbook'],
+  },
+    {
+    id: 'shopify-agencia-theme',
+    name: 'Agencia',
+    slug: 'agencia-shopify-theme',
+    category: 'shopify-theme',
+    description: 'A sleek and modern Shopify theme tailored for digital agencies, portfolios, and creative studios showcasing services.',
+    icon: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=640&q=80',
+    version: 'Latest',
+    fileSize: '—',
+    driveFileId: '',
+    demoUrl: 'http://preview.themeforest.net/item/agencia-creative-agency-portfolio/full_screen_preview/15750163',
+    tags: ['shopify', 'agency', 'portfolio', 'modern']
+  },
+
   {
     id: 'shopify-turbo-theme',
     name: 'Turbo (Portland)',
@@ -38,6 +76,7 @@ const SHOPIFY_THEMES: StoreItem[] = [
     version: '3.2',
     fileSize: '—',
     driveFileId: '1VoSeLLDsbKx25qYMXYysgVu5ZvIrn_zx',
+    demoUrl: 'https://turbo-theme.myshopify.com/',
     tags: ['shopify', 'speed', 'large-catalog'],
 },
 {
@@ -51,6 +90,7 @@ const SHOPIFY_THEMES: StoreItem[] = [
   version: 'Latest',
   fileSize: '—',
   driveFileId: '1XQ2McZyRhweNXvSVCnX0MGfD-xPX0Vao',
+  demoUrl: 'https://triss-demo.myshopify.com/',
   tags: ['shopify', 'beauty', 'fashion'],
 },
 {
@@ -64,6 +104,7 @@ const SHOPIFY_THEMES: StoreItem[] = [
   version: 'Latest',
   fileSize: '—',
   driveFileId: '1_uWR8QICt4o6_TV8E4Kz2ayw8mHQdPUo',
+  demoUrl: 'https://themes.shopify.com/themes/testament/presets/testament',
   tags: ['shopify', 'high-volume', 'conversion'],
 },
 {
@@ -77,6 +118,7 @@ const SHOPIFY_THEMES: StoreItem[] = [
   version: '3.01',
   fileSize: '—',
   driveFileId: '18lAAZOwyehzl6yErChkGpW8rKaAOtMoU',
+  demoUrl: 'https://themes.shopify.com/themes/symmetry/presets/symmetry',
   tags: ['shopify', 'visual-storytelling', 'grid'],
 },
 {
@@ -90,6 +132,8 @@ const SHOPIFY_THEMES: StoreItem[] = [
   version: 'Latest',
   fileSize: '—',
   driveFileId: '1bpCfELkIvYEQoobJMXhHV6jsf1VNQcvm',
+  demoUrl: 'https://sunrise-theme.myshopify.com/',
+
   tags: ['shopify', 'vibrant', 'retail'],
 },
 {
@@ -103,6 +147,7 @@ const SHOPIFY_THEMES: StoreItem[] = [
   version: 'Latest',
   fileSize: '—',
   driveFileId: '1C8_x34IRJk08QqolAEgpzde1n63jpEyH',
+  demoUrl: 'https://themes.shopify.com/themes/startup/presets/startup',
   tags: ['shopify', 'single-product', 'clean'],
 },
 {

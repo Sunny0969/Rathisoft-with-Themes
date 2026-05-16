@@ -1,23 +1,23 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Breadcrumbs } from '../components/Breadcrumbs'
-import { Seo } from '../components/Seo'
+import { Seo, SITE_ORIGIN } from '../components/Seo'
 import { TEAM_MEMBERS } from '../data/teamMembers'
 
-const ABOUT_META_TITLE = 'About RathiSoft | Software Development Agency — Lahore, Pakistan'
+const ABOUT_META_TITLE = 'About Us | Software Agency | RathiSoft'
 const ABOUT_META_DESCRIPTION =
-  'Meet the team behind RathiSoft — a software development agency in Lahore building scalable web, mobile, and digital solutions for businesses across Pakistan and worldwide.'
+  'Meet the team behind RathiSoft—web, mobile, Shopify, and marketing for clients in Pakistan and worldwide. Mission, values, and how we deliver.'
 
 const ABOUT_STRUCTURED_DATA = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
   name: 'About RathiSoft',
-  url: 'https://rathisoft.com/about',
+  url: `${SITE_ORIGIN}/about`,
   description:
-    'Learn about RathiSoft, a software development and digital marketing agency based in Lahore, Pakistan.',
+    'Meet RathiSoft—building web, mobile, Shopify, and marketing for Pakistan and global clients.',
   mainEntityOfPage: {
     '@type': 'WebPage',
-    '@id': 'https://rathisoft.com/about',
+    '@id': `${SITE_ORIGIN}/about`,
   },
 }
 
@@ -721,10 +721,11 @@ export function AboutUs() {
       <div className="hero">
         <div className="wrap">
           <div className="label">About Rathisoft</div>
-          <h1>About RathiSoft — Our Mission, Team &amp; Story</h1>
+          <h1>About Our Software Agency</h1>
           <p>
-            RathiSoft is a software agency in Lahore building scalable web, mobile, and digital
-            solutions for businesses across Pakistan and worldwide—with engineering discipline shaped by global clients.
+            RathiSoft helps founders and operators ship web, mobile, and growth work with clear
+            scopes and engineers who stay reachable after launch—clients in Pakistan, the UK, UAE,
+            and beyond.
           </p>
         </div>
       </div>
@@ -760,15 +761,21 @@ export function AboutUs() {
         <div className="about-layout">
           <div className="about-card">
             <img
-              src="/images/logo/simpleR.webp"
-              alt="RathiSoft"
+              src="/logo/simpleR.webp"
+              alt="RathiSoft logo"
               className="about-rs-logo"
               width={100}
               height={100}
               decoding="async"
+              onError={(e) => {
+                const img = e.currentTarget
+                if (img.src.endsWith('/logo-rs-simple.svg')) return
+                img.onerror = null
+                img.src = '/logo-rs-simple.svg'
+              }}
             />
             <div className="av-name">Rathisoft</div>
-            <div className="av-role">Technology Partner · Lahore</div>
+            <div className="av-role">Technology Partner</div>
             <div className="badges">
               <div className="badge">Client-first mindset</div>
               <div className="badge">Agile & transparent process</div>
@@ -782,15 +789,16 @@ export function AboutUs() {
           <div className="body-text">
             <h2>Who We Are</h2>
             <p>
-              As a software agency in Lahore, <strong>RathiSoft</strong> is more than a vendor—we are a technology partner translating leadership intent into measurable releases:
-              cloud-ready architectures, conversion-aware UX, and accountable growth programmes for founders who demand clarity.
+              <strong>RathiSoft</strong> is a software agency—not a ticket farm. We translate
+              your goals into shipped releases: fast storefronts, maintainable web apps, and growth
+              campaigns you can measure.
             </p>
             <p>
-              Founded with a vision to empower businesses through innovation,
-              Rathisoft specializes in building <strong>scalable</strong>,{' '}
-              <strong>high-performance</strong>, and{' '}
-              <strong>user-centric</strong> software products that drive growth
-              in an increasingly digital world.
+              We build <strong>scalable</strong>, <strong>high-performance</strong>, and{' '}
+              <strong>user-centric</strong> products for founders who want a partner that answers
+              on WhatsApp and stays after launch. Explore our{' '}
+              <Link to="/services">service list</Link> or recent{' '}
+              <Link to="/work">portfolio work</Link>.
             </p>
             <p>
               Our approach combines <strong>modern technologies</strong>,{' '}
@@ -851,7 +859,7 @@ export function AboutUs() {
             </div>
 
             <div className="section-block">
-              <h2>Our Vision &amp; Mission</h2>
+              <h2>Vision &amp; Mission</h2>
               <div className="mv-grid">
                 <div className="mv-card">
                   <div className="mv-k">Mission</div>
@@ -993,7 +1001,7 @@ export function AboutUs() {
             </div>
 
             <div className="section-block">
-              <h2>Why Work With Us</h2>
+              <h2>Why Partner With RathiSoft</h2>
               <div className="feature-grid">
                 <div className="fcard">
                   <div className="f-title">Performance-Obsessed</div>

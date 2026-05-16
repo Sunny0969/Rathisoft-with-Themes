@@ -661,8 +661,8 @@ export function Packages() {
         ]}
       />
       <Seo
-        title="Pricing & Packages | WordPress & Shopify | RathiSoft"
-        description="Transparent pricing for WordPress, Shopify, SEO, and digital marketing packages from RathiSoft — Lahore-based agency serving clients worldwide."
+        title="WordPress & Shopify Packages | Pricing | RathiSoft"
+        description="Clear WordPress, Shopify, SEO, and marketing packages from RathiSoft—what is included, timelines, and support. Compare tiers, then contact us."
       />
       <style>{PACKAGES_STYLES}</style>
 
@@ -670,13 +670,15 @@ export function Packages() {
         <div className="wrap">
           <div className="label">Pricing</div>
           <h1>
-            Simple packages.
+            Simple Packages
             <br />
-            No surprises.
+            With Clear Scope
           </h1>
           <p>
-            RathiSoft is a software agency in Lahore offering transparent retainers—each bundle lists design,
-            engineering, QA, analytics setup, and post-launch care so procurement teams avoid surprise invoices mid-flight.
+            Each bundle lists design, build, QA, analytics setup, and post-launch care—so you know
+            what you are buying before we start. Not sure which tier fits?{' '}
+            <Link to="/services">See all services</Link> or{' '}
+            <Link to="/contact">ask for a custom quote</Link>.
           </p>
         </div>
       </div>

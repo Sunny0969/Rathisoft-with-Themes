@@ -465,8 +465,8 @@ export default function ServicesPage() {
   return (
     <>
       <Seo
-        title="Web Development & Digital Marketing Services in Lahore | RathiSoft"
-        description="Explore RathiSoft's full range of services: WordPress development, Shopify development, SEO, web design, and digital marketing. Based in Lahore, serving clients globally."
+        title="Web Development, SEO & Apps | Services | RathiSoft"
+        description="Web development, Shopify & WordPress, SEO, PPC, and apps from one team with a clear process. See services, then request a free project quote."
       />
       <script
         type="application/ld+json"
@@ -484,13 +484,14 @@ export default function ServicesPage() {
         <div className="rs-wrap">
           <div className="rs-label">What We Do</div>
           <h1>
-            10 services.<br />
-            <span>One team.</span>
+            Web &amp; Digital Services<br />
+            <span>From One Team</span>
           </h1>
           <p>
-            RathiSoft is a software agency in Lahore that bundles discovery, UX design, full-stack
-            engineering, analytics instrumentation, and always-on optimisation for founders who want one
-            accountable partner—from polished WordPress and Shopify storefronts to multilingual SaaS and AI-assisted workflows trusted worldwide.
+            RathiSoft covers discovery, design, engineering, and
+            ongoing marketing—so you are not juggling five freelancers. Explore each service below,
+            then view our <Link to="/work">portfolio</Link> or{' '}
+            <Link to="/contact">book a free consultation</Link> when you are ready.
           </p>
           <div className="hero-stats">
             <div className="hs"><span className="hs-num">10+</span><span className="hs-label">Services Offered</span></div>
@@ -507,9 +508,12 @@ export default function ServicesPage() {
           <div className="svc-intro">
             <div className="rs-label">Our Services</div>
             <h2 className="svc-intro">
-              Everything your<br />business needs online.
+              Services That Cover<br />Your Full Online Stack
             </h2>
-            <p>Click any service to see detailed information, process, and past work — all under one roof.</p>
+            <p>
+              Open a card for scope, deliverables, and how we run the work—web, stores, apps, and
+              growth under one roof.
+            </p>
           </div>
 
           <div className="svc-grid">
@@ -545,8 +549,11 @@ export default function ServicesPage() {
       <section className="process-section">
         <div className="rs-wrap">
           <div className="rs-label">How We Work</div>
-          <h2>Simple process.<br />Consistent results.</h2>
-          <p>Every project follows a clear, proven workflow — so you always know what's happening next.</p>
+          <h2>How We Deliver<br />Every Project</h2>
+          <p>
+            A fixed six-step flow so you always know what is happening—no surprise phases or vague
+            timelines.
+          </p>
 
           <div className="process-grid">
             {PROCESS.map((p) => (
@@ -564,8 +571,11 @@ export default function ServicesPage() {
       <section className="why-section">
         <div className="rs-wrap">
           <div className="rs-label">Why Choose Us</div>
-          <h2>Built on proof,<br />not promises.</h2>
-          <p>Every claim is backed by real client work, clean code, and 5+ years of consistent delivery.</p>
+          <h2>Why Clients<br />Choose RathiSoft</h2>
+          <p>
+            Five years of shipped work, documented scopes, and support after launch—see{' '}
+            <Link to="/work">case studies from our portfolio</Link>.
+          </p>
 
           <div className="why-grid">
             {WHY_CARDS.map((w) => (
@@ -610,47 +620,67 @@ export default function ServicesPage() {
 
       <OnPageSeoSection
         sectionId="services-on-page-seo"
-        heading={`How RathiSoft's Lahore software teams scope engagements end-to-end`}
+        heading="How we scope web and marketing work"
         lead={
           <>
             <p>
-              Choosing a software agency in Lahore is rarely about hourly spreadsheets—it is about
-              assembling architects who translate fuzzy objectives into measurable KPIs. RathiSoft&apos;s pods combine technical SEO engineers,
-              paid-media analysts, motion editors, and product-minded developers who rehearse risks early instead of discovering blockers after invoices pile up.
+              Picking a software agency is less about hourly rates and more about whether
+              one team can own design, build, and growth without dropping handoffs. We run discovery,
+              written scopes, staging reviews, and launch checklists so you know what &quot;done&quot; means
+              before work starts.
             </p>
             <p>
-              Our Lahore delivery hub stays timezone-friendly for Pakistan and Gulf brands while matching UK and North American cadences through overlap windows,
-              shared Notion roadmaps, and recorded walkthroughs. Every statement of work enumerates environments, QA cycles, regression expectations, and what &quot;done&quot;
-              means for marketing automation, ERP touches, or custom storefront logic—eliminating surprise phases that derail boutique engagements.
+              We overlap with UK and Gulf hours when needed, share roadmaps in Notion, and record
+              walkthroughs for stakeholders who cannot join every call. Store, app, or marketing
+              engagements all follow the same clarity standard—see{' '}
+              <Link to="/packages">package pricing</Link> if you want a fixed bundle first.
             </p>
           </>
         }
         links={[
-          { to: "/about", label: "Understand our mission-led Lahore software culture" },
-          { to: "/work", label: "Inspect verified Lahore-led deliveries across industries" },
+          { to: "/about", label: "Understand our mission and delivery culture" },
+          { to: "/work", label: "Inspect verified deliveries across industries" },
           { to: "/packages", label: "Compare sprint-ready pricing bundles before contracting" },
           { to: "/contact", label: "Schedule a roadmap workshop with senior practitioners" },
         ]}
       >
         <p>
-          Keyword stuffing fails audiences faster than outdated frameworks, so we weave latent semantic themes—progressive enhancement,
-          structured snippets for FAQs and articles, accessibility conformance (WCAG-minded QA), fraud-conscious Shopify integrations,
-          consent-aware tagging stacks—directly into build specifications. That discipline keeps editorial, engineering, and media teams aligned when leadership asks for attribution clarity.
+          We bake in accessible markup, structured data where it helps search, and careful{' '}
+          <a href="https://www.shopify.com/partners/blog" target="_blank" rel="noopener noreferrer">
+            Shopify
+          </a>{' '}
+          /{' '}
+          <a href="https://wordpress.org/documentation/" target="_blank" rel="noopener noreferrer">
+            WordPress
+          </a>{' '}
+          integrations so marketing and engineering stay aligned when leadership asks for numbers.
         </p>
         <p>
-          Retainers inherit versioned dependency policies, uptime expectations for commerce workloads, and change-management etiquette every stakeholder signs during onboarding.
-          That mirrors recommendations surfaced publicly inside authoritative guides such as Google’s Starter Guide and web.dev’s performance canon cited below—proof points stakeholders recognise instantly during procurement reviews.
+          Retainers include update policies and uptime expectations for live stores—aligned with
+          public guidance such as{' '}
+          <a
+            href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Google&apos;s SEO Starter Guide
+          </a>{' '}
+          and performance baselines on web.dev.
         </p>
         <p>
-          Whether you need Laravel tooling beside Shopify Hydrogen experiments or multilingual brochure sites synced with CRM schemas,
-          ask how prospective vendors differentiate experimentation lanes from production governance—the gap reveals mature Lahore software agencies from staffing brokers peddling resumes alone.
+          Not sure which lane fits? Start on our <Link to="/about">about page</Link> for how we
+          hire and mentor the people on your account, then message us from{' '}
+          <Link to="/contact">contact</Link> with your timeline.
         </p>
       </OnPageSeoSection>
 
       {/* ── CTA ── */}
       <div className="cta-section">
-        <h2>Ready to start<br />your project?</h2>
-        <p>Get a free consultation — no commitment. We'll discuss your goals and recommend the right services for your business.</p>
+        <h2>Ready to Scope<br />Your Project?</h2>
+        <p>
+          Book a free call—we will map goals to the right mix of{' '}
+          <Link to="/services/web-development">web</Link>, store, or marketing work. No obligation.
+        </p>
         <div className="cta-btns">
           <Link to="/contact" className="btn-p">Get a free quote →</Link>
           <a href="https://wa.me/923342651544" target="_blank" rel="noopener noreferrer" className="btn-g">

@@ -11,10 +11,14 @@
   RewriteEngine On
   RewriteBase /
 
-  # 301: all HTTP → HTTPS, and www → apex https://rathisoft.com
-  RewriteCond %{HTTPS} off [OR]
+  # 301: apex → www (never redirect www away)
+  RewriteCond %{HTTP_HOST} ^rathisoft\.com$ [NC]
+  RewriteRule ^ https://www.rathisoft.com%{REQUEST_URI} [R=301,L,QSA]
+
+  # 301: HTTP on www → HTTPS www
+  RewriteCond %{HTTPS} off
   RewriteCond %{HTTP_HOST} ^www\.rathisoft\.com$ [NC]
-  RewriteRule ^ https://rathisoft.com%{REQUEST_URI} [R=301,L,QSA]
+  RewriteRule ^ https://www.rathisoft.com%{REQUEST_URI} [R=301,L,QSA]
 
   # Paths only: drop trailing slash except site root (matches canonical URLs)
   RewriteCond %{REQUEST_FILENAME} !-f

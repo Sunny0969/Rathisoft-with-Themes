@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { HeroVideo } from '../components/HeroVideo'
 import { OnPageSeoSection } from '../components/OnPageSeoSection'
-import { Seo } from '../components/Seo'
+import { Seo, SITE_ORIGIN } from '../components/Seo'
 import {
   SITE_TESTIMONIALS,
   buildOrganizationReviewProperties,
@@ -52,24 +52,24 @@ const SERVICE_IMAGES = {
 } as const
 
 const SERVICES = [
-  { icon: '💻', title: 'Web Development', desc: 'Fast, responsive, conversion-optimized websites.', tags: ['UI/UX', 'React'], img: SERVICE_IMAGES.web },
-  { icon: '🔍', title: 'SEO Optimization', desc: 'Rank higher on Google with proven SEO strategy.', tags: ['On-Page', 'Technical'], img: SERVICE_IMAGES.seo },
-  { icon: '📲', title: 'App Development', desc: 'Custom mobile apps for iOS and Android.', tags: ['iOS', 'Android'], img: SERVICE_IMAGES.app },
-  { icon: '🛒', title: 'WordPress & Shopify', desc: 'Stores that look great and convert visitors to buyers.', tags: ['WordPress', 'Shopify'], img: SERVICE_IMAGES.wpShopify },
-  { icon: '🎬', title: 'Video Editing', desc: 'Reels, ads, and clips that stop the scroll.', tags: ['Reels', 'Ads'], img: SERVICE_IMAGES.video },
-  { icon: '📱', title: 'Social Media Marketing', desc: 'Done-for-you monthly content across all platforms.', tags: ['Instagram', 'Facebook'], img: SERVICE_IMAGES.social },
-  { icon: '✍️', title: 'Content Marketing', desc: 'Strategic content that attracts and converts.', tags: ['Blogs', 'Copywriting'], img: SERVICE_IMAGES.content },
-  { icon: '🎯', title: 'PPC Advertising', desc: 'High-converting paid campaigns on Google & Meta.', tags: ['Google Ads', 'Meta Ads'], img: SERVICE_IMAGES.ppc },
-  { icon: '🎨', title: 'Branding and UI/UX Design', desc: 'Logos, brand kits, and visual identity that impress.', tags: ['UI/UX', 'Brand Kit'], img: SERVICE_IMAGES.branding },
+  { icon: '💻', title: 'Web Development', desc: 'Fast, responsive sites built to turn visitors into leads.', tags: ['UI/UX', 'React'], img: SERVICE_IMAGES.web, href: '/services/web-development' },
+  { icon: '🔍', title: 'SEO Optimization', desc: 'Technical and on-page SEO so the right customers find you on Google.', tags: ['On-Page', 'Technical'], img: SERVICE_IMAGES.seo, href: '/services/seo-optimization' },
+  { icon: '📲', title: 'App Development', desc: 'Custom mobile apps for iOS and Android that feel fast and reliable.', tags: ['iOS', 'Android'], img: SERVICE_IMAGES.app, href: '/services/app-development' },
+  { icon: '🛒', title: 'WordPress & Shopify', desc: 'Commerce stores that look sharp and guide buyers to checkout.', tags: ['WordPress', 'Shopify'], img: SERVICE_IMAGES.wpShopify, href: '/services/wordpress-shopify' },
+  { icon: '🎬', title: 'Video Editing', desc: 'Reels, ads, and short clips edited for attention and clarity.', tags: ['Reels', 'Ads'], img: SERVICE_IMAGES.video, href: '/services/video-editing' },
+  { icon: '📱', title: 'Social Media Marketing', desc: 'Monthly content and posting so your brand stays visible.', tags: ['Instagram', 'Facebook'], img: SERVICE_IMAGES.social, href: '/services/social-media-marketing' },
+  { icon: '✍️', title: 'Content Marketing', desc: 'Blogs and copy that bring traffic and support sales.', tags: ['Blogs', 'Copywriting'], img: SERVICE_IMAGES.content, href: '/services/content-marketing' },
+  { icon: '🎯', title: 'PPC Advertising', desc: 'Paid search and social campaigns tuned for measurable ROI.', tags: ['Google Ads', 'Meta Ads'], img: SERVICE_IMAGES.ppc, href: '/services/ppc-advertising' },
+  { icon: '🎨', title: 'Branding and UI/UX Design', desc: 'Logos, layouts, and brand systems that look credible on every screen.', tags: ['UI/UX', 'Brand Kit'], img: SERVICE_IMAGES.branding, href: '/services/branding-design' },
 
   // New technologies / services
-  { icon: '🤖', title: 'Generative AI', desc: 'AI features that automate, personalize, and accelerate workflows.', tags: ['LLMs', 'Automation'], img: SERVICE_IMAGES.genAi },
-  { icon: '🏢', title: 'Dynamics 365 ERP', desc: 'Modern ERP implementation & customization for streamlined operations.', tags: ['ERP', 'Microsoft'], img: SERVICE_IMAGES.dynamicsErp },
-  { icon: '🛡️', title: 'Cybersecurity', desc: 'Security-first builds, audits, and hardening for your digital assets.', tags: ['Security', 'Compliance'], img: SERVICE_IMAGES.cyber },
-  { icon: '🎮', title: 'Game Development', desc: 'Engaging game experiences with smooth performance and polish.', tags: ['Unity', '2D/3D'], img: SERVICE_IMAGES.gameDev },
-  { icon: '📦', title: 'SaaS Products', desc: 'Build and scale SaaS apps with clean UX and reliable architecture.', tags: ['SaaS', 'Scalable'], img: SERVICE_IMAGES.saas },
-  { icon: '🧰', title: 'Maintenance & Support', desc: 'Ongoing updates, monitoring, and improvements post-launch.', tags: ['Support', 'Updates'], img: SERVICE_IMAGES.support },
-  { icon: '⚙️', title: 'Automation & Apps', desc: 'Automate repetitive work with smart tools and custom internal apps.', tags: ['Automation', 'Integrations'], img: SERVICE_IMAGES.automation },
+  { icon: '🤖', title: 'Generative AI', desc: 'Practical AI features that save time on support, content, and ops.', tags: ['LLMs', 'Automation'], img: SERVICE_IMAGES.genAi, href: '/services' },
+  { icon: '🏢', title: 'Dynamics 365 ERP', desc: 'ERP setup and tweaks so finance and ops teams work from one source of truth.', tags: ['ERP', 'Microsoft'], img: SERVICE_IMAGES.dynamicsErp, href: '/services' },
+  { icon: '🛡️', title: 'Cybersecurity', desc: 'Hardening, reviews, and secure-by-default builds for live products.', tags: ['Security', 'Compliance'], img: SERVICE_IMAGES.cyber, href: '/services' },
+  { icon: '🎮', title: 'Game Development', desc: 'Game builds with stable performance and polished player flows.', tags: ['Unity', '2D/3D'], img: SERVICE_IMAGES.gameDev, href: '/services' },
+  { icon: '📦', title: 'SaaS Products', desc: 'SaaS products with clear UX and architecture you can extend later.', tags: ['SaaS', 'Scalable'], img: SERVICE_IMAGES.saas, href: '/services' },
+  { icon: '🧰', title: 'Maintenance & Support', desc: 'Updates, fixes, and monitoring after go-live so nothing drifts.', tags: ['Support', 'Updates'], img: SERVICE_IMAGES.support, href: '/contact' },
+  { icon: '⚙️', title: 'Automation & Apps', desc: 'Internal tools and automations that cut manual work across teams.', tags: ['Automation', 'Integrations'], img: SERVICE_IMAGES.automation, href: '/services' },
 ] as const
 
 const TRUST_CARDS = [
@@ -83,9 +83,9 @@ const TRUST_CARDS = [
 
 const WA = 'https://wa.me/923342651544'
 
-const HOME_META_TITLE = 'RathiSoft — Software Agency in Lahore | Web & Digital Solutions'
+const HOME_META_TITLE = 'Software Agency | Web, Apps & Growth | RathiSoft'
 const HOME_META_DESCRIPTION =
-  'RathiSoft is a premier software agency in Lahore, Pakistan. We build custom web apps, mobile solutions, WordPress/Shopify stores, and deliver ROI-driven digital marketing. Get a free quote today.'
+  'Custom web apps, Shopify & WordPress stores, and digital marketing that grows revenue. Free project quote from RathiSoft—most replies within one business day.'
 const HOME_KEYWORDS =
   'software agency Lahore, software development company Pakistan, web development Lahore, digital marketing agency Pakistan, IT company Lahore'
 
@@ -95,10 +95,10 @@ const HOME_STRUCTURED_DATA = {
     {
       '@type': 'Organization',
       name: 'RathiSoft',
-      url: 'https://rathisoft.com',
-      logo: 'https://rathisoft.com/assets/logo.png',
+      url: SITE_ORIGIN,
+      logo: `${SITE_ORIGIN}/assets/logo.png`,
       description:
-        'RathiSoft is a software development and digital marketing agency based in Lahore, Pakistan, serving clients globally.',
+        'Software agency for web apps, Shopify and WordPress stores, and digital marketing that grows revenue—serving clients in Pakistan and worldwide.',
       foundingDate: '2020',
       address: {
         '@type': 'PostalAddress',
@@ -135,12 +135,12 @@ const HOME_STRUCTURED_DATA = {
     {
       '@type': 'WebSite',
       name: 'RathiSoft',
-      url: 'https://rathisoft.com',
+      url: SITE_ORIGIN,
       potentialAction: {
         '@type': 'SearchAction',
         target: {
           '@type': 'EntryPoint',
-          urlTemplate: 'https://rathisoft.com/search?q={search_term_string}',
+          urlTemplate: `${SITE_ORIGIN}/search?q={search_term_string}`,
         },
         'query-input': 'required name=search_term_string',
       },
@@ -563,20 +563,21 @@ export function Home() {
               Scale Your Brand · High-Performance Web · Global Reach
             </div>
             <h1 id="hero-heading" className="hero-h">
-              Trusted Software Agency — <br></br>Built for Results
+              Web, Apps &amp; Growth <br></br>Built to Perform
             </h1>
             <p className="hero-p">
-              RathiSoft is a software agency in Lahore, Pakistan, delivering custom web apps,
-              mobile solutions, WordPress and Shopify commerce builds, and ROI-led digital
-              marketing for teams that want clarity, speed, and measurable outcomes—trusted by
-              clients worldwide from our Lahore studio.
+              RathiSoft helps business owners ship custom web apps, mobile
+              builds, and{' '}
+              <Link to="/services/wordpress-shopify">WordPress and Shopify stores</Link> that
+              load fast—plus digital marketing tied to leads and sales, not vanity metrics. One
+              team, clear milestones, and a direct line to the people doing the work.
             </p>
             <div className="hero-btns">
               <a href="#contact" className="btn-primary">
-                Start your project →
+                Get a free project quote →
               </a>
-              <Link to="/work" className="btn-ghost">
-                View our work
+              <Link to="/services" className="btn-ghost">
+                Explore our services
               </Link>
             </div>
             <div className="hero-trust">
@@ -647,9 +648,9 @@ export function Home() {
             <div className="prob-layout">
               <div className="prob-left">
                 <div className="home-label">The Problem</div>
-                <h2>Custom Software Development in Lahore</h2>
+                <h2>When Your Website Costs You Sales</h2>
                 <p className="home-lead prob-lead">
-                  Your business deserves better than a broken website.
+                  Your business deserves more than a slow site and a checkout that breaks.
                 </p>
               </div>
               <div className="prob-right">
@@ -663,24 +664,25 @@ export function Home() {
                   </p>
                   <p>
                     <span className="prob-hl">
-                      Slow sites. Broken checkouts. Generic templates. Invisible
-                      on Google. Lost sales.
+                      Slow sites. Broken checkouts. Generic templates. Poor visibility in{' '}
+                      <a
+                        href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="home-inline-link"
+                      >
+                        Google search
+                      </a>
+                      . Lost sales.
                     </span>
                   </p>
                   <p>
-                    Rathisoft fixes that.{' '}
-                    <a
-                      href="https://www.linkedin.com/in/suneelpirkash"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="home-inline-link"
-                    >
-                      Suneel Pirkash
-                    </a>{' '}
-                    becomes your <strong>dedicated development partner</strong> —
-                    building, optimizing, and maintaining your WordPress or
-                    Shopify presence so your business grows without the
-                    headaches.
+                    RathiSoft fixes that. We act as your{' '}
+                    <strong>dedicated development partner</strong>—building, tuning, and
+                    maintaining your{' '}
+                    <Link to="/services/wordpress-shopify">WordPress or Shopify</Link> stack so
+                    you can focus on customers. Need proof first? Browse our{' '}
+                    <Link to="/work">portfolio of shipped projects</Link>.
                   </p>
                 </div>
               </div>
@@ -692,16 +694,17 @@ export function Home() {
           <div className="home-wrap">
             <div className="home-section-head">
               <div className="home-label">What We Do</div>
-              <h2>Web &amp; Mobile App Development</h2>
+              <h2>Web &amp; Mobile Builds That Ship on Time</h2>
               <p className="home-lead">
-                Full-stack digital builds — responsive websites, plugins,
-                integrations, and mobile-ready experiences — delivered with clean
-                code and measurable performance.
+                From marketing sites to{' '}
+                <Link to="/services/web-development">custom web development</Link> and{' '}
+                <Link to="/services/app-development">mobile apps</Link>, we deliver responsive
+                layouts, solid integrations, and code your team can maintain.
               </p>
-              <h2 className="home-h2-follow">Digital Marketing That Drives Real Revenue</h2>
+              <h2 className="home-h2-follow">Digital Marketing Built for Revenue</h2>
               <p className="home-lead">
-                SEO, PPC, social, and content that turns traffic into leads and
-                sales — aligned with your goals and tuned for ROI.
+                <Link to="/services/seo-optimization">SEO</Link>, paid ads, social, and content
+                aimed at leads and sales—scoped to your budget and reported in plain language.
               </p>
             </div>
             <div className="svc-grid">
@@ -713,7 +716,9 @@ export function Home() {
                     </Link>
                   </div>
                   <div className="svc-body">
-                    <h3>{s.title}</h3>
+                    <h3>
+                      <Link to={s.href}>{s.title}</Link>
+                    </h3>
                     <p>{s.desc}</p>
                     <div className="svc-tags" aria-label="Service tags">
                       {s.tags.map((t) => (
@@ -744,10 +749,10 @@ export function Home() {
           <div className="home-wrap">
             <div className="home-section-head">
               <div className="home-label">Why Trust Us</div>
-              <h2>Why Businesses Choose RathiSoft</h2>
+              <h2>Why Teams Stick With RathiSoft</h2>
               <p className="home-lead">
-                Every claim is backed by real client work, clean code, and years
-                of consistent delivery — proof over promises.
+                Real launches, clean handoffs, and support after go-live—see the{' '}
+                <Link to="/about">story behind our studio</Link> and how we work.
               </p>
             </div>
             <div className="tc-grid">
@@ -786,9 +791,10 @@ export function Home() {
           <div className="home-wrap">
             <div className="home-section-head">
               <div className="home-label">Reviews</div>
-              <h2>Our Work Speaks for Itself</h2>
+              <h2>What Clients Say After Launch</h2>
               <p className="home-lead">
-                Verified feedback from clients — WordPress, Shopify, apps, and more.
+                Honest feedback from teams we&apos;ve helped on WordPress, Shopify, apps, and
+                marketing—names and roles included where clients allowed.
               </p>
             </div>
             <div
@@ -829,22 +835,23 @@ export function Home() {
           theme="boxed"
           eyebrow="About how we work"
           sectionId="home-on-page-seo"
-          heading="Lahore-based builds — websites, Shopify & WordPress, and marketing that converts"
+          heading="Builds for websites, Shopify, WordPress, and growth"
           lead={
             <>
               <p>
-                <strong>RathiSoft</strong> is a software agency in <strong>Johar Town, Lahore</strong>.
-                We design and ship responsive websites, WordPress and Shopify stores, mobile-friendly
-                experiences, and ongoing SEO and paid social support for founders and teams in
-                Pakistan and overseas. You get clear milestones, staging links before go-live, and
-                direct WhatsApp access — not endless ticket queues.
+                <strong>RathiSoft</strong> works from <strong>Johar Town, Lahore</strong>, shipping
+                responsive sites, commerce stores, and marketing that ties to revenue. You get
+                staging before launch, written scopes, and WhatsApp access to the builders—not a
+                faceless ticket queue.
               </p>
               <p>
-                Typical projects include branding-led landing pages, WooCommerce or Shopify
-                checkouts, speed and Core Web Vitals improvements, and integrations with tools you
-                already use (analytics, forms, CRMs). Whether you are launching something new or
-                fixing a slow or broken site, we scope work upfront so budgets and timelines stay
-                understandable.
+                Typical work covers landing pages, WooCommerce or Shopify checkout fixes, speed
+                passes aligned with{' '}
+                <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer">
+                  Core Web Vitals
+                </a>
+                , and hooks into analytics and CRMs you already use. New launch or rescue project—we
+                quote timelines upfront.
               </p>
             </>
           }
@@ -868,11 +875,13 @@ export function Home() {
           ]}
         >
           <p>
-            Quality matters more than buzzwords: semantic HTML where it helps SEO, responsive
-            layouts, accessible controls, and performance-conscious assets so pages stay fast on
-            phones and desktops. When it fits your roadmap we also build or wire APIs, React
-            front-ends, WooCommerce automation, and email flows — always tied to outcomes you can
-            measure (leads, sales, sign-ups), not vanity metrics alone.
+            We care about semantic HTML, responsive layouts, and assets that stay light on mobile.
+            When it fits, we wire APIs,{' '}
+            <a href="https://react.dev" target="_blank" rel="noopener noreferrer">
+              React
+            </a>{' '}
+            front-ends, WooCommerce automation, and email flows—always tied to leads, sales, or
+            sign-ups you can track.
           </p>
           <p>
             Before you hire anyone, ask how they handle hosting, backups, updates after launch, and
@@ -888,17 +897,18 @@ export function Home() {
         </OnPageSeoSection>
 
         <div className="fcta" id="contact">
-          <h2>Trusted by Clients Across Pakistan &amp; Globally</h2>
+          <h2>Ready to Fix Your Site or Store?</h2>
           <p className="fcta-sub">
-            Stop losing leads to a weak site — your competitors are online and
-            growing. Don&apos;t get left behind.
+            Tell us what you&apos;re selling and what&apos;s broken—we&apos;ll reply with next
+            steps, not a generic pitch deck.
           </p>
 
           <div className="fcta-row">
             <div className="ct-card">
-              <h3 className="ct-card-title">Get in touch.</h3>
+              <h3 className="ct-card-title">Talk to us today</h3>
               <p className="ct-card-lead">
-                Reach out via WhatsApp, email, or fill the form — no pressure.
+                WhatsApp, email, or the form—share your scope and we&apos;ll respond within one
+                business day.
               </p>
               <div className="ct-item">
                 <div className="ct-icon">📧</div>

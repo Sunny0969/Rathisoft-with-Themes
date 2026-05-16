@@ -165,8 +165,8 @@ const TeamSection: React.FC = () => {
         ]}
       />
       <Seo
-        title="Our Team | RathiSoft | Lahore"
-        description="Meet the RathiSoft team — WordPress, Shopify, design, and digital marketing experts helping businesses grow online from Lahore, Pakistan."
+        title="Our Team | Developers & Designers | RathiSoft"
+        description="Meet the RathiSoft team—developers, designers, and marketers on WordPress, Shopify, SEO, and web builds for clients in Pakistan and abroad."
       />
       {/* Header */}
       <div className="section-header">
@@ -175,7 +175,9 @@ const TeamSection: React.FC = () => {
           Meet the <span className="highlight">Team</span>
         </h1>
         <p className="section-subtitle">
-          Meet the specialists powering RathiSoft, a software agency in Lahore pairing engineering depth with growth craft—building tomorrow&apos;s products with transparent collaboration rituals today.
+          Developers, designers, and marketers who ship WordPress, Shopify, web, and growth work—with
+          the same people you meet here on your project. Learn how we operate on the{' '}
+          <Link to="/about">about page</Link>.
         </p>
       </div>
 
@@ -236,26 +238,38 @@ const TeamSection: React.FC = () => {
 
     <OnPageSeoSection
       sectionId="team-on-page-seo"
-      heading="Why multidisciplinary pods define leading Lahore software agencies"
+      heading="The people behind our delivery"
       lead={
         <>
           <p>
-            Modern programmes rarely succeed when siloed freelancers trade files asynchronously—which is why RathiSoft staffs pods spanning strategy, engineering, brand, and performance media inside one software agency in Lahore accountable to shared retrospectives and throughput metrics leadership reviews weekly.
+            Projects run better when strategy, engineering, and marketing sit in one agency—not
+            three freelancers emailing files. The roles you see here are the
+            people named in your proposal.
           </p>
           <p>
-            Visitors browsing talent bios here should correlate titles with responsibilities surfaced inside proposals—no bait-and-switch staffing models—because continuity protects knowledge transfer when launches intensify near fiscal closes or seasonal commerce peaks.
+            Continuity matters on commerce launches and SEO retainers. We keep the same leads when
+            possible so context is not lost mid-sprint—see{' '}
+            <Link to="/work">shipped work</Link> from these disciplines.
           </p>
         </>
       }
       links={[
-        { to: "/about", label: "Read how Lahore leadership hires and mentors these specialists" },
+        { to: "/about", label: "Read how our leadership hires and mentors these specialists" },
         { to: "/services", label: "See service lanes each discipline reinforces during delivery" },
         { to: "/work", label: "Study engagements proving cross-functional throughput under NDAs" },
         { to: "/contact", label: "Request curated pod rotations tailored to procurement policies" },
       ]}
     >
       <p>
-        Teams referencing Google Search Essentials during SEO workshops or Core Web Vitals baselines during engineering reviews demonstrate why credible agencies cite external authorities openly—it reassures stakeholders unfamiliar with Lahore vendors that diligence mirrors Silicon Valley procurement norms.
+        We reference public standards such as{' '}
+        <a href="https://developers.google.com/search/docs/essentials" target="_blank" rel="noopener noreferrer">
+          Google Search Essentials
+        </a>{' '}
+        and{' '}
+        <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer">
+          Core Web Vitals
+        </a>{' '}
+        in reviews so stakeholders know how we benchmark quality.
       </p>
     </OnPageSeoSection>
     </>

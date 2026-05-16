@@ -4,4 +4,4 @@ Allow: /
 User-agent: GPTBot
 Disallow: /
 
-Sitemap: https://rathisoft.com/sitemap.xml
+Sitemap: https://www.rathisoft.com/sitemap.xml

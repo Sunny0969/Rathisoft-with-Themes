@@ -96,6 +96,76 @@ const buildDownloadUrl = (fileId: string): string =>
 const buildDriveViewUrl = (fileId: string): string =>
   `https://drive.google.com/file/d/${fileId}/view?usp=sharing`;
 
+const demoWarmOrigins = new Set<string>();
+
+/** DNS + TCP warm-up before click — call on hover/focus and when modal opens. */
+function warmDemoUrlConnection(rawUrl: string): void {
+  if (typeof document === 'undefined') return;
+  try {
+    const url = new URL(rawUrl.trim(), window.location.href);
+    if (!url.protocol.startsWith('http')) return;
+    const origin = url.origin;
+    if (demoWarmOrigins.has(origin)) return;
+    demoWarmOrigins.add(origin);
+
+    const dns = document.createElement('link');
+    dns.rel = 'dns-prefetch';
+    dns.href = origin;
+
+    const pre = document.createElement('link');
+    pre.rel = 'preconnect';
+    pre.href = origin;
+
+    document.head.appendChild(dns);
+    document.head.appendChild(pre);
+
+    if (/\.youtube\.com$|youtube-nocookie\.com$/i.test(url.hostname)) {
+      const yt = [
+        'https://www.youtube.com',
+        'https://www.youtube-nocookie.com',
+        'https://i.ytimg.com',
+      ];
+      for (const y of yt) {
+        if (demoWarmOrigins.has(y)) continue;
+        demoWarmOrigins.add(y);
+        const l = document.createElement('link');
+        l.rel = 'preconnect';
+        l.href = y;
+        document.head.appendChild(l);
+      }
+    }
+  } catch {
+    /* invalid demo URL */
+  }
+}
+
+/**
+ * Theme Store preview pages don't embed reliably on external sites.
+ * Official listing demos usually live on `{handle}-theme.myshopify.com` (embed-friendly like Turbo).
+ */
+function normalizeShopifyDemoIframeUrl(raw: string): string {
+  const trimmed = raw.trim();
+  try {
+    const u = new URL(trimmed);
+    if (u.hostname.toLowerCase() !== 'themes.shopify.com') return trimmed;
+    const m = u.pathname.match(/^\/themes\/([^/]+)/i);
+    if (!m?.[1]) return trimmed;
+    return `https://${m[1].toLowerCase()}-theme.myshopify.com/`;
+  } catch {
+    return trimmed;
+  }
+}
+
+/** Many third-party demos use *-demo.myshopify.com — Shopify blocks those in cross-site iframes. */
+function shopifyVendorDemoBlocksIframe(url: string): boolean {
+  try {
+    const h = new URL(url).hostname.toLowerCase();
+    return h.endsWith('-demo.myshopify.com');
+  } catch {
+    return false;
+  }
+}
+
 // ── ICONS ──────────────────────────────────────────────────────────
 const SearchIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -142,12 +212,193 @@ const Toast: React.FC<ToastProps> = ({ message, onHide }) => {
   );
 };
 
-// ── CARD COMPONENT ─────────────────────────────────────────────────
-interface CardProps { item: StoreItem; delay: number; }
+type LiveDemoPayload = { title: string; url: string | undefined };
 
-const ItemCard: React.FC<CardProps> = ({ item, delay }) => {
+// ── LIVE DEMO MODAL (shared, one iframe instance) ─────────────────
+interface LiveDemoModalProps {
+  open: boolean;
+  title: string;
+  embedUrl: string | undefined;
+  onClose: () => void;
+}
+
+const LiveDemoModal: React.FC<LiveDemoModalProps> = ({
+  open,
+  title,
+  embedUrl,
+  onClose,
+}) => {
+  const [frameReady, setFrameReady] = useState(false);
+
+  const tabUrl = embedUrl?.trim() ?? '';
+  const iframeSrc = tabUrl ? normalizeShopifyDemoIframeUrl(tabUrl) : '';
+  const iframeBlocked =
+    Boolean(tabUrl) &&
+    shopifyVendorDemoBlocksIframe(iframeSrc);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [open, onClose]);
+
+  useEffect(() => {
+    if (!open) {
+      setFrameReady(false);
+      return;
+    }
+    if (!tabUrl) return;
+
+    warmDemoUrlConnection(tabUrl);
+    if (iframeSrc !== tabUrl) {
+      warmDemoUrlConnection(iframeSrc);
+    }
+
+    if (iframeBlocked) {
+      setFrameReady(true);
+      return;
+    }
+
+    setFrameReady(false);
+    const safety = window.setTimeout(() => setFrameReady(true), 18_000);
+    return () => clearTimeout(safety);
+  }, [open, tabUrl, iframeSrc, iframeBlocked]);
+
+  const handleIframeLoad = useCallback(() => {
+    setFrameReady(true);
+  }, []);
+
+  if (!open) return null;
+
+  const hasSrc = Boolean(tabUrl);
+
+  return (
+    <div className="live-demo-modal-root" role="presentation">
+      <button
+        type="button"
+        className="live-demo-modal-scrim"
+        aria-label="Close preview"
+        onClick={onClose}
+      />
+      <div
+        className="live-demo-modal-shell"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="live-demo-modal-title"
+      >
+        <div className="live-demo-modal-panel">
+          <header className="live-demo-modal-head">
+            <div className="live-demo-modal-head-main">
+              <h2 id="live-demo-modal-title" className="live-demo-modal-title">
+                Live demo · {title}
+              </h2>
+              {tabUrl ? (
+                <a
+                  href={tabUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="live-demo-open-tab"
+                >
+                  Open full demo in new tab ↗
+                </a>
+              ) : null}
+            </div>
+            <button
+              type="button"
+              className="live-demo-modal-close"
+              onClick={onClose}
+              aria-label="Close preview"
+            >
+              ×
+            </button>
+          </header>
+          <div className="live-demo-modal-body">
+            {hasSrc ? (
+              iframeBlocked ? (
+                <div className="live-demo-iframe-fallback">
+                  <p className="live-demo-fallback-lead">
+                    This vendor demo can’t load inside our site
+                  </p>
+                  <p className="live-demo-fallback-text">
+                    Stores like{' '}
+                    <code className="live-demo-fallback-code">*-demo.myshopify.com</code>{' '}
+                    block embedding on other domains (Shopify security — you’d see “refused to
+                    connect” in an iframe). Theme Store-style URLs work best when they resolve to{' '}
+                    <code className="live-demo-fallback-code">*-theme.myshopify.com</code>{' '}
+                    — e.g. Turbo — which usually embeds here.
+                  </p>
+                  <a
+                    href={tabUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="live-demo-fallback-cta"
+                  >
+                    Open demo store ↗
+                  </a>
+                </div>
+              ) : (
+                <>
+                  {!frameReady ? (
+                    <div
+                      className="live-demo-iframe-loading"
+                      aria-busy="true"
+                      aria-live="polite"
+                    >
+                      <span className="live-demo-spinner" aria-hidden />
+                      <span className="live-demo-loading-text">
+                        Loading preview…
+                      </span>
+                    </div>
+                  ) : null}
+                  <iframe
+                    key={iframeSrc}
+                    className={
+                      frameReady
+                        ? 'live-demo-modal-iframe live-demo-modal-iframe--ready'
+                        : 'live-demo-modal-iframe live-demo-modal-iframe--warming'
+                    }
+                    src={iframeSrc}
+                    title={title}
+                    allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    onLoad={handleIframeLoad}
+                  />
+                </>
+              )
+            ) : (
+              <p className="live-demo-modal-empty">
+                No live preview URL is set for this item yet. Add a{' '}
+                <code>demoUrl</code> field in <code>themesStoreData.ts</code> to
+                load a demo or video embed in this window.
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ── CARD COMPONENT ─────────────────────────────────────────────────
+interface CardProps {
+  item: StoreItem;
+  delay: number;
+  onOpenLiveDemo: (payload: LiveDemoPayload) => void;
+}
+
+const ItemCard: React.FC<CardProps> = ({ item, delay, onOpenLiveDemo }) => {
   const [downloading, setDownloading] = useState(false);
   const url = buildDownloadUrl(item.driveFileId);
+  const demoUrl = item.demoUrl?.trim();
 
   const handleDownload = useCallback(() => {
     setDownloading(true);
@@ -244,16 +495,51 @@ const ItemCard: React.FC<CardProps> = ({ item, delay }) => {
           </span>
         </div>
 
-        <button
-          className={`download-btn${downloading ? ' downloading' : ''}`}
-          onClick={handleDownload}
-          disabled={downloading}
-          aria-label={`Download ${item.name} for free`}
-          title={`Free download: ${item.name}`}
-        >
-          <DownloadIcon />
-          {downloading ? 'Starting Download…' : 'Free Download'}
-        </button>
+        <div className="card-actions" role="group" aria-label="Preview and download">
+          <button
+            type="button"
+            className="btn-live-demo"
+            {...(demoUrl ? { 'data-demo-url': demoUrl } : {})}
+            onMouseEnter={() => {
+              if (!demoUrl) return;
+              warmDemoUrlConnection(demoUrl);
+              const iframeCandidate = normalizeShopifyDemoIframeUrl(demoUrl);
+              if (iframeCandidate !== demoUrl) {
+                warmDemoUrlConnection(iframeCandidate);
+              }
+            }}
+            onFocus={() => {
+              if (!demoUrl) return;
+              warmDemoUrlConnection(demoUrl);
+              const iframeCandidate = normalizeShopifyDemoIframeUrl(demoUrl);
+              if (iframeCandidate !== demoUrl) {
+                warmDemoUrlConnection(iframeCandidate);
+              }
+            }}
+            onClick={() =>
+              onOpenLiveDemo({ title: item.name, url: demoUrl || undefined })
+            }
+            aria-label={`Live demo: ${item.name}`}
+          >
+            Live Demo
+          </button>
+          <a
+            href={url}
+            className={`btn-download${downloading ? ' downloading' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              if (downloading) return;
+              handleDownload();
+            }}
+            rel="noopener noreferrer"
+            download={`${item.slug}.zip`}
+            aria-label={`Download ${item.name} for free`}
+            title={`Free download: ${item.name}`}
+          >
+            <DownloadIcon />
+            {downloading ? 'Starting Download…' : 'Free Download'}
+          </a>
+        </div>
       </div>
     </article>
   );
@@ -268,6 +554,8 @@ function filterTabLabel(f: StoreFilter): string {
 }
 
 const ThemesStore: React.FC = () => {
+  const [liveDemo, setLiveDemo] = useState<LiveDemoPayload | null>(null);
+
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<StoreFilter>('all');
   const [toast, setToast] = useState<string | null>(null);
@@ -440,7 +728,11 @@ const ThemesStore: React.FC = () => {
           ) : (
             filtered.map((item, idx) => (
               <div key={item.id} role="listitem">
-                <ItemCard item={item} delay={idx} />
+                <ItemCard
+                  item={item}
+                  delay={idx}
+                  onOpenLiveDemo={(payload) => setLiveDemo(payload)}
+                />
               </div>
             ))
           )}
@@ -511,6 +803,13 @@ const ThemesStore: React.FC = () => {
 
       {/* ── TOAST ── */}
       {toast && <Toast message={toast} onHide={() => setToast(null)} />}
+
+      <LiveDemoModal
+        open={liveDemo !== null}
+        title={liveDemo?.title ?? ''}
+        embedUrl={liveDemo?.url}
+        onClose={() => setLiveDemo(null)}
+      />
     </>
   );
 };

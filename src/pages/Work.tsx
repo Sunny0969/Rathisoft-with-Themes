@@ -1311,18 +1311,21 @@ export function Work() {
         ]}
       />
       <Seo
-        title="Portfolio & Case Studies | RathiSoft | Lahore"
-        description="Explore RathiSoft's client work — WordPress, Shopify, web apps, and digital projects delivered for businesses in Lahore and worldwide."
+        title="Web Development Portfolio & Case Studies | RathiSoft"
+        description="See RathiSoft portfolio: WordPress, Shopify, web apps & marketing for brands worldwide. Proof you can verify—message us to scope your build."
       />
       <style>{WORK_STYLES}</style>
 
       <div className="hero">
         <div className="wrap">
           <div className="label">Our Work</div>
-          <h1>Work that wins clients.</h1>
+          <h1>Web Development Portfolio</h1>
           <p>
-            Explore launches stewarded by RathiSoft, a software agency in Lahore—covering custom web deployments,
-            multilingual WordPress estates, Shopify commerce experiments, UI/UX refreshes, and AI-assisted automation shipped for worldwide stakeholders.
+            Browse sites, stores, and campaigns we have shipped for clinics, agencies, and brands
+            worldwide—WordPress, Shopify, custom web, and marketing work you can click
+            through. Like what you see?{' '}
+            <Link to="/contact">Tell us about your project</Link> or compare scopes on our{' '}
+            <Link to="/services">services page</Link>.
           </p>
           <div className="stats-bar">
             <div className="stat">
@@ -1377,14 +1380,13 @@ export function Work() {
         <div className="wrap">
           <div className="label">Portfolio proof</div>
           <h2 id="work-evidence-heading">
-            Beyond screenshots — how Lahore squads document portfolio-grade releases
+            What We Document Behind Each Launch
           </h2>
           <div className="work-evidence-shell">
             <p className="work-evidence-lead">
-              Work shown here is curated for <strong>engineering evidence</strong>, not decoration.
-              Procurement reviewers increasingly ask for receipts—proof that UX or platform changes moved{' '}
-              <strong>funnel metrics</strong>, <strong>Core Web Vitals</strong>, or reclaimed hours for teams
-              stuck in brittle spreadsheets.
+              These projects are selected for outcomes, not pretty thumbnails. Where NDAs allow, we
+              note funnel changes, speed improvements, or hours saved—so you can judge how we
+              measure success, not just screenshots.
             </p>
             <div className="work-evidence-pillars">
               <div className="work-evidence-pillar">
@@ -1439,7 +1441,7 @@ export function Work() {
             </div>
             <nav className="work-evidence-nav" aria-label="Related pages">
               <Link to="/services">
-                Map portfolio lanes back to formal Lahore service menus
+                Map portfolio lanes back to our service menu
               </Link>
               <Link to="/about">
                 Read how we document transparency and delivery ethos
@@ -1475,11 +1477,14 @@ export function Work() {
       </section>
 
       <div className="cta">
-        <h2>Have a project in mind?</h2>
-        <p>Let&apos;s build something great together. Get a free quote today.</p>
+        <h2>Want Results Like These?</h2>
+        <p>
+          Share your URL and goals—we will reply with a realistic plan and quote, usually within one
+          business day.
+        </p>
         <div className="cta-btns">
           <Link to="/contact" className="btn-p">
-            Start your project →
+            Request a free project quote →
           </Link>
           <a
             href={WA}

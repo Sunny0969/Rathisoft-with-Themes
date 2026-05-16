@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-/** Production site URL — used for canonical and Open Graph. */
-export const SITE_ORIGIN = 'https://rathisoft.com'
+/** Production site URL — used for canonical, sitemap, and Open Graph. */
+export const SITE_ORIGIN = 'https://www.rathisoft.com'
 
 /**
  * Canonical URL policy (aligned with sitemap & redirects):
- * - Homepage: https://rathisoft.com/ (trailing slash)
- * - All other paths: https://rathisoft.com/path (no trailing slash)
+ * - Homepage: https://www.rathisoft.com/ (trailing slash)
+ * - All other paths: https://www.rathisoft.com/path (no trailing slash)
  */
 
 /** Default Open Graph / Twitter preview (1200×630). Served from `/public/og-image.jpg`. */

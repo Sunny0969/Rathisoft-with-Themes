@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { useWwwRedirect } from './hooks/useWwwRedirect'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { AboutUs } from './pages/AboutUs'
@@ -19,6 +20,8 @@ import { NotFound } from './pages/NotFound'
 import './App.css'
 
 export default function App() {
+  useWwwRedirect()
+
   return (
     <BrowserRouter>
       <Header />
