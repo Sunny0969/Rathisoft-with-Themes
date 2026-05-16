@@ -65,72 +65,133 @@ body::before {
   to { transform: translate(30px, -30px) scale(1.05); }
 }
 
+/* ── PAGE HERO (Packages-style, full width) ── */
+.page-themes {
+  --pt-bg: #13131a;
+  --pt-bg2: #1c1c27;
+  --pt-border: rgba(255, 255, 255, 0.07);
+  --pt-indigo: #6366f1;
+  --pt-indigo2: #818cf8;
+  --pt-white: #fff;
+  --pt-fh: 'Poppins', system-ui, sans-serif;
+}
+
+.page-themes,
+.page-themes *,
+.page-themes *::before,
+.page-themes *::after {
+  box-sizing: border-box;
+}
+
+.page-themes .hero {
+  width: 100%;
+  padding: 80px 0 60px;
+  border-bottom: 1px solid var(--pt-border);
+  background: linear-gradient(135deg, var(--pt-bg), var(--pt-bg2));
+  position: relative;
+  overflow: hidden;
+}
+
+.page-themes .hero::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: -80px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.page-themes .hero .wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 52px;
+  text-align: left;
+}
+
+.page-themes .label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--pt-indigo2);
+  margin-bottom: 14px;
+}
+
+.page-themes .label::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--pt-indigo), transparent);
+}
+
+.page-themes .hero h1 {
+  font-family: var(--pt-fh);
+  font-size: clamp(44px, 5.5vw, 76px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  color: var(--pt-white);
+  margin: 0;
+}
+
+.page-themes .hero p {
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: 300;
+  color: #fff;
+  margin: 12px 0 0;
+  max-width: 520px;
+}
+
+.page-themes .hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px 48px;
+  margin-top: 32px;
+}
+
+.page-themes .hero-stat-num {
+  font-family: var(--pt-fh);
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 700;
+  color: var(--pt-indigo2);
+  line-height: 1.1;
+}
+
+.page-themes .hero-stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .page-themes .hero {
+    padding: 56px 0 40px;
+  }
+  .page-themes .hero .wrap {
+    padding: 0 20px;
+  }
+}
+
 /* ── LAYOUT ── */
 .store-wrapper {
   position: relative;
   z-index: 1;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 24px 80px;
+  padding: 48px 24px 80px;
 }
-
-/* ── HEADER ── */
-.store-header {
-  text-align: center;
-  padding: 72px 0 56px;
-  position: relative;
-}
-.store-header .badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(108,99,255,0.12);
-  border: 1px solid rgba(108,99,255,0.3);
-  border-radius: 100px;
-  padding: 6px 16px;
-  font-size: 13px;
-  color: var(--tag-theme-text);
-  font-weight: 500;
-  margin-bottom: 24px;
-  animation: fadeSlideDown 0.6s ease both;
-}
-.store-header .badge span { font-size: 16px; }
-
-.store-header h1 {
-  font-size: clamp(2.4rem, 6vw, 4.5rem);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  color: var(--text);
-  animation: fadeSlideDown 0.6s 0.1s ease both;
-}
-.store-header h1 .highlight {
-  background: #6366f1;
-}
-
-.store-header .subtitle {
-  font-size: 1.1rem;
-  color: var(--text2);
-  margin: 20px auto 0;
-  max-width: 560px;
-  line-height: 1.65;
-  animation: fadeSlideDown 0.6s 0.2s ease both;
-}
-
-.store-header .stats-row {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 40px;
-  animation: fadeSlideDown 0.6s 0.3s ease both;
-}
-.stat-item { text-align: center; }
-.stat-item .stat-num {
-  font-size: 2rem;
-  font-weight: 800;
-  color: #6366f1;
-}
-.stat-item .stat-label { font-size: 12px; color: var(--text2); margin-top: 2px; letter-spacing: 0.05em; text-transform: uppercase; }
 
 /* ── SEARCH & FILTER BAR ── */
 .control-bar {

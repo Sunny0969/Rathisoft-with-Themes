@@ -293,7 +293,13 @@ body.cur-hover #cursor-ring {
   font-size: 15px;
 }
 
-/* Hero */
+/* Hero — pull under fixed header so transparent nav shows video/gradient */
+.rathisoft-landing #hero {
+  margin-top: calc(-1 * var(--header-h, 64px));
+  padding-top: var(--header-h, 64px);
+  min-height: calc(66svh + var(--header-h, 64px));
+}
+
 /* Hero shell: min-height + border come from Tailwind on #hero in Home.tsx */
 .rathisoft-landing #hero::before {
   content: '';

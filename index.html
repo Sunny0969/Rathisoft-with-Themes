@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JH9VS55MVY"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-JH9VS55MVY');
+    </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/webp" href="/logo/simpleR.webp" />
     <link rel="apple-touch-icon" href="/logo/simpleR.webp" />
@@ -17,6 +27,7 @@
     />
     <title>RathiSoft — Software Agency in Lahore | Web &amp; Digital Solutions</title>
     <link rel="canonical" href="https://www.rathisoft.com/" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://www.rathisoft.com/sitemap.xml" />
     <!-- Open Graph (defaults for /; routes update via Seo.tsx) -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="RathiSoft" />
@@ -82,6 +93,17 @@
     </noscript>
   </head>
   <body>
+    <noscript>
+      <nav aria-label="Site pages">
+        <a href="https://www.rathisoft.com/">Home</a>
+        <a href="https://www.rathisoft.com/work">Portfolio</a>
+        <a href="https://www.rathisoft.com/packages">Packages</a>
+        <a href="https://www.rathisoft.com/themes">Themes</a>
+        <a href="https://www.rathisoft.com/courses">E-Learning</a>
+        <a href="https://www.rathisoft.com/about">About</a>
+        <a href="https://www.rathisoft.com/contact">Contact</a>
+      </nav>
+    </noscript>
     <div id="root"></div>
     <!-- SPA bundle: type="module" is deferred by default; defer attribute preserves intent for auditors -->
     <script type="module" src="/src/main.tsx" defer></script>

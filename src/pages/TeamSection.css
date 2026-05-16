@@ -17,50 +17,111 @@
     --rs-font-body: "DM Sans", "Segoe UI", sans-serif;
   }
   
-  /* ─── Section Layout ─────────────────────────────────────────────────────────── */
-  .team-section {
-    background: var(--rs-bg);
-    padding: 96px 24px;
+  /* ─── Page shell (aligned with Packages / About) ───────────────────────────── */
+  .page-team {
+    --bg: #13131a;
+    --bg2: #1c1c27;
+    --border: rgba(255, 255, 255, 0.07);
+    --indigo: #6366f1;
+    --indigo2: #818cf8;
+    --white: #fff;
+    --fh: "Poppins", system-ui, sans-serif;
+    background: var(--bg);
     font-family: var(--rs-font-body);
     color: var(--rs-text);
-    min-height: 100vh;
   }
-  
-  /* ─── Section Header ─────────────────────────────────────────────────────────── */
-  .section-header {
-    text-align: center;
-    max-width: 640px;
-    margin: 0 auto 56px;
+
+  .page-team .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 52px;
   }
-  
-  .section-eyebrow {
-    display: inline-block;
-    font-size: 0.75rem;
+
+  .page-team .hero {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, var(--bg), var(--bg2));
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-team .hero::before {
+    content: "";
+    position: absolute;
+    top: -100px;
+    left: -80px;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .page-team .hero .wrap {
+    position: relative;
+    z-index: 1;
+    text-align: left;
+  }
+
+  .page-team .label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10px;
     font-weight: 600;
-    letter-spacing: 0.15em;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--rs-accent);
-    background: rgba(79, 142, 247, 0.1);
-    border: 1px solid rgba(79, 142, 247, 0.25);
-    padding: 4px 14px;
-    border-radius: 100px;
-    margin-bottom: 16px;
+    color: var(--indigo2);
+    margin-bottom: 14px;
   }
-  
-  .section-title {
-    font-family: var(--rs-font-display);
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    font-weight: 800;
-    line-height: 1.15;
-    margin: 0 0 16px;
-    color: var(--rs-text);
+
+  .page-team .label::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--indigo), transparent);
   }
-  
-  .section-title .highlight {
-    background: var(--rs-gradient);
+
+  .page-team .section-title {
+    font-family: var(--fh);
+    font-size: clamp(44px, 5.5vw, 76px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    color: var(--white);
+    margin: 0 0 12px;
+    text-align: left;
+  }
+
+  .page-team .section-title .highlight {
+    background: linear-gradient(135deg, var(--indigo2), var(--indigo));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  .page-team .section-subtitle {
+    font-size: 16px;
+    line-height: 1.8;
+    font-weight: 300;
+    color: #fff;
+    margin: 0;
+    max-width: 520px;
+    text-align: left;
+  }
+
+  .page-team .section-subtitle a {
+    color: var(--indigo2);
+    text-decoration: none;
+  }
+
+  .page-team .section-subtitle a:hover {
+    color: #a5b4fc;
+    text-decoration: underline;
+  }
+
+  .page-team .team-content {
+    padding: 56px 0 96px;
   }
 
   /* Bridges H1 → H3 member cards without adding visible clutter */
@@ -77,22 +138,14 @@
     border: 0;
   }
   
-  .section-subtitle {
-    font-size: 1.05rem;
-    color: var(--rs-muted);
-    line-height: 1.7;
-    margin: 0;
-  }
-  
   /* ─── Controls ───────────────────────────────────────────────────────────────── */
-  .controls-row {
+  .page-team .controls-row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    max-width: 1160px;
-    margin: 0 auto 48px;
+    margin-bottom: 48px;
   }
   
   .filter-tabs {
@@ -148,12 +201,10 @@
   }
   
   /* ─── Team Grid ──────────────────────────────────────────────────────────────── */
-  .team-grid {
+  .page-team .team-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 24px;
-    max-width: 1160px;
-    margin: 0 auto;
   }
   
   .no-results {
@@ -621,11 +672,19 @@
   
   /* ─── Responsive ─────────────────────────────────────────────────────────────── */
   @media (max-width: 768px) {
-    .team-section {
-      padding: 64px 16px;
+    .page-team .wrap {
+      padding: 0 20px;
     }
-  
-    .controls-row {
+
+    .page-team .hero {
+      padding: 56px 0 40px;
+    }
+
+    .page-team .team-content {
+      padding: 40px 0 64px;
+    }
+
+    .page-team .controls-row {
       flex-direction: column;
       align-items: flex-start;
     }
@@ -634,7 +693,7 @@
       width: 100%;
     }
   
-    .team-grid {
+    .page-team .team-grid {
       grid-template-columns: 1fr;
     }
   

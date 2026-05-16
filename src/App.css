@@ -1,4 +1,14 @@
+:root {
+  --header-h: 64px;
+}
+
 .app-main {
   flex: 1;
   min-height: 60vh;
+  padding-top: var(--header-h);
+}
+
+/* Home hero sits under the fixed header */
+.app-main:has(#hero) {
+  padding-top: 0;
 }

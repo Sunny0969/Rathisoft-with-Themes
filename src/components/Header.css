@@ -3,20 +3,48 @@
 .rs-header {
   --nav: rgba(19, 19, 26, 0.92);
   --border: rgba(255, 255, 255, 0.07);
-  position: sticky;
+  --header-h: 64px;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 500;
-  flex-shrink: 0;
   width: 100%;
-  align-self: stretch;
+  pointer-events: none;
 }
 
 .rs-header nav {
   position: relative;
+  min-height: var(--header-h);
+  border-bottom: 1px solid transparent;
+  pointer-events: auto;
+  transition:
+    background 0.45s ease,
+    border-color 0.45s ease,
+    box-shadow 0.45s ease,
+    backdrop-filter 0.45s ease;
+}
+
+/* Over hero at top: clear glass — no tint, no blue wash */
+.rs-header--overlay {
+  background: transparent;
+}
+
+.rs-header--overlay nav {
+  background: transparent;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: none;
+  box-shadow: none;
+}
+
+/* After scrolling past half the hero (or pages with no hero) */
+.rs-header--solid nav {
   background: var(--nav);
-  backdrop-filter: blur(24px) saturate(160%);
-  border-bottom: 1px solid var(--border);
-  transition: box-shadow 0.2s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom-color: var(--border);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.28);
 }
 
 .rs-header .nav-in {

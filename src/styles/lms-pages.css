@@ -14,6 +14,116 @@
   color: var(--lms-body);
 }
 
+.page-courses.lms-page {
+  padding-top: 0;
+}
+
+/* Hero — same structure as Packages / Themes (full width, left-aligned) */
+.page-courses .hero {
+  width: 100%;
+  padding: 80px 0 60px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: linear-gradient(135deg, #13131a, #1c1c27);
+  position: relative;
+  overflow: hidden;
+}
+
+.page-courses .hero::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: -80px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.page-courses .hero .wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 52px;
+  text-align: left;
+}
+
+.page-courses .label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #818cf8;
+  margin-bottom: 14px;
+}
+
+.page-courses .label::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, #6366f1, transparent);
+}
+
+.page-courses .hero h1 {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(44px, 5.5vw, 76px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  color: #fff;
+  margin: 0;
+}
+
+.page-courses .hero p {
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: 300;
+  color: #fff;
+  margin: 12px 0 0;
+  max-width: 520px;
+}
+
+.page-courses .hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px 48px;
+  margin-top: 32px;
+}
+
+.page-courses .hero-stat-num {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 700;
+  color: #818cf8;
+  line-height: 1.1;
+}
+
+.page-courses .hero-stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 4px;
+}
+
+.page-courses .lms-catalog {
+  padding-top: 2.5rem;
+}
+
+@media (max-width: 768px) {
+  .page-courses .hero {
+    padding: 56px 0 40px;
+  }
+  .page-courses .hero .wrap {
+    padding: 0 20px;
+  }
+}
+
 .lms-page--flush-top {
   padding-top: 0;
 }

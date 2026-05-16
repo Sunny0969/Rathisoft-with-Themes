@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 import { Seo } from '../components/Seo';
 import coursesJson from '../data/courses.json';
 import type { Course, CourseLevel } from '../types/lms';
@@ -74,32 +75,57 @@ export function CoursesPage() {
         description="Learn web development, SEO, and more with free courses from RathiSoft. Certificates included."
         keywords="free courses, web development, SEO, online learning, RathiSoft"
       />
-      <main className="lms-page">
-        <div className="lms-container">
-          <header className="lms-hero-block">
-            <h1 className="lms-heading-xl">
-              Free Courses — Learn & Grow 🚀
-            </h1>
-            <p className="lms-lead lms-lead--center">
-              Self-paced lessons built like Udemy and Coursera — clear structure,
-              practical topics, and zero tuition. Pick a course, enroll free,
-              and track your progress at your own pace.
-            </p>
+      <main className="page-courses lms-page app-main">
+        <Breadcrumbs
+          items={[
+            { name: 'Home', path: '/' },
+            { name: 'E-Learning', path: '/courses' },
+          ]}
+        />
 
-            <div className="lms-input-wrap">
-              <label htmlFor="courses-search" className="lms-sr-only">
-                Search courses
-              </label>
-              <input
-                id="courses-search"
-                type="search"
-                placeholder="Search by title, description, or tags…"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="lms-input"
-              />
+        <section className="hero" aria-labelledby="courses-hero-heading">
+          <div className="wrap">
+            <div className="label">E-Learning</div>
+            <h1 id="courses-hero-heading">
+              Free Courses
+              <br />
+              Learn &amp; Grow
+            </h1>
+            <p>
+              Self-paced lessons with clear structure and practical topics—enroll free, track
+              progress at your own pace, and earn a certificate when you finish.
+            </p>
+            <div className="hero-stats" role="region" aria-label="Course library highlights">
+              <div className="hero-stat">
+                <div className="hero-stat-num">{courses.length}</div>
+                <div className="hero-stat-label">Courses</div>
+              </div>
+              <div className="hero-stat">
+                <div className="hero-stat-num">100%</div>
+                <div className="hero-stat-label">Free forever</div>
+              </div>
+              <div className="hero-stat">
+                <div className="hero-stat-num">Cert</div>
+                <div className="hero-stat-label">On completion</div>
+              </div>
             </div>
-          </header>
+          </div>
+        </section>
+
+        <div className="lms-container lms-catalog">
+          <div className="lms-input-wrap">
+            <label htmlFor="courses-search" className="lms-sr-only">
+              Search courses
+            </label>
+            <input
+              id="courses-search"
+              type="search"
+              placeholder="Search by title, description, or tags…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="lms-input"
+            />
+          </div>
 
           <div className="lms-filter-row">
             <button
@@ -127,21 +153,6 @@ export function CoursesPage() {
                 {cat}
               </button>
             ))}
-          </div>
-
-          <div className="lms-stat-grid">
-            <div>
-              <p className="lms-stat-value">{courses.length}</p>
-              <p className="lms-stat-label">Total courses</p>
-            </div>
-            <div className="lms-stat-grid__mid">
-              <p className="lms-stat-accent">100% Free Forever</p>
-              <p className="lms-stat-label">No hidden fees</p>
-            </div>
-            <div>
-              <p className="lms-stat-title">Certificate Included</p>
-              <p className="lms-stat-label">Finish & celebrate</p>
-            </div>
           </div>
 
           <ul className="lms-course-grid">

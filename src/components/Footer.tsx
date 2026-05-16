@@ -60,6 +60,8 @@ export function Footer() {
             <Link to="/about">About Us</Link>
             <Link to="/work">Portfolio</Link>
             <Link to="/packages">Packages</Link>
+            <Link to="/themes">Themes</Link>
+            <Link to="/courses">E-Learning</Link>
             <Link to="/contact">Contact</Link>
           </div>
         </div>

@@ -1,6 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import './Header.css'
+
+const HERO_SELECTOR =
+  '#hero, main .hero, .page-about .hero, .page-packages .hero, .page-work .hero, .page-team .hero, .page-themes .hero, .page-courses .hero'
+
+function findPageHero(): HTMLElement | null {
+  return document.querySelector<HTMLElement>(HERO_SELECTOR)
+}
 
 const NAV_LINKS = [
   // { label: 'Services', href: '/services' },
@@ -13,23 +20,63 @@ const NAV_LINKS = [
 ] as const
 
 export function Header() {
+  const { pathname } = useLocation()
   const [mobileOpen, setMobileOpen] = useState(false)
+  /** Solid nav background (false = transparent blur over hero). */
+  const [solid, setSolid] = useState(false)
   const navRef = useRef<HTMLElement>(null)
 
   const closeMobile = useCallback(() => setMobileOpen(false), [])
   const toggleMobile = useCallback(() => setMobileOpen((o) => !o), [])
 
-  useEffect(() => {
-    const onScroll = () => {
-      const nav = navRef.current
-      if (!nav) return
-      nav.style.boxShadow =
-        window.scrollY > 10 ? '0 4px 24px rgba(0,0,0,0.3)' : 'none'
+  const updateHeaderMode = useCallback(() => {
+    const hero = findPageHero()
+    if (!hero) {
+      setSolid(true)
+      return
     }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
+    if (window.scrollY < 8) {
+      setSolid(false)
+      return
+    }
+    const height = hero.offsetHeight
+    if (height < 80) {
+      setSolid(false)
+      return
+    }
+    const top = hero.getBoundingClientRect().top + window.scrollY
+    const halfHero = top + height / 2
+    setSolid(window.scrollY >= halfHero)
   }, [])
+
+  useLayoutEffect(() => {
+    updateHeaderMode()
+  }, [pathname, updateHeaderMode])
+
+  useEffect(() => {
+    let raf = 0
+    const onScrollOrResize = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(updateHeaderMode)
+    }
+
+    onScrollOrResize()
+    window.addEventListener('scroll', onScrollOrResize, { passive: true })
+    window.addEventListener('resize', onScrollOrResize, { passive: true })
+
+    const hero = findPageHero()
+    const ro = hero ? new ResizeObserver(onScrollOrResize) : null
+    ro?.observe(hero)
+
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScrollOrResize)
+      window.removeEventListener('resize', onScrollOrResize)
+      ro?.disconnect()
+    }
+  }, [pathname, updateHeaderMode])
+
+  const headerMode = solid || mobileOpen ? 'rs-header--solid' : 'rs-header--overlay'
 
   /** Warm full wordmark in memory so first hover/focus doesn’t wait on decode. */
   useEffect(() => {
@@ -52,7 +99,7 @@ export function Header() {
   }, [mobileOpen, closeMobile])
 
   return (
-    <header className="rs-header">
+    <header className={`rs-header ${headerMode}`}>
       <nav ref={navRef} id="mainNav">
         <div className="nav-in">
           {/*

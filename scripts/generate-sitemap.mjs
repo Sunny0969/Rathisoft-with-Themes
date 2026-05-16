@@ -60,12 +60,7 @@ const lastmod = todayYyyyMmDd()
 const urlEntries = pages
   .map(
     (p) =>
-      `  <url>
-    <loc>${escapeXml(absoluteLoc(p.path))}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>${p.changefreq}</changefreq>
-    <priority>${p.priority}</priority>
-  </url>`,
+      `  <url><loc>${escapeXml(absoluteLoc(p.path))}</loc><lastmod>${lastmod}</lastmod><changefreq>${p.changefreq}</changefreq><priority>${p.priority}</priority></url>`,
   )
   .join('\n')
 
@@ -75,6 +70,6 @@ ${urlEntries}
 </urlset>
 `
 
-writeFileSync(join(publicDir, 'sitemap.xml'), xml, 'utf8')
+writeFileSync(join(publicDir, 'sitemap.xml'), xml, { encoding: 'utf8' })
 console.log('Wrote public/sitemap.xml (%s URLs, lastmod %s)', pages.length, lastmod)
 

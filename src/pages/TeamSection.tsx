@@ -157,7 +157,7 @@ const TeamSection: React.FC = () => {
 
   return (
     <>
-    <section className="team-section" id="team">
+    <main className="page-team app-main" id="team">
       <Breadcrumbs
         items={[
           { name: "Home", path: "/" },
@@ -168,22 +168,24 @@ const TeamSection: React.FC = () => {
         title="Our Team | Developers & Designers | RathiSoft"
         description="Meet the RathiSoft team—developers, designers, and marketers on WordPress, Shopify, SEO, and web builds for clients in Pakistan and abroad."
       />
-      {/* Header */}
-      <div className="section-header">
-        <span className="section-eyebrow">Our People</span>
-        <h1 className="section-title">
-          Meet the <span className="highlight">Team</span>
-        </h1>
-        <p className="section-subtitle">
-          Developers, designers, and marketers who ship WordPress, Shopify, web, and growth work—with
-          the same people you meet here on your project. Learn how we operate on the{' '}
-          <Link to="/about">about page</Link>.
-        </p>
+
+      <div className="hero">
+        <div className="wrap">
+          <div className="label">Our People</div>
+          <h1 className="section-title">
+            Meet the <span className="highlight">Team</span>
+          </h1>
+          <p className="section-subtitle">
+            Developers, designers, and marketers who ship WordPress, Shopify, web, and growth
+            work—with the same people you meet here on your project. Learn how we operate on the{" "}
+            <Link to="/about">about page</Link>.
+          </p>
+        </div>
       </div>
 
+      <div className="team-content wrap">
       <h2 className="team-roster-sr-only">Team roster</h2>
 
-      {/* Controls */}
       <div className="controls-row">
         <div className="filter-tabs">
           {DEPARTMENTS.map((dept) => (
@@ -232,9 +234,9 @@ const TeamSection: React.FC = () => {
         ))}
       </div> */}
 
-      {/* Modal */}
       <MemberModal member={selectedMember} onClose={() => setSelectedMember(null)} />
-    </section>
+      </div>
+    </main>
 
     <OnPageSeoSection
       sectionId="team-on-page-seo"

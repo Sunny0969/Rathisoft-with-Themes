@@ -629,49 +629,50 @@ const ThemesStore: React.FC = () => {
       <div className="bg-blob bg-blob-2" aria-hidden="true" />
       <div className="bg-blob bg-blob-3" aria-hidden="true" />
 
-      <main className="store-wrapper">
+      <main className="page-themes app-main">
         <Breadcrumbs
           items={[
             { name: 'Home', path: '/' },
             { name: 'Themes store', path: '/themes' },
           ]}
         />
-        {/* ── HEADER ── */}
-        <header className="store-header">
-          <div className="badge" role="note">
-            <span>📦</span> Shopify themes · WP themes · WP plugins
+        <section className="hero" aria-labelledby="themes-hero-heading">
+          <div className="wrap">
+            <div className="label">Themes store</div>
+
+            <h1 id="themes-hero-heading">
+              Premium Shopify &amp; WordPress
+              <br />
+              Themes &amp; Plugins
+            </h1>
+
+            <p>
+              RathiSoft curates {STORE_ITEMS.length}+ Shopify themes, WordPress themes, and plugins—download-ready
+              assets plus guardrails so your team can evaluate stacks before production licences.
+            </p>
+
+          <div className="hero-stats" role="region" aria-label="Library statistics">
+            <div className="hero-stat">
+              <div className="hero-stat-num">{STORE_ITEMS.length}</div>
+              <div className="hero-stat-label">Total</div>
+            </div>
+            <div className="hero-stat">
+              <div className="hero-stat-num">{STORE_STATS.shopify}</div>
+              <div className="hero-stat-label">Shopify themes</div>
+            </div>
+            <div className="hero-stat">
+              <div className="hero-stat-num">{STORE_STATS.wpThemes}</div>
+              <div className="hero-stat-label">WP themes</div>
+            </div>
+            <div className="hero-stat">
+              <div className="hero-stat-num">{STORE_STATS.wpPlugins}</div>
+              <div className="hero-stat-label">WP plugins</div>
+            </div>
           </div>
-
-          <h1>
-            <span style={{ color: '#6366f1' }}>Premium</span> Shopify &amp; WordPress<br />
-            Themes &amp; Plugins
-          </h1>
-
-          <p className="subtitle">
-            RathiSoft is a software agency in Lahore curating {STORE_ITEMS.length}+ Shopify themes, WordPress themes,
-            and plugins—download-ready assets plus guardrails so engineering squads avoid licensing drift while iterating storefront experiences responsibly.
-          </p>
-
-          <div className="stats-row" role="region" aria-label="Library statistics">
-            <div className="stat-item">
-              <div className="stat-num">{STORE_ITEMS.length}</div>
-              <div className="stat-label">Total</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-num">{STORE_STATS.shopify}</div>
-              <div className="stat-label">Shopify themes</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-num">{STORE_STATS.wpThemes}</div>
-              <div className="stat-label">WP themes</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-num">{STORE_STATS.wpPlugins}</div>
-              <div className="stat-label">WP plugins</div>
-            </div>
           </div>
-        </header>
+        </section>
 
+        <div className="store-wrapper">
         {/* ── CONTROLS ── */}
         <section aria-label="Search and filter">
           <div className="control-bar">
@@ -799,6 +800,7 @@ const ThemesStore: React.FC = () => {
             </a>
           </p>
         </footer>
+        </div>
       </main>
 
       {/* ── TOAST ── */}
