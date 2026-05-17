@@ -294,9 +294,32 @@ body.cur-hover #cursor-ring {
 }
 
 /* Hero — pull under fixed header so transparent nav shows video/gradient */
+.rathisoft-landing .hero-side {
+  position: absolute;
+  top: 56%;
+  right: 23px;
+
+  transform: translateY(-50%);
+  height: 55%;
+
+  width: auto;
+  z-index: 2;
+  opacity: 0.95;
+  pointer-events: none;
+}
+
+
 .rathisoft-landing #hero {
-  margin-top: calc(-1 * var(--header-h, 64px));
-  padding-top: var(--header-h, 64px);
+  position: relative;
+}
+
+.rathisoft-landing #hero {
+  margin-top: calc(-1 * var(--header-h, 60px) + 39px);
+  padding-top: calc(var(--header-h, 60px) + 39px);
+
+
+
+
   min-height: calc(66svh + var(--header-h, 64px));
 }
 

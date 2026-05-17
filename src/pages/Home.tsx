@@ -2,7 +2,7 @@ import gsap from 'gsap'
 import type { FormEvent } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { HeroVideo } from '../components/HeroVideo'
+// import { HeroVideo } from '../components/HeroVideo'
 import { OnPageSeoSection } from '../components/OnPageSeoSection'
 import { Seo, SITE_ORIGIN } from '../components/Seo'
 import {
@@ -556,10 +556,16 @@ export function Home() {
           className="relative min-h-[66svh] overflow-hidden border-b border-solid [border-color:var(--border)]"
           aria-labelledby="hero-heading"
         >
-          <HeroVideo />
+          {/* <HeroVideo /> */}
+          <img
+            src="/images/Side.png"
+            alt=""
+            aria-hidden="true"
+            className="hero-side"
+          />
           <div className="hero-l">
             <div className="hero-pill">
-              <span className="pill-pulse" />
+              <span className="pill-pulse"  />
               Scale Your Brand · High-Performance Web · Global Reach
             </div>
             <h1 id="hero-heading" className="hero-h">
