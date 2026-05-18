@@ -12,6 +12,10 @@ import { THEMES_STORE_FONT_STYLESHEET } from '../constants/deferredFontUrls';
 import { injectDeferredStylesheet } from '../utils/deferredStylesheet';
 
 import {
+  isShopifyDemoSubdomain,
+  resolveDemoEmbedPlan,
+} from '../utils/demoEmbed';
+import {
   STORE_ITEMS,
   countByCategory,
   isIconImageUrl,
@@ -21,6 +25,10 @@ import {
 } from './themesStoreData';
 
 const STORE_STATS = countByCategory(STORE_ITEMS);
+
+const THEMES_META_TITLE = 'WordPress Themes & Plugins Download | RathiSoft';
+const THEMES_META_DESCRIPTION =
+  'Download free WordPress themes, premium Shopify templates, WooCommerce layouts, and plugins. Live demos and staging-first picks from RathiSoft.';
 
 const CATEGORY_LABEL: Record<StoreCategory, string> = {
   'shopify-theme': 'Shopify Theme',
@@ -139,33 +147,6 @@ function warmDemoUrlConnection(rawUrl: string): void {
   }
 }
 
-/**
- * Theme Store preview pages don't embed reliably on external sites.
- * Official listing demos usually live on `{handle}-theme.myshopify.com` (embed-friendly like Turbo).
- */
-function normalizeShopifyDemoIframeUrl(raw: string): string {
-  const trimmed = raw.trim();
-  try {
-    const u = new URL(trimmed);
-    if (u.hostname.toLowerCase() !== 'themes.shopify.com') return trimmed;
-    const m = u.pathname.match(/^\/themes\/([^/]+)/i);
-    if (!m?.[1]) return trimmed;
-    return `https://${m[1].toLowerCase()}-theme.myshopify.com/`;
-  } catch {
-    return trimmed;
-  }
-}
-
-/** Many third-party demos use *-demo.myshopify.com — Shopify blocks those in cross-site iframes. */
-function shopifyVendorDemoBlocksIframe(url: string): boolean {
-  try {
-    const h = new URL(url).hostname.toLowerCase();
-    return h.endsWith('-demo.myshopify.com');
-  } catch {
-    return false;
-  }
-}
-
 // ── ICONS ──────────────────────────────────────────────────────────
 const SearchIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -229,12 +210,28 @@ const LiveDemoModal: React.FC<LiveDemoModalProps> = ({
   onClose,
 }) => {
   const [frameReady, setFrameReady] = useState(false);
+  const [candidateIndex, setCandidateIndex] = useState(0);
+  const [embedExhausted, setEmbedExhausted] = useState(false);
+  const tabOpenedRef = useRef(false);
 
-  const tabUrl = embedUrl?.trim() ?? '';
-  const iframeSrc = tabUrl ? normalizeShopifyDemoIframeUrl(tabUrl) : '';
-  const iframeBlocked =
-    Boolean(tabUrl) &&
-    shopifyVendorDemoBlocksIframe(iframeSrc);
+  const plan = useMemo(() => resolveDemoEmbedPlan(embedUrl), [embedUrl]);
+  const tabUrl = plan?.tabUrl ?? '';
+  const candidates = plan?.embedCandidates ?? [];
+  const iframeSrc = candidates[candidateIndex] ?? '';
+  const hasMoreCandidates = candidateIndex + 1 < candidates.length;
+
+  const advanceCandidate = useCallback(() => {
+    setCandidateIndex((idx) => {
+      if (idx + 1 < candidates.length) {
+        setFrameReady(false);
+        setEmbedExhausted(false);
+        return idx + 1;
+      }
+      setEmbedExhausted(true);
+      setFrameReady(true);
+      return idx;
+    });
+  }, [candidates.length]);
 
   useEffect(() => {
     if (!open) return;
@@ -253,28 +250,70 @@ const LiveDemoModal: React.FC<LiveDemoModalProps> = ({
   useEffect(() => {
     if (!open) {
       setFrameReady(false);
+      setCandidateIndex(0);
+      setEmbedExhausted(false);
       return;
     }
-    if (!tabUrl) return;
+    if (!plan) return;
 
-    warmDemoUrlConnection(tabUrl);
-    if (iframeSrc !== tabUrl) {
-      warmDemoUrlConnection(iframeSrc);
+    warmDemoUrlConnection(plan.tabUrl);
+    for (const c of plan.embedCandidates) {
+      warmDemoUrlConnection(c);
     }
 
-    if (iframeBlocked) {
+    tabOpenedRef.current = false;
+    setCandidateIndex(0);
+    if (plan.embedCandidates.length === 0) {
+      setEmbedExhausted(true);
       setFrameReady(true);
-      return;
+    } else {
+      setEmbedExhausted(false);
+      setFrameReady(false);
     }
+  }, [open, plan]);
 
-    setFrameReady(false);
-    const safety = window.setTimeout(() => setFrameReady(true), 18_000);
+  const openExactTabUrl = useCallback(() => {
+    if (!tabUrl || tabOpenedRef.current) return;
+    tabOpenedRef.current = true;
+    window.open(tabUrl, '_blank', 'noopener,noreferrer');
+  }, [tabUrl]);
+
+  useEffect(() => {
+    if (!open || !embedExhausted || !tabUrl) return;
+    openExactTabUrl();
+  }, [open, embedExhausted, tabUrl, openExactTabUrl]);
+
+  useEffect(() => {
+    if (!open || !iframeSrc || embedExhausted) return;
+
+    const safety = window.setTimeout(() => {
+      if (hasMoreCandidates) {
+        advanceCandidate();
+      } else {
+        setEmbedExhausted(true);
+        setFrameReady(true);
+      }
+    }, 6_000);
+
     return () => clearTimeout(safety);
-  }, [open, tabUrl, iframeSrc, iframeBlocked]);
+  }, [open, iframeSrc, embedExhausted, hasMoreCandidates, advanceCandidate]);
 
   const handleIframeLoad = useCallback(() => {
+    try {
+      const host = new URL(iframeSrc).hostname.toLowerCase();
+      if (isShopifyDemoSubdomain(host)) {
+        advanceCandidate();
+        return;
+      }
+    } catch {
+      /* keep loading */
+    }
     setFrameReady(true);
-  }, []);
+  }, [iframeSrc, advanceCandidate]);
+
+  const handleIframeError = useCallback(() => {
+    advanceCandidate();
+  }, [advanceCandidate]);
 
   if (!open) return null;
 
@@ -322,27 +361,30 @@ const LiveDemoModal: React.FC<LiveDemoModalProps> = ({
           </header>
           <div className="live-demo-modal-body">
             {hasSrc ? (
-              iframeBlocked ? (
+              embedExhausted ? (
                 <div className="live-demo-iframe-fallback">
                   <p className="live-demo-fallback-lead">
-                    This vendor demo can’t load inside our site
+                    Preview opens in a new browser tab
                   </p>
                   <p className="live-demo-fallback-text">
-                    Stores like{' '}
-                    <code className="live-demo-fallback-code">*-demo.myshopify.com</code>{' '}
-                    block embedding on other domains (Shopify security — you’d see “refused to
-                    connect” in an iframe). Theme Store-style URLs work best when they resolve to{' '}
-                    <code className="live-demo-fallback-code">*-theme.myshopify.com</code>{' '}
-                    — e.g. Turbo — which usually embeds here.
+                    This demo can&apos;t load inside our site (the store blocks embedded previews).
+                    We opened your exact link in a new tab—use the button below if it didn&apos;t
+                    appear.
                   </p>
                   <a
                     href={tabUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="live-demo-fallback-cta"
+                    onClick={() => {
+                      tabOpenedRef.current = true;
+                    }}
                   >
-                    Open demo store ↗
+                    Open exact demo URL ↗
                   </a>
+                  <p className="live-demo-fallback-url" title={tabUrl}>
+                    {tabUrl}
+                  </p>
                 </div>
               ) : (
                 <>
@@ -354,23 +396,27 @@ const LiveDemoModal: React.FC<LiveDemoModalProps> = ({
                     >
                       <span className="live-demo-spinner" aria-hidden />
                       <span className="live-demo-loading-text">
-                        Loading preview…
+                        {candidateIndex > 0
+                          ? 'Trying alternate preview URL…'
+                          : 'Loading live preview…'}
                       </span>
                     </div>
                   ) : null}
                   <iframe
-                    key={iframeSrc}
+                    key={`${iframeSrc}-${candidateIndex}`}
                     className={
                       frameReady
                         ? 'live-demo-modal-iframe live-demo-modal-iframe--ready'
-                        : 'live-demo-modal-iframe live-demo-modal-iframe--warming'
+                        : 'live-demo-modal-iframe live-demo-modal-iframe--warming live-demo-modal-iframe--hidden'
                     }
                     src={iframeSrc}
-                    title={title}
+                    title={`Live demo: ${title}`}
                     allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
                     allowFullScreen
-                    referrerPolicy="strict-origin-when-cross-origin"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    loading="eager"
                     onLoad={handleIframeLoad}
+                    onError={handleIframeError}
                   />
                 </>
               )
@@ -455,7 +501,7 @@ const ItemCard: React.FC<CardProps> = ({ item, delay, onOpenLiveDemo }) => {
 
       <div className="card-body">
         <div className="card-top">
-          <h2 className="card-title" itemProp="name">{item.name}</h2>
+          <h3 className="card-title" itemProp="name">{item.name}</h3>
           <span className={`card-tag ${item.category}`} aria-label={CATEGORY_LABEL[item.category]}>
             {CATEGORY_LABEL[item.category]}
           </span>
@@ -501,20 +547,16 @@ const ItemCard: React.FC<CardProps> = ({ item, delay, onOpenLiveDemo }) => {
             className="btn-live-demo"
             {...(demoUrl ? { 'data-demo-url': demoUrl } : {})}
             onMouseEnter={() => {
-              if (!demoUrl) return;
-              warmDemoUrlConnection(demoUrl);
-              const iframeCandidate = normalizeShopifyDemoIframeUrl(demoUrl);
-              if (iframeCandidate !== demoUrl) {
-                warmDemoUrlConnection(iframeCandidate);
-              }
+              const plan = resolveDemoEmbedPlan(demoUrl);
+              if (!plan) return;
+              warmDemoUrlConnection(plan.tabUrl);
+              for (const c of plan.embedCandidates) warmDemoUrlConnection(c);
             }}
             onFocus={() => {
-              if (!demoUrl) return;
-              warmDemoUrlConnection(demoUrl);
-              const iframeCandidate = normalizeShopifyDemoIframeUrl(demoUrl);
-              if (iframeCandidate !== demoUrl) {
-                warmDemoUrlConnection(iframeCandidate);
-              }
+              const plan = resolveDemoEmbedPlan(demoUrl);
+              if (!plan) return;
+              warmDemoUrlConnection(plan.tabUrl);
+              for (const c of plan.embedCandidates) warmDemoUrlConnection(c);
             }}
             onClick={() =>
               onOpenLiveDemo({ title: item.name, url: demoUrl || undefined })
@@ -600,10 +642,7 @@ const ThemesStore: React.FC = () => {
 
   return (
     <>
-      <Seo
-        title="WordPress Themes & Plugins Store | RathiSoft"
-        description="Browse premium WordPress themes, Shopify themes, and WordPress plugins from RathiSoft — curated marketplace with downloads for your next project."
-      />
+      <Seo title={THEMES_META_TITLE} description={THEMES_META_DESCRIPTION} />
       {/* ── SEO: JSON-LD Structured Data ── */}
       <script
         type="application/ld+json"
@@ -647,8 +686,9 @@ const ThemesStore: React.FC = () => {
             </h1>
 
             <p>
-              RathiSoft curates {STORE_ITEMS.length}+ Shopify themes, WordPress themes, and plugins—download-ready
-              assets plus guardrails so your team can evaluate stacks before production licences.
+              Browse {STORE_ITEMS.length}+ curated downloads—responsive WordPress themes, WooCommerce storefronts,
+              premium Shopify templates, and plugins with live demos. RathiSoft&apos;s staging-first library helps your
+              team compare layouts before you buy official licences.
             </p>
 
           <div className="hero-stats" role="region" aria-label="Library statistics">
@@ -723,7 +763,7 @@ const ThemesStore: React.FC = () => {
           {filtered.length === 0 ? (
             <div className="empty-state" role="status">
               <div className="empty-icon">🔍</div>
-              <h2>Nothing found</h2>
+              <p className="empty-state-title">Nothing found</p>
               <p>Try a different keyword or remove the filter.</p>
             </div>
           ) : (
@@ -740,9 +780,10 @@ const ThemesStore: React.FC = () => {
         </section>
 
         <section className="store-faq" aria-labelledby="store-faq-heading">
-          <h2 id="store-faq-heading">Theme &amp; plugin FAQs</h2>
+          <h2 id="store-faq-heading">WordPress &amp; Shopify Theme FAQs: Downloads, Licences &amp; Updates</h2>
           <p className="store-faq-intro">
-            Quick answers for teams using this Shopify and WordPress library—staging, licensing, updates, and SEO hygiene.
+            Common questions about free downloads, premium templates, staging workflows, GPL-style evaluation, and
+            keeping WooCommerce or Shopify stores fast after go-live.
           </p>
           <div className="store-faq-list">
             {STORE_FAQ_ITEMS.map((item, i) => (

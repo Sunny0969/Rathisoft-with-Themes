@@ -23,11 +23,9 @@ export interface StoreItem {
   fileSize: string
   driveFileId: string
   /**
-   * Live preview for the modal. Use a URL that allows embedding when possible:
-   * Theme Store demos: `https://{handle}-theme.myshopify.com/` (same pattern as Turbo).
-   * Avoid `*-demo.myshopify.com` for in-page iframe — Shopify blocks those on external sites;
-   * the UI will offer “open in new tab” instead.
-   * `https://themes.shopify.com/themes/{handle}/…` is rewritten to `{handle}-theme.myshopify.com`.
+   * Live preview URL (ThemeForest, Shopify Theme Store, myshopify.com, WordPress demos, etc.).
+   * The themes page modal tries embed-friendly URLs first (`*-theme.myshopify.com`, Theme Store rewrite),
+   * then falls back to “open in new tab” when a vendor blocks iframes.
    */
   demoUrl?: string
   tags: string[]
@@ -45,24 +43,10 @@ const SHOPIFY_THEMES: StoreItem[] = [
     "version": "1.0",
     "fileSize": "Not specified",
     "driveFileId": "1tWe0aiXdBIQCvMZQGuxIHoQCGNwT6jrN",
-    "demoUrl": "https://themeforest.net/item/pomar-fashion-store-shopify-theme-os-30-theme-block/63312114",
+    "demoUrl": "https://preview.themeforest.net/item/pomar-fashion-store-shopify-theme-os-30-theme-block/full_screen_preview/63312114",
     "tags": ["shopify", "minimalist", "clean", "beginner"]
   },
-  {
-    "id": "shopify-beginner-copy",
-    "name": "Beginner (Copy)",
-    "slug": "shopify-beginner-theme-copy",
-    "category": "shopify-theme",
-    "description": "Backup copy of the minimalist Shopify theme designed for quick e-commerce store setups with essential retail layouts.",
-    "icon": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=640&q=80",
-    "version": "1.0",
-    "fileSize": "Not specified",
-    "driveFileId": "1Y8SPH4Lj5HEQNQM8UfEnfj64rMwNRT6E",
-    "demoUrl": "https://themeforest.net/item/lamora-jewelry-shopify-theme-os-30-theme-block/61555112",
-    "tags": ["shopify", "minimalist", "clean", "backup"]
-  },
- 
-  
+   
   {
     id: 'shopify-adeline',
     name: 'Adeline',
@@ -75,22 +59,10 @@ const SHOPIFY_THEMES: StoreItem[] = [
     /** Google Drive ID based on provided file */
     fileSize: 'Not specified',
     driveFileId: '146E9Jye7_2vCTR3aZKzU_-AoDSzpZjoF',
-    demoUrl: 'https://adeline-demo-01.myshopify.com/',
+    demoUrl: 'https://themes.shopify.com/themes/avante/presets/adelle',
     tags: ['shopify', 'fashion', 'lookbook'],
   },
-    {
-    id: 'shopify-agencia-theme',
-    name: 'Agencia',
-    slug: 'agencia-shopify-theme',
-    category: 'shopify-theme',
-    description: 'A sleek and modern Shopify theme tailored for digital agencies, portfolios, and creative studios showcasing services.',
-    icon: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=640&q=80',
-    version: 'Latest',
-    fileSize: '—',
-    driveFileId: '',
-    demoUrl: 'http://preview.themeforest.net/item/agencia-creative-agency-portfolio/full_screen_preview/15750163',
-    tags: ['shopify', 'agency', 'portfolio', 'modern']
-  },
+   
   {
     "id": "shopify-collection",
     "name": "Collection",
@@ -173,7 +145,6 @@ const SHOPIFY_THEMES: StoreItem[] = [
   fileSize: '—',
   driveFileId: '1bpCfELkIvYEQoobJMXhHV6jsf1VNQcvm',
   demoUrl: 'https://sunrise-theme.myshopify.com/',
-
   tags: ['shopify', 'vibrant', 'retail'],
 },
 {
@@ -840,19 +811,7 @@ const SHOPIFY_THEMES: StoreItem[] = [
     "demoUrl": "https://foodly-demo.myshopify.com/",
     "tags": ["shopify", "food", "grocery", "organic"]
   },
-{
-    "id": "shopify-fashionchic",
-    "name": "FashionChic",
-    "slug": "shopify-fashionchic-theme",
-    "category": "shopify-theme",
-    "description": "A stylish, conversion-focused Shopify theme designed specifically for modern boutique stores, luxury fashion labels, and accessories.",
-    "icon": "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=640&q=80",
-    "version": "1.0",
-    "fileSize": "Not specified",
-    "driveFileId": "YOUR_DRIVE_FILE_ID_HERE",
-    "demoUrl": "https://fashionchic-demo.myshopify.com/",
-    "tags": ["shopify", "fashion", "boutique", "chic"]
-  },
+ 
 {
   id: 'shopify-furniture-theme',
   name: 'Furniture',
@@ -932,19 +891,6 @@ const SHOPIFY_THEMES: StoreItem[] = [
   driveFileId: '1icf-SpSj3YrFNlkEgzMFwZwUOd1cMol3',
   tags: ['shopify', 'coffee', 'cafe'],
 },
-{
-    "id": "shopify-adeline-copy",
-    "name": "Adeline (Official Copy)",
-    "slug": "shopify-adeline-theme-copy",
-    "category": "shopify-theme",
-    "description": "Backup template copy of the premium Shopify Adeline theme by bitcode.com, tailored for fashion collections and lookbooks.",
-    "icon": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=640&q=80",
-    "version": "1.x",
-    "fileSize": "Not specified",
-    "driveFileId": "1dD37bOGwR9evixtwEIg_Gb1ZmkHW8isB",
-    "demoUrl": "https://themes.shopify.com/themes/madrid/presets/tote",
-    "tags": ["shopify", "fashion", "lookbook", "backup"]
-  },
   {
     "id": "shopify-insider",
     "name": "Insider",
@@ -1968,19 +1914,7 @@ const WORDPRESS_THEMES: StoreItem[] = [
     "demoUrl": "https://elements.envato.com/hyani-bold-blog-and-magazine-wordpress-theme-37BQVM8",
     "tags": ["wordpress", "blog", "journal", "news"]
   },
-  {
-    "id": "wp-aquamag-copy",
-    "name": "AquaMag (Copy)",
-    "slug": "wordpress-aquamag-theme-copy",
-    "category": "wordpress-theme",
-    "description": "Backup copy of the multi-functional magazine WordPress theme perfect for news portals and editorial sites.",
-    "icon": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=640&q=80",
-    "version": "1.0",
-    "fileSize": "Not specified",
-    "driveFileId": "1yY7Q9GKrsG1bqgsEt-KzL6cWZ-tQa83v",
-    "demoUrl": "https://www.youtube.com/watch?v=mcR2RcxAK4w",
-    "tags": ["wordpress", "magazine", "news", "backup"]
-  },
+  
   {
     "id": "wp-autoplay-copy",
     "name": "Autoplay (Copy)",
