@@ -1327,6 +1327,19 @@ const WORDPRESS_THEMES: StoreItem[] = [
     "tags": ["wordpress", "dark-mode", "streaming", "cinema"]
   },
   {
+    "id": "blogger-3rdball-premium-v2",
+    "name": "3rdball Premium (v2)",
+    "slug": "blogger-3rdball-premium-template-v2",
+    "category": "wordpress-theme",
+    "description": "A high-performance premium template package tailored for magazine layouts, optimized for quick content rendering and clean ad placement structures.",
+    "icon": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=640&q=80",
+    "version": "2.0",
+    "fileSize": "Not specified",
+    "driveFileId": "1xvmVdo5NEYMfTCIbE7BdhorxRKD0vl_M",
+    "demoUrl": "https://www.msdesignbd.com/2016/05/3rdball-responsive-video-blogger-template.html",
+    "tags": ["blogger", "premium", "magazine", "clean-layout"]
+  },
+  {
     "id": "wp-wordplus",
     "name": "WordPlus",
     "slug": "wordpress-wordplus-theme",
