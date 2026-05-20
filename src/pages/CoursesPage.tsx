@@ -10,6 +10,7 @@ const courses = coursesJson as Course[];
 const CATEGORY_EMOJI: Record<string, string> = {
   'Web Development': '💻',
   'Digital Marketing': '📈',
+  'Islamic Studies': '📖',
 };
 
 function categoryEmoji(category: string): string {

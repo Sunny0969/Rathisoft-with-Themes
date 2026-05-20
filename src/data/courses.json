@@ -296,5 +296,39 @@
         }
       ]
     }
+  },
+  {
+    "id": "quran",
+    "title": "Quran",
+    "description": "Quran lecture — watch the full lesson and follow along at your own pace.",
+    "thumbnail": "",
+    "category": "Islamic Studies",
+    "level": "Beginner",
+    "duration": "1 hour",
+    "totalLectures": 1,
+    "instructor": "RathiSoft Team",
+    "tags": ["Quran", "Islamic Studies"],
+    "lectures": [
+      {
+        "id": "quran-l1",
+        "title": "quran",
+        "description": "Quran lecture video.",
+        "duration": "1 hour",
+        "driveFileId": "https://1024terabox.com/s/1a82LEqO8YQYXlN5R4rvfUQ",
+        "order": 1
+      }
+    ],
+    "quiz": {
+      "passingScore": 70,
+      "questions": [
+        {
+          "id": "quran-q1",
+          "question": "What is the holy book of Islam?",
+          "options": ["Bible", "Quran", "Torah", "Vedas"],
+          "correctAnswer": 1,
+          "explanation": "The Quran is the central religious text of Islam."
+        }
+      ]
+    }
   }
 ]

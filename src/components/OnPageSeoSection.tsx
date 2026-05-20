@@ -49,21 +49,34 @@ export function OnPageSeoSection({
           {heading}
         </h2>
         {isBoxed ? (
-          <div className="on-page-seo__prose-card">
-            <div className="on-page-seo__prose-inner">{proseBlock}</div>
+          <div className="on-page-seo__content-row">
+            <div className="on-page-seo__prose-card">
+              <div className="on-page-seo__prose-inner">{proseBlock}</div>
+            </div>
+            <nav className="on-page-seo__nav" aria-label="Explore more on this website">
+              <ul>
+                {links.map((l) => (
+                  <li key={`${l.to}-${l.label}`}>
+                    <Link to={l.to}>{l.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
         ) : (
-          proseBlock
+          <>
+            {proseBlock}
+            <nav className="on-page-seo__nav" aria-label="Explore more on this website">
+              <ul>
+                {links.map((l) => (
+                  <li key={`${l.to}-${l.label}`}>
+                    <Link to={l.to}>{l.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </>
         )}
-        <nav className="on-page-seo__nav" aria-label="Explore more on this website">
-          <ul>
-            {links.map((l) => (
-              <li key={`${l.to}-${l.label}`}>
-                <Link to={l.to}>{l.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
         <p className="on-page-seo__authority">
           We align public guidance with{' '}
           <a

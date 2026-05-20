@@ -1319,7 +1319,7 @@ export function Work() {
       <div className="hero">
         <div className="wrap">
           <div className="label">Our Work</div>
-          <h1>Web Development Portfolio</h1>
+          <h1>Rathisoft Portfolio</h1>
           <p>
             Browse sites, stores, and campaigns we have shipped for clinics, agencies, and brands
             worldwide—WordPress, Shopify, custom web, and marketing work you can click

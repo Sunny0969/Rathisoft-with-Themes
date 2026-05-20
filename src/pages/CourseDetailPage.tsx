@@ -1,10 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { EnrollmentModal } from '../components/EnrollmentModal';
+import { TeraboxLecturePlayer } from '../components/TeraboxLecturePlayer';
 import { Seo } from '../components/Seo';
 import coursesJson from '../data/courses.json';
 import type { Course, Lecture } from '../types/lms';
 import { useProgress } from '../hooks/useProgress';
+import {
+  getLectureFallbackUrl,
+  getLectureVideoSrc,
+  isExternalLectureUrl,
+  isTeraboxLecture,
+} from '../utils/lectureVideo';
 
 const courses = coursesJson as Course[];
 
@@ -112,6 +119,19 @@ export function CourseDetailPage() {
   const currentComplete =
     activeLecture != null && isLectureComplete(activeLecture.id);
 
+  const lectureVideoSrc = activeLecture
+    ? getLectureVideoSrc(activeLecture.driveFileId)
+    : '';
+  const lectureFallbackUrl = activeLecture
+    ? getLectureFallbackUrl(activeLecture.driveFileId)
+    : null;
+  const lectureIsGenericExternal = activeLecture
+    ? isExternalLectureUrl(activeLecture.driveFileId)
+    : false;
+  const lectureIsTerabox = activeLecture
+    ? isTeraboxLecture(activeLecture.driveFileId)
+    : false;
+
   return (
     <>
       <Seo
@@ -162,14 +182,39 @@ export function CourseDetailPage() {
           <div className="lms-player-main">
             <div className="lms-player-video-wrap">
               {activeLecture && isEnrolled ? (
-                <iframe
-                  key={activeLecture.id}
-                  src={`https://drive.google.com/file/d/${activeLecture.driveFileId}/preview`}
-                  width="100%"
-                  title={activeLecture.title}
-                  allow="autoplay"
-                  allowFullScreen
-                />
+                lectureIsGenericExternal && lectureFallbackUrl ? (
+                  <div className="lms-player-placeholder lms-player-placeholder--external">
+                    <span className="lms-player-placeholder-icon" aria-hidden>
+                      ▶
+                    </span>
+                    <span>This lecture opens on an external site.</span>
+                    <a
+                      href={lectureFallbackUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="lms-btn lms-btn--primary lms-mt-4"
+                    >
+                      Watch lecture →
+                    </a>
+                  </div>
+                ) : lectureIsTerabox ? (
+                  <TeraboxLecturePlayer
+                    key={activeLecture.id}
+                    shareUrl={activeLecture.driveFileId}
+                    title={activeLecture.title}
+                    fallbackUrl={lectureFallbackUrl}
+                  />
+                ) : (
+                  <iframe
+                    key={activeLecture.id}
+                    src={lectureVideoSrc}
+                    width="100%"
+                    title={activeLecture.title}
+                    allow="autoplay; fullscreen; encrypted-media"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                )
               ) : (
                 <div className="lms-player-placeholder">
                   <span className="lms-player-placeholder-icon" aria-hidden>

@@ -16,7 +16,7 @@ const NAV_LINKS = [
   { label: 'About Us', href: '/about' },
   // { label: 'Contact', href: '/contact' },
   { label: 'Themes', href: '/themes' },
-  { label: 'E-Learning', href: '/courses' },
+  // { label: 'E-Learning', href: '/courses' },
 ] as const
 
 export function Header() {
@@ -66,7 +66,7 @@ export function Header() {
 
     const hero = findPageHero()
     const ro = hero ? new ResizeObserver(onScrollOrResize) : null
-    ro?.observe(hero)
+    if (hero && ro) ro.observe(hero)
 
     return () => {
       cancelAnimationFrame(raf)

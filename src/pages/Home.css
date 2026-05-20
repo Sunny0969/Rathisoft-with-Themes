@@ -296,12 +296,11 @@ body.cur-hover #cursor-ring {
 /* Hero — pull under fixed header so transparent nav shows video/gradient */
 .rathisoft-landing .hero-side {
   position: absolute;
-  top: 56%;
-  right: 23px;
-
+  top: 54%;
+  right: 8px;
   transform: translateY(-50%);
-  height: 55%;
-
+  height: min(68vh, 68%);
+  max-height: 720px;
   width: auto;
   z-index: 2;
   opacity: 0.95;
@@ -357,7 +356,7 @@ body.cur-hover #cursor-ring {
   z-index: 2;
 }
 .rathisoft-landing .hero-l {
-  padding: 1px 64px 4px 52px;
+  padding: 20px 64px 4px 52px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -382,7 +381,7 @@ body.cur-hover #cursor-ring {
   font-weight: 500;
   padding: 7px 16px;
   border-radius: 100px;
-  margin-bottom: 36px;
+  margin-bottom: 16px;
   letter-spacing: 0.8px;
   width: fit-content;
 }

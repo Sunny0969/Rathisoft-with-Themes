@@ -672,6 +672,11 @@ body::before {
   opacity: 0;
 }
 
+.live-demo-modal-iframe--hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .live-demo-modal-iframe--ready {
   opacity: 1;
 }
@@ -764,6 +769,15 @@ body::before {
   transform: scale(0.98);
 }
 
+.live-demo-fallback-url {
+  margin: 12px 0 0;
+  max-width: 100%;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text2);
+  word-break: break-all;
+}
+
 @keyframes liveDemoScrimIn {
   from {
     opacity: 0;
@@ -808,7 +822,12 @@ body::before {
   color: var(--text2);
 }
 .empty-state .empty-icon { font-size: 56px; margin-bottom: 20px; }
-.empty-state h2 { font-size: 1.4rem; color: var(--text); margin-bottom: 8px; font-weight: 600; }
+.empty-state-title {
+  font-size: 1.4rem;
+  color: var(--text);
+  margin: 0 0 8px;
+  font-weight: 600;
+}
 
 /* ── FAQ ── */
 .store-faq {
