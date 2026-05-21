@@ -130,6 +130,16 @@
   font-weight: 300;
 }
 
+.rs-footer-block .ft-humans-link {
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+}
+
+.rs-footer-block .ft-humans-link:hover {
+  color: #a5b4fc;
+  text-decoration: underline;
+}
+
 .rs-footer-block .ft-soc {
   display: flex;
   gap: 8px;

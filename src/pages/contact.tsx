@@ -2,42 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { OnPageSeoSection } from "../components/OnPageSeoSection";
-import { Seo, SITE_ORIGIN } from "../components/Seo";
-
-const CONTACT_META_TITLE = "Contact Us | Get a Free Quote | RathiSoft";
-const CONTACT_META_DESCRIPTION =
-  "Contact RathiSoft for web, Shopify, SEO, or app quotes. Book a slot or send a brief—most replies within one business day. NDA on request.";
-
-const CONTACT_STRUCTURED_DATA = {
-  "@context": "https://schema.org",
-  "@type": "ContactPage",
-  name: "Contact RathiSoft",
-  url: `${SITE_ORIGIN}/contact`,
-  description:
-    "Contact RathiSoft for software development, web development, digital marketing, and SEO services in Lahore, Pakistan.",
-  mainEntity: {
-    "@type": "LocalBusiness",
-    name: "RathiSoft",
-    telephone: "+923342651544",
-    email: "info@rathisoft.com",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Johar Town",
-      addressLocality: "Lahore",
-      addressRegion: "Punjab",
-      postalCode: "54000",
-      addressCountry: "PK",
-    },
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        opens: "09:00",
-        closes: "18:00",
-      },
-    ],
-  },
-};
+import { JsonLd } from "../components/JsonLd";
+import { Seo } from "../components/Seo";
+import { buildContactPageSchemaGraph } from "../data/schemaMarkup";
+import { PAGE_SEO } from "../data/pageSeo";
+import { CONTACT_INTERNAL_LINKS } from "../data/internalLinks";
+import { ROUTES, servicePath } from "../utils/routes";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const MONTHS = [
@@ -683,17 +653,18 @@ function ContactFormPanel() {
 export default function ContactPage() {
   return (
     <>
-      <Seo title={CONTACT_META_TITLE} description={CONTACT_META_DESCRIPTION} />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(CONTACT_STRUCTURED_DATA) }}
+      <Seo
+        title={PAGE_SEO.contact.title}
+        description={PAGE_SEO.contact.description}
+        keywords={PAGE_SEO.contact.keywords}
       />
+      <JsonLd data={buildContactPageSchemaGraph()} />
       <style>{styles}</style>
 
       <Breadcrumbs
         items={[
-          { name: "Home", path: "/" },
-          { name: "Contact", path: "/contact" },
+          { name: "Home", path: ROUTES.home },
+          { name: "Contact", path: ROUTES.contact },
         ]}
       />
 
@@ -701,13 +672,13 @@ export default function ContactPage() {
       <section className="rathi-hero">
         <div className="rathi-wrap">
           <div className="rathi-label">Get In Touch</div>
-          <h1>Get in Touch</h1>
+          <h1 id="contact-hero-heading">Contact RathiSoft — Software Agency in Lahore</h1>
           <p>
-            Book a consultation, pick a time, or send your brief—RathiSoft routes every message to
-            the people who will actually build your{' '}
-            <Link to="/services/web-development">web</Link>, store, or{' '}
-            <Link to="/services/seo-optimization">SEO</Link> work. Most enquiries get a reply within
-            one business day.
+            <strong>Contact RathiSoft</strong>, your <em>software agency in Lahore</em>, to book a
+            consultation or send your brief—we route every message to the people who will actually
+            build your <Link to={servicePath('web-development')}>web</Link>, store, or{' '}
+            <Link to={servicePath('seo-services')}>SEO</Link> work. Most enquiries get a reply
+            within one business day.
           </p>
           <div className="hero-badges">
             <span className="hbadge">⚡ 24hr Response</span>
@@ -768,16 +739,11 @@ export default function ContactPage() {
             <p>
               Expect a short recap of goals, timeline, and stack (WordPress, Shopify, custom web, or
               ads), plus a suggested first milestone. Review our{' '}
-              <Link to="/work">portfolio</Link> anytime while you wait for the reply.
+              <Link to={ROUTES.portfolio}>portfolio</Link> anytime while you wait for the reply.
             </p>
           </>
         }
-        links={[
-          { to: "/services", label: "Align procurement decks with our published service lanes" },
-          { to: "/about", label: "Understand governance philosophies motivating response SLAs" },
-          { to: "/work", label: "Review analogous engagements proving multidisciplinary throughput" },
-          { to: "/packages", label: "Benchmark packaged engagements ahead of bespoke quoting" },
-        ]}
+        links={CONTACT_INTERNAL_LINKS}
       >
         <p>
           Need an NDA first? Say so in your message. We can share sandbox access and a responsibility
@@ -785,12 +751,12 @@ export default function ContactPage() {
           <a
             href="https://developers.google.com/search/docs/essentials"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer nofollow"
           >
             search quality
           </a>{' '}
           and{' '}
-          <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer">
+          <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer nofollow">
             performance
           </a>{' '}
           practices we follow on live builds.

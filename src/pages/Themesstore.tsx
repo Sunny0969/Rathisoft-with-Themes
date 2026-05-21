@@ -7,7 +7,11 @@
 import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import './Themesstore.css';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { InternalLinksNav } from '../components/InternalLinksNav';
+import { THEMES_INTERNAL_LINKS } from '../data/internalLinks';
 import { Seo, SITE_ORIGIN } from '../components/Seo';
+import { PAGE_SEO } from '../data/pageSeo';
+import { ROUTES } from '../utils/routes';
 import { THEMES_STORE_FONT_STYLESHEET } from '../constants/deferredFontUrls';
 import { injectDeferredStylesheet } from '../utils/deferredStylesheet';
 
@@ -25,10 +29,6 @@ import {
 } from './themesStoreData';
 
 const STORE_STATS = countByCategory(STORE_ITEMS);
-
-const THEMES_META_TITLE = 'WordPress Themes & Plugins Download | RathiSoft';
-const THEMES_META_DESCRIPTION =
-  'Download free WordPress themes, premium Shopify templates, WooCommerce layouts, and plugins. Live demos and staging-first picks from RathiSoft.';
 
 const CATEGORY_LABEL: Record<StoreCategory, string> = {
   'shopify-theme': 'Shopify Theme',
@@ -343,7 +343,7 @@ const LiveDemoModal: React.FC<LiveDemoModalProps> = ({
                 <a
                   href={tabUrl}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer nofollow"
                   className="live-demo-open-tab"
                 >
                   Open full demo in new tab ↗
@@ -374,7 +374,7 @@ const LiveDemoModal: React.FC<LiveDemoModalProps> = ({
                   <a
                     href={tabUrl}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener noreferrer nofollow"
                     className="live-demo-fallback-cta"
                     onClick={() => {
                       tabOpenedRef.current = true;
@@ -486,7 +486,8 @@ const ItemCard: React.FC<CardProps> = ({ item, delay, onOpenLiveDemo }) => {
           <img
             className="card-thumb-icon-img"
             src={item.icon}
-            alt={`${item.name} — WordPress or Shopify product thumbnail`}
+            alt={`${item.name} — WordPress or Shopify theme download | RathiSoft`}
+            title={`Preview ${item.name} theme or plugin`}
             width={72}
             height={72}
             loading="lazy"
@@ -532,7 +533,7 @@ const ItemCard: React.FC<CardProps> = ({ item, delay, onOpenLiveDemo }) => {
                 className="card-meta-drive-link"
                 href={buildDriveViewUrl(item.driveFileId)}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 onClick={(e) => e.stopPropagation()}
               >
                 Size on Drive
@@ -638,11 +639,15 @@ const ThemesStore: React.FC = () => {
     injectDeferredStylesheet(THEMES_STORE_FONT_STYLESHEET, 'rathisoft-deferred-fonts-themes');
   }, []);
 
-  const themesStoreUrl = `${SITE_ORIGIN}/themes`;
+  const themesStoreUrl = `${SITE_ORIGIN}/themes-store/`;
 
   return (
     <>
-      <Seo title={THEMES_META_TITLE} description={THEMES_META_DESCRIPTION} />
+      <Seo
+        title={PAGE_SEO.themes.title}
+        description={PAGE_SEO.themes.description}
+        keywords={PAGE_SEO.themes.keywords}
+      />
       {/* ── SEO: JSON-LD Structured Data ── */}
       <script
         type="application/ld+json"
@@ -671,8 +676,8 @@ const ThemesStore: React.FC = () => {
       <main className="page-themes app-main">
         <Breadcrumbs
           items={[
-            { name: 'Home', path: '/' },
-            { name: 'Themes store', path: '/themes' },
+            { name: 'Home', path: ROUTES.home },
+            { name: 'Themes store', path: ROUTES.themes },
           ]}
         />
         <section className="hero" aria-labelledby="themes-hero-heading">
@@ -680,15 +685,15 @@ const ThemesStore: React.FC = () => {
             <div className="label">Themes store</div>
 
             <h1 id="themes-hero-heading">
-              Premium Shopify &amp; WordPress
-              <br />
-              Themes &amp; Plugins
+              WordPress Themes &amp; Shopify Templates Download
             </h1>
 
             <p>
-              Browse {STORE_ITEMS.length}+ curated downloads—responsive WordPress themes, WooCommerce storefronts,
-              premium Shopify templates, and plugins with live demos. RathiSoft&apos;s staging-first library helps your
-              team compare layouts before you buy official licences.
+              Browse {STORE_ITEMS.length}+ <strong>WordPress themes and Shopify templates</strong>
+              —responsive storefronts, WooCommerce layouts, and plugins with live demos.
+              RathiSoft&apos;s staging-first library helps your team compare layouts before you buy
+              official licences—handy whether you run an <em>IT company in Lahore</em> or ship
+              client sites abroad.
             </p>
 
           <div className="hero-stats" role="region" aria-label="Library statistics">
@@ -807,7 +812,7 @@ const ThemesStore: React.FC = () => {
                       <a
                         href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide"
                         target="_blank"
-                        rel="noopener noreferrer"
+                        rel="noopener noreferrer nofollow"
                       >
                         SEO Starter Guide
                       </a>
@@ -815,12 +820,12 @@ const ThemesStore: React.FC = () => {
                       <a
                         href="https://developers.google.com/search/docs/essentials"
                         target="_blank"
-                        rel="noopener noreferrer"
+                        rel="noopener noreferrer nofollow"
                       >
                         Search Essentials
                       </a>
                       <span aria-hidden> · </span>
-                      <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer">
+                      <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer nofollow">
                         Core Web Vitals (web.dev)
                       </a>
                     </p>
@@ -830,6 +835,8 @@ const ThemesStore: React.FC = () => {
             ))}
           </div>
         </section>
+
+        <InternalLinksNav links={THEMES_INTERNAL_LINKS} heading="Related pages" />
 
         {/* ── FOOTER ── */}
         <footer className="store-footer">

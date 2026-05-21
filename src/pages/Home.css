@@ -277,8 +277,14 @@ body.cur-hover #cursor-ring {
 .rathisoft-landing .home-section-head {
   margin-bottom: 52px;
 }
-.rathisoft-landing .home-h2-follow {
-  margin-top: 36px;
+.rathisoft-landing .home-h3-follow {
+  font-family: var(--fh);
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: -0.5px;
+  margin: 36px 0 0;
+  line-height: 1.2;
 }
 .rathisoft-landing .prob-lead {
   margin-top: 14px;
@@ -393,9 +399,23 @@ body.cur-hover #cursor-ring {
   animation: homePulse 2s ease-in-out infinite;
 }
 .rathisoft-landing .hero-h {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: clamp(40px, 5.2vw, 72px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
   margin-bottom: 24px;
 }
-.rathisoft-landing .hero-h span {
+.rathisoft-landing .hero-h .hero-h-accent {
+  color: var(--gold);
+  font-weight: 800;
+}
+.rathisoft-landing .hero-p strong {
+  font-weight: 600;
+  color: var(--white);
+}
+.rathisoft-landing .hero-p em {
+  font-style: italic;
   color: var(--indigo2);
 }
 .rathisoft-landing .hero-p {
@@ -1203,6 +1223,19 @@ body.cur-hover #cursor-ring {
   align-items: start;
   text-align: left;
 }
+.rathisoft-landing .fcta-form-heading {
+  font-family: var(--fh);
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 600;
+  color: var(--white);
+  margin: 0 0 16px;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+}
+.rathisoft-landing .fcta-form-col {
+  display: flex;
+  flex-direction: column;
+}
 .rathisoft-landing .ct-card {
   background: var(--bg2);
   border: 1px solid var(--border2);
@@ -1685,4 +1718,12 @@ body.cur-hover #cursor-ring {
   .rathisoft-landing section.on-page-seo.on-page-seo--boxed {
     padding: 44px 0;
   }
+}
+
+/* Sticky industry cards — avoid overflow clipping from landing shell */
+.rathisoft-landing .ai-industries,
+.rathisoft-landing .ai-industries-wrap,
+.rathisoft-landing .ai-industries-pin,
+.rathisoft-landing .ai-industries-stack {
+  overflow: visible;
 }

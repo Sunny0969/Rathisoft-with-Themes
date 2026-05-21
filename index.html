@@ -1,55 +1,56 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JH9VS55MVY"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'G-JH9VS55MVY');
-    </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/webp" href="/logo/simpleR.webp" />
     <link rel="apple-touch-icon" href="/logo/simpleR.webp" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#6366f1" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
     <meta
       name="description"
-      content="Custom web apps, Shopify &amp; WordPress stores, and digital marketing that grows revenue. Free project quote from RathiSoft—most replies within one business day."
+      content="Custom web apps, Shopify &amp; WordPress stores, and marketing that grows revenue. Lahore-based team—get a free project quote today."
     />
     <meta
       name="keywords"
-      content="software agency Lahore, software development company Pakistan, web development Lahore, digital marketing agency Pakistan, IT company Lahore"
+      content="software agency Lahore, web development Pakistan, Shopify developer Lahore, WordPress agency, digital marketing Lahore, app development, IT company Johar Town, RathiSoft"
     />
-    <title>Software Agency | Web, Apps &amp; Growth | RathiSoft</title>
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="RathiSoft" />
+    <meta name="geo.region" content="PK-PB" />
+    <meta name="geo.placename" content="Lahore" />
+    <meta name="geo.position" content="31.5497;74.3436" />
+    <meta name="ICBM" content="31.5497, 74.3436" />
+    <title>Web &amp; App Development Agency Lahore | RathiSoft</title>
     <link rel="canonical" href="https://www.rathisoft.com/" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://www.rathisoft.com/sitemap.xml" />
     <!-- Open Graph (defaults for /; routes update via Seo.tsx) -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="RathiSoft" />
-    <meta property="og:title" content="Software Agency | Web, Apps &amp; Growth | RathiSoft" />
+    <meta property="og:title" content="Web &amp; App Development Agency Lahore | RathiSoft" />
     <meta
       property="og:description"
-      content="Custom web apps, Shopify &amp; WordPress stores, and digital marketing that grows revenue. Free project quote from RathiSoft—most replies within one business day."
+      content="Custom web apps, Shopify &amp; WordPress stores, and marketing that grows revenue. Lahore-based team—get a free project quote today."
     />
     <meta property="og:url" content="https://www.rathisoft.com/" />
-    <meta property="og:image" content="https://www.rathisoft.com/og-image.jpg" />
+    <meta property="og:image" content="https://www.rathisoft.com/og-image.webp" />
+    <meta property="og:image:secure_url" content="https://www.rathisoft.com/og-image.webp" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="RathiSoft — web, Shopify, WordPress, and app development agency in Lahore, Pakistan" />
+    <meta property="og:image:type" content="image/webp" />
     <meta property="og:locale" content="en_US" />
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@rathisoft" />
-    <meta name="twitter:title" content="Software Agency | Web, Apps &amp; Growth | RathiSoft" />
+    <meta name="twitter:image:alt" content="RathiSoft — web, Shopify, WordPress, and app development agency in Lahore, Pakistan" />
+    <meta name="twitter:title" content="Web &amp; App Development Agency Lahore | RathiSoft" />
     <meta
       name="twitter:description"
-      content="Custom web apps, Shopify &amp; WordPress stores, and digital marketing that grows revenue. Free project quote from RathiSoft—most replies within one business day."
+      content="Custom web apps, Shopify &amp; WordPress stores, and marketing that grows revenue. Lahore-based team—get a free project quote today."
     />
-    <meta name="twitter:image" content="https://www.rathisoft.com/og-image.jpg" />
+    <meta name="twitter:image" content="https://www.rathisoft.com/og-image.webp" />
     <!-- PART 8: critical CSS — shell + first paint before bundle (Tailwind/React hydrate separately) -->
     <style id="rathisoft-critical-css">
       *,
@@ -64,7 +65,7 @@
         margin: 0;
         background: #0a0a12;
         color: #fff;
-        font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+        font-family: Inter, system-ui, 'Segoe UI', Roboto, sans-serif;
         -webkit-font-smoothing: antialiased;
       }
       #root {
@@ -73,12 +74,23 @@
         display: flex;
         flex-direction: column;
       }
+      img,
+      video {
+        max-width: 100%;
+        height: auto;
+      }
     </style>
-    <!-- Core Web Vitals: early connections + LCP poster -->
+    <!-- Core Web Vitals: early connections (fonts, analytics, media CDNs) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="image" href="/assets/hero-image.webp" fetchpriority="high" />
-    <!-- Non-critical fonts: print media swap avoids blocking first paint -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="dns-prefetch" href="https://images.unsplash.com" />
+    <link rel="dns-prefetch" href="https://cdn.simpleicons.org" />
+    <!-- LCP: hero visual + critical body font (font-display: swap in /src/styles/fonts.css) -->
+    <link rel="preload" as="image" href="/images/Side.webp" type="image/webp" fetchpriority="high" />
+    <link rel="preload" as="image" href="/assets/hero-image.webp" type="image/webp" />
+    <link rel="preload" as="font" href="/fonts/inter-latin-400.woff2" type="font/woff2" crossorigin />
+    <!-- Decorative heading/body stacks — non-blocking (display=swap in Google URL) -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&amp;family=Inter:wght@300;400;500&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap"
@@ -96,24 +108,26 @@
     <noscript>
       <nav aria-label="Site pages">
         <a href="https://www.rathisoft.com/">Home</a>
-        <a href="https://www.rathisoft.com/work">Portfolio</a>
-        <a href="https://www.rathisoft.com/packages">Packages</a>
-        <a href="https://www.rathisoft.com/themes">Themes</a>
-        <a href="https://www.rathisoft.com/courses">E-Learning</a>
-        <a href="https://www.rathisoft.com/about">About</a>
-        <a href="https://www.rathisoft.com/contact">Contact</a>
+        <a href="https://www.rathisoft.com/portfolio/">Portfolio</a>
+        <a href="https://www.rathisoft.com/packages/">Packages</a>
+        <a href="https://www.rathisoft.com/themes-store/">Themes</a>
+        <a href="https://www.rathisoft.com/e-learning-courses/">E-Learning</a>
+        <a href="https://www.rathisoft.com/about-us/">About</a>
+        <a href="https://www.rathisoft.com/contact-us/">Contact</a>
       </nav>
     </noscript>
     <div id="root">
       <main>
-        <h1>Web, Apps &amp; Growth — Built to Perform</h1>
+        <p class="seo-prerender-title">
+          Web, Apps &amp; Growth — Built to Perform | RathiSoft
+        </p>
         <p>
           RathiSoft is a software agency for custom web apps, Shopify and WordPress stores, and
           revenue-focused digital marketing.
         </p>
       </main>
     </div>
-    <!-- SPA bundle: type="module" is deferred by default; defer attribute preserves intent for auditors -->
+    <!-- SPA bundle: type="module" is deferred by default -->
     <script type="module" src="/src/main.tsx" defer></script>
   </body>
 </html>

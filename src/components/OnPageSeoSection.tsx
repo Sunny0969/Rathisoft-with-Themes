@@ -82,12 +82,12 @@ export function OnPageSeoSection({
           <a
             href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer nofollow"
           >
             Google&apos;s SEO Starter Guide
           </a>{' '}
           and ship fast UX benchmarked against{' '}
-          <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer">
+          <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer nofollow">
             Core Web Vitals guidance on web.dev
           </a>
           .

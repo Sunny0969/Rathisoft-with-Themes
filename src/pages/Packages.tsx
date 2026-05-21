@@ -2,8 +2,12 @@ import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Breadcrumbs } from '../components/Breadcrumbs'
+import { InternalLinksNav } from '../components/InternalLinksNav'
+import { PACKAGES_INTERNAL_LINKS } from '../data/internalLinks'
 import { PackagesSection } from '../components/PackagesSection'
 import { Seo } from '../components/Seo'
+import { PAGE_SEO } from '../data/pageSeo'
+import { ROUTES } from '../utils/routes'
 
 const PACKAGES_STYLES = `
 .page-packages {
@@ -608,12 +612,12 @@ const FAQ_ITEMS: { q: string; a: ReactNode }[] = [
         <a
           href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide"
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener noreferrer nofollow"
         >
           Google&apos;s SEO Starter Guide
         </a>{' '}
         and{' '}
-        <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer">
+        <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer nofollow">
           Core Web Vitals guidance on web.dev
         </a>
         .
@@ -625,10 +629,10 @@ const FAQ_ITEMS: { q: string; a: ReactNode }[] = [
     a: (
       <>
         We step into bespoke scope with the same clarity. Review{' '}
-        <Link to="/services">all services</Link>, benchmark outcomes on our{' '}
-        <Link to="/work">portfolio</Link>, read{' '}
-        <Link to="/about">how we operate</Link>, or{' '}
-        <Link to="/contact">contact us</Link> for procurement questionnaires, signatures, or NDAs.
+        <Link to={ROUTES.services}>all services</Link>, benchmark outcomes on our{' '}
+        <Link to={ROUTES.portfolio}>portfolio</Link>, read{' '}
+        <Link to={ROUTES.about}>how we operate</Link>, or{' '}
+        <Link to={ROUTES.contact}>contact us</Link> for procurement questionnaires, signatures, or NDAs.
       </>
     ),
   },
@@ -656,29 +660,29 @@ export function Packages() {
     <main className="page-packages app-main">
       <Breadcrumbs
         items={[
-          { name: 'Home', path: '/' },
-          { name: 'Packages', path: '/packages' },
+          { name: 'Home', path: ROUTES.home },
+          { name: 'Packages', path: ROUTES.packages },
         ]}
       />
       <Seo
-        title="WordPress & Shopify Packages | Pricing | RathiSoft"
-        description="Clear WordPress, Shopify, SEO, and marketing packages from RathiSoft—what is included, timelines, and support. Compare tiers, then contact us."
+        title={PAGE_SEO.packages.title}
+        description={PAGE_SEO.packages.description}
+        keywords={PAGE_SEO.packages.keywords}
       />
       <style>{PACKAGES_STYLES}</style>
 
       <div className="hero">
         <div className="wrap">
           <div className="label">Pricing</div>
-          <h1>
-            Simple Packages
-            <br />
-            With Clear Scope
+          <h1 id="packages-hero-heading">
+            WordPress &amp; Shopify Packages &amp; Pricing in Lahore
           </h1>
           <p>
-            Each bundle lists design, build, QA, analytics setup, and post-launch care—so you know
-            what you are buying before we start. Not sure which tier fits?{' '}
-            <Link to="/services">See all services</Link> or{' '}
-            <Link to="/contact">ask for a custom quote</Link>.
+            Our <strong>WordPress and Shopify packages</strong> list design, build, QA, analytics,
+            and post-launch care—<em>affordable web development</em> tiers for Lahore startups and
+            global brands alike. Not sure which bundle fits?{' '}
+            <Link to={ROUTES.services}>See all services</Link> or{' '}
+            <Link to={ROUTES.contact}>ask for a custom quote</Link>.
           </p>
         </div>
       </div>
@@ -707,6 +711,8 @@ export function Packages() {
             </div>
           ))}
         </div>
+
+        <InternalLinksNav links={PACKAGES_INTERNAL_LINKS} heading="Related pages" />
       </div>
 
       <div className="cta-wrap">
@@ -716,7 +722,7 @@ export function Packages() {
           hours.
         </p>
         <div className="cta-btns">
-          <Link to="/contact" className="btn-p">
+          <Link to={ROUTES.contact} className="btn-p">
             Send a message →
           </Link>
           <a

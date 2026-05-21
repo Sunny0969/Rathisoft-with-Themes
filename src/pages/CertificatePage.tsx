@@ -1,11 +1,13 @@
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
 import { useMemo, useRef, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { Seo } from '../components/Seo';
 import coursesJson from '../data/courses.json';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import type { Course } from '../types/lms';
+import { Breadcrumbs } from '../components/Breadcrumbs';
+import { InternalLinksNav } from '../components/InternalLinksNav';
+import { courseDetailInternalLinks } from '../data/internalLinks';
+import { ROUTES, coursePath } from '../utils/routes';
 
 const courses = coursesJson as Course[];
 
@@ -56,6 +58,10 @@ export function CertificatePage() {
 
     setPdfBusy(true);
     try {
+      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+        import('html2canvas'),
+        import('jspdf'),
+      ])
       const canvas = await html2canvas(node, {
         scale: 2,
         useCORS: true,
@@ -80,7 +86,7 @@ export function CertificatePage() {
   }
 
   if (!course) {
-    return <Navigate to="/courses" replace />;
+    return <Navigate to={ROUTES.courses} replace />;
   }
 
   return (
@@ -88,6 +94,14 @@ export function CertificatePage() {
       <Seo
         title={`Certificate — ${course.title}`}
         description={`Certificate of completion for ${course.title}.`}
+      />
+      <Breadcrumbs
+        items={[
+          { name: 'Home', path: ROUTES.home },
+          { name: 'E-Learning', path: ROUTES.courses },
+          { name: course.title, path: coursePath(course.id) },
+          { name: 'Certificate', path: coursePath(course.id, 'certificate') },
+        ]}
       />
       <main className="lms-cert-page">
         <div className="lms-cert-page-inner">
@@ -141,10 +155,15 @@ export function CertificatePage() {
             >
               {pdfBusy ? 'Preparing PDF…' : '⬇ Download PDF Certificate'}
             </button>
-            <Link to="/courses" className="lms-btn lms-btn--outline">
+            <Link to={ROUTES.courses} className="lms-btn lms-btn--outline">
               Explore More Courses
             </Link>
           </div>
+
+          <InternalLinksNav
+            links={courseDetailInternalLinks(course.title)}
+            heading="Related pages"
+          />
         </div>
       </main>
     </>

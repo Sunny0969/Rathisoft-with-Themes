@@ -1,25 +1,15 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Breadcrumbs } from '../components/Breadcrumbs'
-import { Seo, SITE_ORIGIN } from '../components/Seo'
+import { InternalLinksNav } from '../components/InternalLinksNav'
+import { ABOUT_INTERNAL_LINKS } from '../data/internalLinks'
+import { JsonLd } from '../components/JsonLd'
+import { Seo } from '../components/Seo'
+import { buildAboutPageSchemaGraph } from '../data/schemaMarkup'
+import { PAGE_SEO } from '../data/pageSeo'
+import { ROUTES } from '../utils/routes'
+import { logoAlt, teamMemberAlt } from '../utils/imageAssets'
 import { TEAM_MEMBERS } from '../data/teamMembers'
-
-const ABOUT_META_TITLE = 'About Us | Software Agency | RathiSoft'
-const ABOUT_META_DESCRIPTION =
-  'Meet the team behind RathiSoft—web, mobile, Shopify, and marketing for clients in Pakistan and worldwide. Mission, values, and how we deliver.'
-
-const ABOUT_STRUCTURED_DATA = {
-  '@context': 'https://schema.org',
-  '@type': 'AboutPage',
-  name: 'About RathiSoft',
-  url: `${SITE_ORIGIN}/about`,
-  description:
-    'Meet RathiSoft—building web, mobile, Shopify, and marketing for Pakistan and global clients.',
-  mainEntityOfPage: {
-    '@type': 'WebPage',
-    '@id': `${SITE_ORIGIN}/about`,
-  },
-}
 
 /** All About page styles live in this file (no separate CSS module). Scoped under `.page-about`. */
 const ABOUT_STYLES = `
@@ -707,25 +697,26 @@ export function AboutUs() {
     <main className="page-about app-main">
       <Breadcrumbs
         items={[
-          { name: 'Home', path: '/' },
-          { name: 'About', path: '/about' },
+          { name: 'Home', path: ROUTES.home },
+          { name: 'About', path: ROUTES.about },
         ]}
       />
-      <Seo title={ABOUT_META_TITLE} description={ABOUT_META_DESCRIPTION} />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ABOUT_STRUCTURED_DATA) }}
+      <Seo
+        title={PAGE_SEO.about.title}
+        description={PAGE_SEO.about.description}
+        keywords={PAGE_SEO.about.keywords}
       />
+      <JsonLd data={buildAboutPageSchemaGraph()} />
       <style>{ABOUT_STYLES}</style>
 
       <div className="hero">
         <div className="wrap">
           <div className="label">About Rathisoft</div>
-          <h1>About Our Software Agency</h1>
+          <h1>About RathiSoft — Software Agency in Lahore, Pakistan</h1>
           <p>
-            RathiSoft helps founders and operators ship web, mobile, and growth work with clear
-            scopes and engineers who stay reachable after launch—clients in Pakistan, the UK, UAE,
-            and beyond.
+            RathiSoft is a <strong>software agency in Lahore, Pakistan</strong> helping founders
+            ship web, mobile, and growth work with clear scopes—an <em>IT company</em> teams in
+            Pakistan, the UK, UAE, and beyond trust because engineers stay reachable after launch.
           </p>
         </div>
       </div>
@@ -762,10 +753,12 @@ export function AboutUs() {
           <div className="about-card">
             <img
               src="/logo/simpleR.webp"
-              alt="RathiSoft logo"
+              alt={logoAlt('about')}
+              title="RathiSoft — custom web development Lahore Pakistan"
               className="about-rs-logo"
               width={100}
               height={100}
+              loading="lazy"
               decoding="async"
               onError={(e) => {
                 const img = e.currentTarget
@@ -797,8 +790,8 @@ export function AboutUs() {
               We build <strong>scalable</strong>, <strong>high-performance</strong>, and{' '}
               <strong>user-centric</strong> products for founders who want a partner that answers
               on WhatsApp and stays after launch. Explore our{' '}
-              <Link to="/services">service list</Link> or recent{' '}
-              <Link to="/work">portfolio work</Link>.
+              <Link to={ROUTES.services}>service list</Link> or recent{' '}
+              <Link to={ROUTES.portfolio}>portfolio work</Link>.
             </p>
             <p>
               Our approach combines <strong>modern technologies</strong>,{' '}
@@ -882,15 +875,16 @@ export function AboutUs() {
               <h2>The Team Behind RathiSoft</h2>
               <p className="section-subtitle">
                 Led by experienced builders and strategists — tap a card for full bios on our{' '}
-                <Link to="/team">team page</Link>.
+                <Link to={ROUTES.team}>team page</Link>.
               </p>
               <div className="about-team-mini-grid">
                 {TEAM_MEMBERS.map((member) => (
-                  <Link key={member.id} to="/team" className="about-mini-card">
+                  <Link key={member.id} to={ROUTES.team} className="about-mini-card">
                     <div className="about-mini-top">
                       <img
                         src={member.image}
-                        alt={`${member.name}, ${member.role}`}
+                        alt={teamMemberAlt(member.name, member.role)}
+                        title={`${member.name} — ${member.role} at RathiSoft`}
                         className="about-mini-av"
                         width={52}
                         height={52}
@@ -973,16 +967,16 @@ export function AboutUs() {
                     <a
                       href="https://developers.google.com/search/docs/essentials"
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer nofollow"
                     >
                       Google Search Essentials
                     </a>
                     {' · '}
-                    <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer">
+                    <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer nofollow">
                       Core Web Vitals (web.dev)
                     </a>
                   </span>
-                  <Link to="/work" className="about-doc-cta">
+                  <Link to={ROUTES.portfolio} className="about-doc-cta">
                     View portfolio &amp; case context →
                   </Link>
                 </div>
@@ -1028,6 +1022,10 @@ export function AboutUs() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="wrap" style={{ paddingBottom: 48 }}>
+        <InternalLinksNav links={ABOUT_INTERNAL_LINKS} heading="Continue exploring RathiSoft" />
       </div>
     </main>
   )

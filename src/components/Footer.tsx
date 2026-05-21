@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { ROUTES, servicePath } from '../utils/routes'
 import './Footer.css'
 
 const YEAR = new Date().getFullYear()
@@ -39,30 +40,30 @@ export function Footer() {
 
           <div className="ft-col">
             <p className="ft-col-title">Services</p>
-            <Link to="/services/web-development">Web Development</Link>
-            <Link to="/services/seo-optimization">SEO Optimization</Link>
-            <Link to="/services/app-development">App Development</Link>
-            <Link to="/services/wordpress-shopify">WordPress & Shopify</Link>
-            <Link to="/services/video-editing">Video Editing</Link>
+            <Link to={servicePath('web-development')}>Web Development</Link>
+            <Link to={servicePath('seo-services')}>SEO Optimization</Link>
+            <Link to={servicePath('app-development')}>App Development</Link>
+            <Link to={servicePath('wordpress-shopify')}>WordPress & Shopify</Link>
+            <Link to={servicePath('video-editing')}>Video Editing</Link>
           </div>
 
           <div className="ft-col">
             <p className="ft-col-title">More Services</p>
-            <Link to="/services/social-media-marketing">Social Media</Link>
-            <Link to="/services/content-marketing">Content Marketing</Link>
-            <Link to="/services/ppc-advertising">PPC Advertising</Link>
-            <Link to="/services/email-marketing">Email Marketing</Link>
-            <Link to="/services/branding-design">Branding & Design</Link>
+            <Link to={servicePath('social-media-marketing')}>Social Media</Link>
+            <Link to={servicePath('content-marketing')}>Content Marketing</Link>
+            <Link to={servicePath('ppc-advertising')}>PPC Advertising</Link>
+            <Link to={servicePath('email-marketing')}>Email Marketing</Link>
+            <Link to={servicePath('branding-design')}>Branding & Design</Link>
           </div>
 
           <div className="ft-col">
             <p className="ft-col-title">Company</p>
-            <Link to="/about">About Us</Link>
-            <Link to="/work">Portfolio</Link>
-            <Link to="/packages">Packages</Link>
-            <Link to="/themes">Themes</Link>
-            <Link to="/courses">E-Learning</Link>
-            <Link to="/contact">Contact</Link>
+            <Link to={ROUTES.about}>About Us</Link>
+            <Link to={ROUTES.portfolio}>Portfolio</Link>
+            <Link to={ROUTES.packages}>Packages</Link>
+            <Link to={ROUTES.themes}>Themes</Link>
+            <Link to={ROUTES.courses}>E-Learning</Link>
+            <Link to={ROUTES.contact}>Contact</Link>
           </div>
         </div>
 
@@ -70,6 +71,10 @@ export function Footer() {
           <div className="ft-copy">
             © {YEAR} Rathisoft Innovation | Suneel Pirkash | All rights
             reserved.
+            {' · '}
+            <a href="/humans.txt" className="ft-humans-link">
+              humans.txt
+            </a>
           </div>
           <div className="ft-soc">
             <a

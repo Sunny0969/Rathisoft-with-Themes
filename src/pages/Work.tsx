@@ -1,7 +1,14 @@
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Breadcrumbs } from '../components/Breadcrumbs'
+import { CaseStudiesSection } from '../components/CaseStudiesSection'
 import { Seo } from '../components/Seo'
+import { REL_CLIENT_LIVE } from '../utils/externalLink'
+import { PAGE_SEO } from '../data/pageSeo'
+import { JsonLd } from '../components/JsonLd'
+import { buildPortfolioItemListSchema } from '../data/schemaMarkup'
+import { portfolioScreenshotAlt, toWebpSrc } from '../utils/imageAssets'
+import { ROUTES } from '../utils/routes'
 
 const WA = 'https://wa.me/923342651544'
 
@@ -208,6 +215,7 @@ const WORK_STYLES = `
   color: var(--indigo2);
 }
 .page-work .section-label {
+  font-family: var(--fh);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 3px;
@@ -215,10 +223,11 @@ const WORK_STYLES = `
   color: var(--indigo2);
   padding: 24px 0 16px;
   border-top: 1px solid var(--border);
-  margin-top: 8px;
+  margin: 8px 0 0;
   display: flex;
   align-items: center;
   gap: 10px;
+  line-height: 1.3;
 }
 .page-work .section-label::after {
   content: '';
@@ -683,10 +692,12 @@ function ProjectCard({
   /** First above-the-fold thumb: eager + high fetch priority for faster LCP */
   imgLoading?: 'lazy' | 'eager'
 }) {
-  const [src, setSrc] = useState(card.img)
+  const initialSrc = toWebpSrc(card.img)
+  const [src, setSrc] = useState(initialSrc)
+  const imageAlt = portfolioScreenshotAlt(card.title)
 
   useEffect(() => {
-    setSrc(card.img)
+    setSrc(toWebpSrc(card.img))
   }, [card.img])
 
   const onImgErr = () => {
@@ -694,7 +705,7 @@ function ProjectCard({
       setSrc(card.imgFallback)
       return
     }
-    setSrc(PLACEHOLDER(card.alt.slice(0, 24)))
+    setSrc(PLACEHOLDER(card.title.slice(0, 24)))
   }
 
   const thumbCls = `pc-thumb${card.emojiThumb ? ' emoji-thumb' : ''}`
@@ -705,13 +716,14 @@ function ProjectCard({
         className="card-link"
         href={card.href}
         target="_blank"
-        rel="noopener noreferrer"
+        rel={REL_CLIENT_LIVE}
       >
         <div className={thumbCls}>
           <img
             className="screenshot"
             src={src}
-            alt={card.alt}
+            alt={imageAlt}
+            title={`${card.title} — live project by RathiSoft`}
             width={800}
             height={500}
             loading={imgLoading}
@@ -1306,26 +1318,28 @@ export function Work() {
     <main className="page-work app-main">
       <Breadcrumbs
         items={[
-          { name: 'Home', path: '/' },
-          { name: 'Work', path: '/work' },
+          { name: 'Home', path: ROUTES.home },
+          { name: 'Work', path: ROUTES.portfolio },
         ]}
       />
       <Seo
-        title="Web Development Portfolio & Case Studies | RathiSoft"
-        description="See RathiSoft portfolio: WordPress, Shopify, web apps & marketing for brands worldwide. Proof you can verify—message us to scope your build."
+        title={PAGE_SEO.work.title}
+        description={PAGE_SEO.work.description}
+        keywords={PAGE_SEO.work.keywords}
       />
+      <JsonLd data={buildPortfolioItemListSchema()} />
       <style>{WORK_STYLES}</style>
 
       <div className="hero">
         <div className="wrap">
           <div className="label">Our Work</div>
-          <h1>Rathisoft Portfolio</h1>
+          <h1 id="work-hero-heading">Prove Our Craft with <br></br>Case Studies | RathiSoft</h1>
           <p>
-            Browse sites, stores, and campaigns we have shipped for clinics, agencies, and brands
-            worldwide—WordPress, Shopify, custom web, and marketing work you can click
-            through. Like what you see?{' '}
-            <Link to="/contact">Tell us about your project</Link> or compare scopes on our{' '}
-            <Link to="/services">services page</Link>.
+            This <strong>web development portfolio</strong> shows WordPress, Shopify, custom web,
+            and marketing launches you can verify—work from a <em>Pakistan software house</em>{' '}
+            serving clinics, agencies, and brands worldwide. Like what you see?{' '}
+            <Link to={ROUTES.contact}>Tell us about your project</Link> or compare scopes on our{' '}
+            <Link to={ROUTES.services}>services page</Link>.
           </p>
           <div className="stats-bar">
             <div className="stat">
@@ -1360,9 +1374,9 @@ export function Work() {
 
         {sectionsVisible.map((sec, secIdx) => (
           <Fragment key={sec.id}>
-            <div className="section-label" id={sec.anchor}>
+            <h2 className="section-label" id={sec.anchor}>
               {sec.label}
-            </div>
+            </h2>
             <div className="port-grid">
               {sec.cards.map((card, idx) => (
                 <ProjectCard
@@ -1375,6 +1389,8 @@ export function Work() {
           </Fragment>
         ))}
       </div>
+
+      <CaseStudiesSection />
 
       <section className="work-evidence" aria-labelledby="work-evidence-heading">
         <div className="wrap">
@@ -1420,7 +1436,7 @@ export function Work() {
                     <a
                       href="https://developers.google.com/search/docs/essentials"
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer nofollow"
                       className="work-evidence-ref-inline"
                     >
                       Search Essentials
@@ -1429,7 +1445,7 @@ export function Work() {
                     <a
                       href="https://web.dev/articles/vitals"
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer nofollow"
                       className="work-evidence-ref-inline"
                     >
                       Core Web Vitals
@@ -1440,17 +1456,20 @@ export function Work() {
               </div>
             </div>
             <nav className="work-evidence-nav" aria-label="Related pages">
-              <Link to="/services">
+              <Link to={ROUTES.services}>
                 Map portfolio lanes back to our service menu
               </Link>
-              <Link to="/about">
+              <Link to={ROUTES.about}>
                 Read how we document transparency and delivery ethos
               </Link>
-              <Link to="/packages">
+              <Link to={ROUTES.packages}>
                 Turn admired work into scoped pilots via packaged engagements
               </Link>
-              <Link to="/contact">
+              <Link to={ROUTES.contact}>
                 Start discovery — reference case IDs from this portfolio
+              </Link>
+              <Link to={ROUTES.themes}>
+                Download WordPress &amp; Shopify themes for your next build
               </Link>
             </nav>
             <div className="work-evidence-foot">
@@ -1459,16 +1478,16 @@ export function Work() {
                 <a
                   href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer nofollow"
                 >
                   Google&apos;s SEO Starter Guide
                 </a>
                 {' · '}
-                <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer">
+                <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer nofollow">
                   Core Web Vitals on web.dev
                 </a>
               </span>
-              <Link to="/about" className="work-evidence-about-link">
+              <Link to={ROUTES.about} className="work-evidence-about-link">
                 Our documentation philosophy on About →
               </Link>
             </div>
@@ -1483,7 +1502,7 @@ export function Work() {
           business day.
         </p>
         <div className="cta-btns">
-          <Link to="/contact" className="btn-p">
+          <Link to={ROUTES.contact} className="btn-p">
             Request a free project quote →
           </Link>
           <a

@@ -1,0 +1,56 @@
+/* TEAM — https://www.rathisoft.com/our-team/ */
+
+RathiSoft builds custom web apps, Shopify & WordPress stores, and growth marketing from Lahore, Pakistan.
+
+    Suneel Pirkash — Senior Project Manager, Full Stack, WordPress & Shopify
+    Muhammad Tayyab Shahid — UI/UX, Branding & Graphic Design
+    Hirtik Kumar — Web Developer & WordPress Specialist
+
+Contact: info@rathisoft.com
+WhatsApp: https://wa.me/923342651544
+Location: Johar Town, Lahore, Pakistan
+
+/* TECH STACK */
+
+Frontend:     React, TypeScript, Vite, Tailwind CSS
+Backend:      Node.js, PHP, WordPress, Shopify Liquid
+Mobile:       iOS & Android app development
+CMS / Store:  WordPress, WooCommerce, Shopify
+Marketing:    SEO, PPC, content, social, email
+Design:       Figma, UI/UX, branding systems
+AI / Data:    OpenAI integrations, automation workflows
+DevOps:       Git, CI-friendly builds, performance tuning
+
+/* CANONICAL INBOUND URLS (HTTP 200 — use for listings & backlinks) */
+
+Always link with https://www.rathisoft.com and trailing slashes. Avoid legacy paths that redirect (301).
+
+    https://www.rathisoft.com/
+    https://www.rathisoft.com/about-us/
+    https://www.rathisoft.com/portfolio/
+    https://www.rathisoft.com/packages/
+    https://www.rathisoft.com/themes-store/
+    https://www.rathisoft.com/e-learning-courses/
+    https://www.rathisoft.com/contact-us/
+    https://www.rathisoft.com/our-team/
+    https://www.rathisoft.com/services/
+    https://www.rathisoft.com/services/web-development/
+    https://www.rathisoft.com/services/seo-services/
+    https://www.rathisoft.com/services/app-development/
+    https://www.rathisoft.com/services/wordpress-shopify/
+    https://www.rathisoft.com/services/video-editing/
+    https://www.rathisoft.com/services/social-media-marketing/
+    https://www.rathisoft.com/services/content-marketing/
+    https://www.rathisoft.com/services/ppc-advertising/
+    https://www.rathisoft.com/services/email-marketing/
+    https://www.rathisoft.com/services/branding-design/
+
+Do not list: /about, /work, /contact, /courses, bare /services/* (no slash), or http://rathisoft.com — these redirect.
+
+/* STANDARDS */
+
+    Outbound external links: rel="noopener noreferrer" (+ nofollow on third-party refs)
+    Multilingual: hreflang wired in src/data/hreflang.ts when locales ship
+    Sitemap: https://www.rathisoft.com/sitemap.xml
+
+Last update: 2026-05-21

@@ -3,6 +3,11 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* Fixed header clearance when breadcrumbs sit below the nav */
+.app-main .rs-breadcrumb-bar {
+  padding-top: var(--header-h, 64px);
+}
+
 .rs-breadcrumb-inner {
   max-width: 1180px;
   margin: 0 auto;

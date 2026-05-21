@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { ROUTES } from '../utils/routes'
 import './Header.css'
 
 const HERO_SELECTOR =
@@ -10,13 +11,10 @@ function findPageHero(): HTMLElement | null {
 }
 
 const NAV_LINKS = [
-  // { label: 'Services', href: '/services' },
-  { label: 'Portfolio', href: '/work' },
-  { label: 'Packages', href: '/packages' },
-  { label: 'About Us', href: '/about' },
-  // { label: 'Contact', href: '/contact' },
-  { label: 'Themes', href: '/themes' },
-  // { label: 'E-Learning', href: '/courses' },
+  { label: 'Portfolio', href: ROUTES.portfolio },
+  { label: 'Packages', href: ROUTES.packages },
+  { label: 'About Us', href: ROUTES.about },
+  { label: 'Themes', href: ROUTES.themes },
 ] as const
 
 export function Header() {
@@ -114,8 +112,11 @@ export function Header() {
             <img
               src="/logo/simpleR.webp"
               alt="RathiSoft logo — Lahore web development agency"
+              title="RathiSoft — custom web development Lahore Pakistan"
               width={36}
               height={36}
+              loading="eager"
+              fetchPriority="high"
               decoding="async"
               className="relative z-10 h-9 w-9 object-contain"
               draggable={false}
@@ -126,7 +127,7 @@ export function Header() {
             >
               <img
                 src="/logo/athiSoft.webp"
-                alt="RathiSoft wordmark"
+                alt=""
                 aria-hidden
                 width={260}
                 height={36}
@@ -144,7 +145,7 @@ export function Header() {
               </li>
             ))}
           </ul>
-          <Link to="/contact" className="nav-btn">
+          <Link to={ROUTES.contact} className="nav-btn">
             Get a free quote →
           </Link>
           <button

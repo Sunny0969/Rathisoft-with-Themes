@@ -5,3 +5,6 @@ User-agent: GPTBot
 Disallow: /
 
 Sitemap: https://www.rathisoft.com/sitemap.xml
+Sitemap: https://www.rathisoft.com/sitemap-images.xml
+
+# Team & canonical listing URLs: https://www.rathisoft.com/humans.txt

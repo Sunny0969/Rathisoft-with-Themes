@@ -76,7 +76,12 @@ export function LogoSlider() {
               >
                 <img
                   src={logo.src}
-                  alt={primarySet ? `${logo.alt} — partner logo` : ''}
+                  alt={
+                    primarySet
+                      ? `${logo.alt} — technology partner of RathiSoft Lahore`
+                      : ''
+                  }
+                  title={primarySet ? logo.alt : undefined}
                   aria-hidden={!primarySet || undefined}
                   width={160}
                   height={60}

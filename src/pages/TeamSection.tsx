@@ -6,7 +6,10 @@ import { OnPageSeoSection } from "../components/OnPageSeoSection";
 import { Seo } from "../components/Seo";
 import { TEAM_SECTION_FONT_STYLESHEET } from "../constants/deferredFontUrls";
 import { TEAM_MEMBERS, type TeamMember } from "../data/teamMembers";
+import { teamMemberAlt } from "../utils/imageAssets";
+import { ROUTES } from "../utils/routes";
 import { injectDeferredStylesheet } from "../utils/deferredStylesheet";
+import { TEAM_INTERNAL_LINKS } from "../data/internalLinks";
 
 const DEPARTMENTS = ["All", "Leadership", "Engineering", "Design", "Marketing"];
 
@@ -22,7 +25,8 @@ const MemberCard: React.FC<{ member: TeamMember; onSelect: (m: TeamMember) => vo
       <div className="avatar-wrap">
         <img
           src={member.image}
-          alt={`${member.name}, ${member.role} — RathiSoft team`}
+          alt={teamMemberAlt(member.name, member.role)}
+          title={`${member.name} — ${member.role} | RathiSoft Lahore`}
           className="avatar"
           width={200}
           height={200}
@@ -67,7 +71,8 @@ const MemberModal: React.FC<{ member: TeamMember | null; onClose: () => void }> 
         <div className="modal-top">
           <img
             src={member.image}
-            alt={`${member.name}, ${member.role} — portrait`}
+            alt={teamMemberAlt(member.name, member.role)}
+            title={`${member.name} — RathiSoft team member`}
             className="modal-avatar"
             width={240}
             height={240}
@@ -128,7 +133,7 @@ const MemberModal: React.FC<{ member: TeamMember | null; onClose: () => void }> 
         </div>
 
         <div className="modal-cta">
-          <Link to="/contact" className="modal-btn modal-btn-primary" onClick={onClose}>
+          <Link to={ROUTES.contact} className="modal-btn modal-btn-primary" onClick={onClose}>
             Work with me →
           </Link>
         </div>
@@ -160,8 +165,8 @@ const TeamSection: React.FC = () => {
     <main className="page-team app-main" id="team">
       <Breadcrumbs
         items={[
-          { name: "Home", path: "/" },
-          { name: "Team", path: "/team" },
+          { name: "Home", path: ROUTES.home },
+          { name: "Team", path: ROUTES.team },
         ]}
       />
       <Seo
@@ -172,13 +177,13 @@ const TeamSection: React.FC = () => {
       <div className="hero">
         <div className="wrap">
           <div className="label">Our People</div>
-          <h1 className="section-title">
-            Meet the <span className="highlight">Team</span>
+          <h1 id="team-hero-heading" className="section-title">
+            Meet the RathiSoft Team — Developers &amp; Designers in Lahore
           </h1>
           <p className="section-subtitle">
             Developers, designers, and marketers who ship WordPress, Shopify, web, and growth
             work—with the same people you meet here on your project. Learn how we operate on the{" "}
-            <Link to="/about">about page</Link>.
+            <Link to={ROUTES.about}>about page</Link>.
           </p>
         </div>
       </div>
@@ -251,24 +256,19 @@ const TeamSection: React.FC = () => {
           <p>
             Continuity matters on commerce launches and SEO retainers. We keep the same leads when
             possible so context is not lost mid-sprint—see{' '}
-            <Link to="/work">shipped work</Link> from these disciplines.
+            <Link to={ROUTES.portfolio}>shipped work</Link> from these disciplines.
           </p>
         </>
       }
-      links={[
-        { to: "/about", label: "Read how our leadership hires and mentors these specialists" },
-        { to: "/services", label: "See service lanes each discipline reinforces during delivery" },
-        { to: "/work", label: "Study engagements proving cross-functional throughput under NDAs" },
-        { to: "/contact", label: "Request curated pod rotations tailored to procurement policies" },
-      ]}
+      links={TEAM_INTERNAL_LINKS}
     >
       <p>
         We reference public standards such as{' '}
-        <a href="https://developers.google.com/search/docs/essentials" target="_blank" rel="noopener noreferrer">
+        <a href="https://developers.google.com/search/docs/essentials" target="_blank" rel="noopener noreferrer nofollow">
           Google Search Essentials
         </a>{' '}
         and{' '}
-        <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer">
+        <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener noreferrer nofollow">
           Core Web Vitals
         </a>{' '}
         in reviews so stakeholders know how we benchmark quality.

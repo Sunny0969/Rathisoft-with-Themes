@@ -5,6 +5,10 @@ import coursesJson from '../data/courses.json';
 import type { Course, QuizQuestion } from '../types/lms';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { useProgress } from '../hooks/useProgress';
+import { Breadcrumbs } from '../components/Breadcrumbs';
+import { InternalLinksNav } from '../components/InternalLinksNav';
+import { courseDetailInternalLinks } from '../data/internalLinks';
+import { ROUTES, coursePath } from '../utils/routes';
 
 const courses = coursesJson as Course[];
 
@@ -49,7 +53,7 @@ export function QuizPage() {
   const isLast = questionIndex >= totalQuestions - 1;
 
   const goToCourse = useCallback(() => {
-    navigate(`/courses/${courseId}`);
+    navigate(coursePath(courseId));
   }, [courseId, navigate]);
 
   const finishQuiz = useCallback(
@@ -91,8 +95,15 @@ export function QuizPage() {
   };
 
   if (!course || totalQuestions === 0) {
-    return <Navigate to={`/courses/${courseId || ''}`} replace />;
+    return <Navigate to={courseId ? coursePath(courseId) : ROUTES.courses} replace />;
   }
+
+  const quizBreadcrumbs = [
+    { name: 'Home', path: ROUTES.home },
+    { name: 'E-Learning', path: ROUTES.courses },
+    { name: course.title, path: coursePath(course.id) },
+    { name: 'Quiz', path: coursePath(course.id, 'quiz') },
+  ]
 
   if (phase === 'results') {
     return (
@@ -101,6 +112,7 @@ export function QuizPage() {
           title={`Quiz results — ${course.title}`}
           description={`You scored ${resultPercent}% on the ${course.title} quiz.`}
         />
+        <Breadcrumbs items={quizBreadcrumbs} />
         <main className="lms-quiz-shell">
           <div className="lms-container-narrow lms-mt-6">
             <div className="lms-result-card">
@@ -137,6 +149,11 @@ export function QuizPage() {
                 )}
               </div>
             </div>
+            <InternalLinksNav
+              links={courseDetailInternalLinks(course.title)}
+              heading="Related pages"
+              className="internal-links--compact"
+            />
           </div>
         </main>
       </>
@@ -147,7 +164,7 @@ export function QuizPage() {
     ((questionIndex + 1) / totalQuestions) * 100;
 
   if (!question) {
-    return <Navigate to={`/courses/${courseId}`} replace />;
+    return <Navigate to={coursePath(courseId)} replace />;
   }
 
   return (
@@ -156,6 +173,7 @@ export function QuizPage() {
         title={`Quiz — ${course.title}`}
         description={`Knowledge check for ${course.title}. Pass at ${passingScore}%.`}
       />
+      <Breadcrumbs items={quizBreadcrumbs} />
       <main className="lms-quiz-shell">
         <div className="lms-quiz-topbar">
           <div className="lms-quiz-topbar-inner">
@@ -264,6 +282,12 @@ export function QuizPage() {
               ← Back to course
             </button>
           </p>
+
+          <InternalLinksNav
+            links={courseDetailInternalLinks(course.title)}
+            heading="Related pages"
+            className="internal-links--compact"
+          />
         </div>
       </main>
     </>

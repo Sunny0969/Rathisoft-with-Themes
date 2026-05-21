@@ -2,7 +2,13 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { EnrollmentModal } from '../components/EnrollmentModal';
 import { TeraboxLecturePlayer } from '../components/TeraboxLecturePlayer';
+import { Breadcrumbs } from '../components/Breadcrumbs';
+import { InternalLinksNav } from '../components/InternalLinksNav';
 import { Seo } from '../components/Seo';
+import { JsonLd } from '../components/JsonLd';
+import { SCHEMA_CONTEXT, buildCourseSchema } from '../data/schemaMarkup';
+import { courseDetailInternalLinks } from '../data/internalLinks';
+import { ROUTES, coursePath } from '../utils/routes';
 import coursesJson from '../data/courses.json';
 import type { Course, Lecture } from '../types/lms';
 import { useProgress } from '../hooks/useProgress';
@@ -108,7 +114,7 @@ export function CourseDetailPage() {
   };
 
   if (!course) {
-    return <Navigate to="/courses" replace />;
+    return <Navigate to={ROUTES.courses} replace />;
   }
 
   const descriptionPlain =
@@ -139,6 +145,12 @@ export function CourseDetailPage() {
         description={descriptionPlain}
         keywords={[course.category, ...course.tags].join(', ')}
       />
+      <JsonLd
+        data={{
+          '@context': SCHEMA_CONTEXT,
+          '@graph': [buildCourseSchema(course)],
+        }}
+      />
 
       {showEnrollment ? (
         <EnrollmentModal
@@ -150,11 +162,21 @@ export function CourseDetailPage() {
         />
       ) : null}
 
+      <Breadcrumbs
+        items={[
+          { name: 'Home', path: ROUTES.home },
+          { name: 'E-Learning', path: ROUTES.courses },
+          { name: course.title, path: coursePath(course.id) },
+        ]}
+      />
+
       <div className="lms-page lms-page--flush-top">
         <section className="lms-hero">
           <div className="lms-container">
             <p className="lms-hero-pill">{course.category}</p>
-            <h1 className="lms-hero-title">{course.title}</h1>
+            <h1 className="lms-hero-title">
+              {course.title} — Free Online Course | RathiSoft
+            </h1>
             <p className="lms-hero-desc">{course.description}</p>
 
             <dl className="lms-hero-dl">
@@ -191,7 +213,7 @@ export function CourseDetailPage() {
                     <a
                       href={lectureFallbackUrl}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer nofollow"
                       className="lms-btn lms-btn--primary lms-mt-4"
                     >
                       Watch lecture →
@@ -280,7 +302,7 @@ export function CourseDetailPage() {
             ) : null}
 
             <p className="lms-mt-6">
-              <Link to="/courses" className="lms-link">
+              <Link to={ROUTES.courses} className="lms-link">
                 ← All courses
               </Link>
             </p>
@@ -379,7 +401,7 @@ export function CourseDetailPage() {
 
             {isEnrolled && allLecturesComplete && !quizPassed ? (
               <Link
-                to={`/courses/${course.id}/quiz`}
+                to={coursePath(course.id, 'quiz')}
                 className="lms-btn lms-btn--primary lms-btn--block lms-mt-6"
               >
                 📝 Take Final Quiz →
@@ -388,12 +410,18 @@ export function CourseDetailPage() {
 
             {isEnrolled && quizPassed ? (
               <Link
-                to={`/courses/${course.id}/certificate`}
+                to={coursePath(course.id, 'certificate')}
                 className="lms-btn lms-btn--primary lms-btn--block lms-mt-6"
               >
                 🏆 Download Certificate
               </Link>
             ) : null}
+
+            <InternalLinksNav
+              links={courseDetailInternalLinks(course.title)}
+              heading="Related pages"
+              className="internal-links--sidebar internal-links--compact"
+            />
           </aside>
         </div>
       </div>

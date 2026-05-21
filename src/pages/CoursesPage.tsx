@@ -1,7 +1,13 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { InternalLinksNav } from '../components/InternalLinksNav';
+import { COURSES_INTERNAL_LINKS } from '../data/internalLinks';
+import { JsonLd } from '../components/JsonLd';
 import { Seo } from '../components/Seo';
+import { buildCoursesPageSchemaGraph } from '../data/schemaMarkup';
+import { PAGE_SEO } from '../data/pageSeo';
+import { ROUTES, coursePath } from '../utils/routes';
 import coursesJson from '../data/courses.json';
 import type { Course, CourseLevel } from '../types/lms';
 
@@ -72,15 +78,16 @@ export function CoursesPage() {
   return (
     <>
       <Seo
-        title="Free Courses — RathiSoft"
-        description="Learn web development, SEO, and more with free courses from RathiSoft. Certificates included."
-        keywords="free courses, web development, SEO, online learning, RathiSoft"
+        title={PAGE_SEO.courses.title}
+        description={PAGE_SEO.courses.description}
+        keywords={PAGE_SEO.courses.keywords}
       />
+      <JsonLd data={buildCoursesPageSchemaGraph()} />
       <main className="page-courses lms-page app-main">
         <Breadcrumbs
           items={[
-            { name: 'Home', path: '/' },
-            { name: 'E-Learning', path: '/courses' },
+            { name: 'Home', path: ROUTES.home },
+            { name: 'E-Learning', path: ROUTES.courses },
           ]}
         />
 
@@ -88,13 +95,13 @@ export function CoursesPage() {
           <div className="wrap">
             <div className="label">E-Learning</div>
             <h1 id="courses-hero-heading">
-              Free Courses
-              <br />
-              Learn &amp; Grow
+              Free Web Development &amp; SEO Courses | RathiSoft
             </h1>
             <p>
-              Self-paced lessons with clear structure and practical topics—enroll free, track
-              progress at your own pace, and earn a certificate when you finish.
+              Start <strong>free web development and SEO courses</strong> from our Lahore
+              team—self-paced lessons, practical topics, and certificates when you finish. A solid
+              first step if you plan to <em>hire web developers in Pakistan</em> or upskill your
+              own squad.
             </p>
             <div className="hero-stats" role="region" aria-label="Course library highlights">
               <div className="hero-stat">
@@ -160,7 +167,7 @@ export function CoursesPage() {
             {filteredCourses.map((course) => (
               <li key={course.id}>
                 <Link
-                  to={`/courses/${course.id}`}
+                  to={coursePath(course.id)}
                   className="lms-course-card"
                 >
                   <div className={categoryHeadClass(course.category)}>
@@ -197,6 +204,8 @@ export function CoursesPage() {
               No courses match your search. Try another keyword or category.
             </p>
           ) : null}
+
+          <InternalLinksNav links={COURSES_INTERNAL_LINKS} heading="Related pages" />
         </div>
       </main>
     </>

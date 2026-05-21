@@ -13,8 +13,8 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: 'Poppins', system-ui, 'Segoe UI', sans-serif;
-  --heading: 'Poppins', system-ui, 'Segoe UI', sans-serif;
+  --sans: 'Inter', system-ui, 'Segoe UI', sans-serif;
+  --heading: 'Inter', 'Poppins', system-ui, 'Segoe UI', sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   /** LMS / e-learning (aligned with marketing inner pages + Header CTA indigo) */
@@ -126,6 +126,14 @@ body {
   margin: 0;
   background: #0a0a12;
   font-family: var(--sans);
+  overflow-x: hidden;
+}
+
+img,
+video,
+svg {
+  max-width: 100%;
+  height: auto;
 }
 
 h1,

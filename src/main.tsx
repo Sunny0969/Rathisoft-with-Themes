@@ -1,8 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import './styles/fonts.css'
 import './index.css'
 import './styles/lms-pages.css'
 import App from './App.tsx'
+import { loadDeferredAnalytics } from './utils/loadAnalytics'
 
 if (
   typeof window !== 'undefined' &&
@@ -15,6 +17,8 @@ if (
       window.location.hash,
   )
 }
+
+loadDeferredAnalytics()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

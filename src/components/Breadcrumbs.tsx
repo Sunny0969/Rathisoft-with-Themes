@@ -4,7 +4,7 @@ import './Breadcrumbs.css'
 
 export type BreadcrumbTrailItem = {
   name: string
-  /** Path from site root, e.g. `/about` */
+  /** Path from site root, e.g. `/about-us/` */
   path: string
 }
 
@@ -34,19 +34,33 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <div className="rs-breadcrumb-bar">
-        <nav className="rs-breadcrumb-inner rs-breadcrumb-nav" aria-label="Breadcrumb">
+        <nav
+          className="rs-breadcrumb-inner rs-breadcrumb-nav"
+          aria-label="Breadcrumb"
+          itemScope
+          itemType="https://schema.org/BreadcrumbList"
+        >
           <ol>
             {items.map((it, i) => {
               const last = i === items.length - 1
+              const position = i + 1
               return (
-                <li key={`${it.path}-${it.name}`}>
+                <li
+                  key={`${it.path}-${it.name}`}
+                  itemProp="itemListElement"
+                  itemScope
+                  itemType="https://schema.org/ListItem"
+                >
                   {last ? (
-                    <span className="rs-breadcrumb-current" aria-current="page">
+                    <span className="rs-breadcrumb-current" aria-current="page" itemProp="name">
                       {it.name}
                     </span>
                   ) : (
-                    <Link to={it.path}>{it.name}</Link>
+                    <Link to={it.path} itemProp="item">
+                      <span itemProp="name">{it.name}</span>
+                    </Link>
                   )}
+                  <meta itemProp="position" content={String(position)} />
                 </li>
               )
             })}

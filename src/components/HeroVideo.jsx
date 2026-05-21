@@ -146,7 +146,8 @@ export function HeroVideo({
       */}
       <img
         src={posterSrc}
-        alt="Full-width hero visual behind headline — RathiSoft WordPress and Shopify agency Lahore"
+        alt="Custom web development Lahore Pakistan — RathiSoft hero background"
+        title="RathiSoft — WordPress and Shopify agency Lahore"
         width={posterWidth}
         height={posterHeight}
         decoding="async"

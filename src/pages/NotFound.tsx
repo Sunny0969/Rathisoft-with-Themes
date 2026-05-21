@@ -1,5 +1,8 @@
 import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { Breadcrumbs } from '../components/Breadcrumbs'
+import { HOME_INTERNAL_LINKS } from '../data/internalLinks'
+import { ROUTES } from '../utils/routes'
 import {
   SITE_ORIGIN,
   applySocialMeta,
@@ -24,7 +27,11 @@ export function NotFound() {
     removeCanonicalLink()
 
     const pageUrl = `${SITE_ORIGIN}${pathname}`
-    applySocialMeta('Page Not Found | RathiSoft', NOT_FOUND_DESCRIPTION, pageUrl)
+    applySocialMeta({
+      title: 'Page Not Found | RathiSoft',
+      description: NOT_FOUND_DESCRIPTION,
+      pageUrl,
+    })
 
     return () => {
       removeRobotsMeta()
@@ -33,6 +40,12 @@ export function NotFound() {
 
   return (
     <main className="page-not-found app-main">
+      <Breadcrumbs
+        items={[
+          { name: 'Home', path: ROUTES.home },
+          { name: 'Page not found', path: pathname },
+        ]}
+      />
       <div className="nf-wrap">
         <p className="nf-code" aria-hidden>
           404
@@ -42,30 +55,20 @@ export function NotFound() {
           That URL doesn&apos;t exist or may have moved. Head back to a main section below—no broken ends.
         </p>
 
-        <nav className="nf-nav" aria-label="Main sections">
-          <Link className="nf-btn nf-btn-primary" to="/">
-            Home
+        <nav className="nf-nav" aria-label="Helpful pages on RathiSoft">
+          <Link className="nf-btn nf-btn-primary" to={ROUTES.home}>
+            Return to the RathiSoft Homepage
           </Link>
-          <Link className="nf-btn" to="/services">
-            Services
+          {HOME_INTERNAL_LINKS.map((l) => (
+            <Link key={l.to} className="nf-btn" to={l.to}>
+              {l.label}
+            </Link>
+          ))}
+          <Link className="nf-btn" to={ROUTES.themes}>
+            Browse WordPress &amp; Shopify Theme Downloads
           </Link>
-          <Link className="nf-btn" to="/work">
-            Portfolio
-          </Link>
-          <Link className="nf-btn" to="/packages">
-            Packages
-          </Link>
-          <Link className="nf-btn" to="/about">
-            About
-          </Link>
-          <Link className="nf-btn" to="/contact">
-            Contact
-          </Link>
-          <Link className="nf-btn" to="/themes">
-            Themes store
-          </Link>
-          <Link className="nf-btn" to="/team">
-            Team
+          <Link className="nf-btn" to={ROUTES.team}>
+            Meet Our Lahore Software Team
           </Link>
         </nav>
       </div>

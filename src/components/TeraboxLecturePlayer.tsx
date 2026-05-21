@@ -95,7 +95,7 @@ export function TeraboxLecturePlayer({
             <a
               href={fallbackUrl}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener noreferrer nofollow"
               className="lms-btn lms-btn--primary"
             >
               Play on TeraBox →
@@ -122,7 +122,7 @@ export function TeraboxLecturePlayer({
       />
       {fallbackUrl ? (
         <p className="lms-player-external-fallback">
-          <a href={fallbackUrl} target="_blank" rel="noopener noreferrer">
+          <a href={fallbackUrl} target="_blank" rel="noopener noreferrer nofollow">
             Backup: open on TeraBox →
           </a>
         </p>

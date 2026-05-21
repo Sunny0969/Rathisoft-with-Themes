@@ -19,8 +19,15 @@
   padding-top: 0;
 }
 
-.page-courses .rs-breadcrumb-bar {
+.page-courses .rs-breadcrumb-bar,
+.rs-breadcrumb-bar:has(+ .lms-page),
+.rs-breadcrumb-bar:has(+ .lms-quiz-shell),
+.rs-breadcrumb-bar:has(+ .lms-cert-page) {
   padding-top: var(--header-h, 64px);
+}
+
+.rs-breadcrumb-bar + .lms-page--flush-top {
+  padding-top: 0;
 }
 
 /* Breadcrumb already clears the header; hero only needs section spacing */

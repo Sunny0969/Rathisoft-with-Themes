@@ -4,7 +4,21 @@ import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { Breadcrumbs, type BreadcrumbTrailItem } from "../components/Breadcrumbs";
 import { OnPageSeoSection } from "../components/OnPageSeoSection";
+import { RelatedServicesLinks } from "../components/RelatedServicesLinks";
+import { SERVICES_HUB_INTERNAL_LINKS } from "../data/internalLinks";
+import { JsonLd } from "../components/JsonLd";
 import { Seo, SITE_ORIGIN } from "../components/Seo";
+import {
+  buildServiceDetailSchemaGraph,
+  buildServicesPageSchemaGraph,
+} from "../data/schemaMarkup";
+import { PAGE_SEO } from "../data/pageSeo";
+import {
+  ROUTES,
+  SERVICE_SLUG_SET,
+  SERVICE_SLUGS,
+  servicePath,
+} from "../utils/routes";
 import {
   SITE_TESTIMONIALS,
   buildOrganizationReviewProperties,
@@ -39,97 +53,71 @@ const SERVICES: Service[] = [
     num: "01", icon: "💻", title: "Web Development",
     desc: "Fast, responsive, conversion-optimized websites built with clean code. Custom themes, landing pages, and full multi-page sites tailored to your brand.",
     tags: ["UI/UX", "HTML/CSS", "JavaScript"],
-    href: "/services/web-development",
+    href: servicePath("web-development"),
   },
   {
     num: "02", icon: "🔍", title: "SEO Optimization",
     desc: "Rank higher on Google with proven on-page and technical SEO strategies. Keyword research, speed optimization, and structured data — all included.",
     tags: ["On-Page", "Technical", "Local SEO"],
-    href: "/services/seo-optimization",
+    href: servicePath("seo-services"),
   },
   {
     num: "03", icon: "📲", title: "App Development",
     desc: "Custom mobile apps for iOS and Android. From simple tools to fully featured platforms — built with performance and user experience at the core.",
     tags: ["iOS", "Android", "React Native"],
-    href: "/services/app-development",
+    href: servicePath("app-development"),
   },
   {
     num: "04", icon: "🛒", title: "WordPress & Shopify",
     desc: "Stores that look great and convert visitors into buyers. Full setup — theme, plugins, payment gateways, product pages, and ongoing support included.",
     tags: ["WordPress", "Shopify", "WooCommerce"],
-    href: "/services/wordpress-shopify",
+    href: servicePath("wordpress-shopify"),
   },
   {
     num: "05", icon: "🎬", title: "Video Editing",
     desc: "Reels, ads, YouTube videos, and short-form clips that stop the scroll. Professional cuts, captions, transitions, and brand-consistent visuals.",
     tags: ["Reels", "Ads", "YouTube"],
-    href: "/services/video-editing",
+    href: servicePath("video-editing"),
   },
   {
     num: "06", icon: "📱", title: "Social Media Marketing",
     desc: "Done-for-you monthly content strategy and posting across all platforms. Graphics, captions, scheduling, and analytics — we handle it all.",
     tags: ["Instagram", "Facebook", "LinkedIn"],
-    href: "/services/social-media-marketing",
+    href: servicePath("social-media-marketing"),
   },
   {
     num: "07", icon: "✍️", title: "Content Marketing",
     desc: "Strategic blogs, web copy, and long-form content that attracts traffic and converts readers into leads. SEO-optimized writing for every industry.",
     tags: ["Blogs", "Copywriting", "Web Copy"],
-    href: "/services/content-marketing",
+    href: servicePath("content-marketing"),
   },
   {
     num: "08", icon: "🎯", title: "PPC Advertising",
     desc: "High-converting paid campaigns on Google and Meta. Precise targeting, compelling ad copy, and constant A/B testing to maximise your ROI.",
     tags: ["Google Ads", "Meta Ads", "Retargeting"],
-    href: "/services/ppc-advertising",
+    href: servicePath("ppc-advertising"),
   },
   {
     num: "09", icon: "📧", title: "Email Marketing",
     desc: "Automated email sequences that nurture leads and drive repeat sales. Welcome flows, drip campaigns, newsletters, and list management all handled.",
     tags: ["Automation", "Campaigns", "Klaviyo"],
-    href: "/services/email-marketing",
+    href: servicePath("email-marketing"),
   },
   {
     num: "10", icon: "🎨", title: "Branding & Design",
     desc: "Logos, brand kits, colour palettes, and complete visual identity systems that leave a lasting impression and build brand trust from first glance.",
     tags: ["Logo", "Brand Kit", "UI Design"],
-    href: "/services/branding-design",
+    href: servicePath("branding-design"),
   },
 ];
 
-/** Slug segments for `/services/{slug}` routes and legacy redirects */
-export const SERVICE_SLUGS: string[] = SERVICES.map((s) =>
-  s.href.replace(/^\/services\//, ""),
-);
+export { SERVICE_SLUGS };
 
-const SERVICE_SLUG_SET = new Set(SERVICE_SLUGS);
-
-function absoluteUrl(pathFromRoot: string): string {
-  return `${SITE_ORIGIN}${pathFromRoot}`;
-}
-
-const SERVICES_JSON_LD = {
-  "@context": "https://schema.org",
-  "@graph": SERVICES.map((svc) => ({
-    "@type": "Service",
-    serviceType: svc.title,
-    provider: {
-      "@type": "Organization",
-      name: "RathiSoft",
-      url: SITE_ORIGIN,
-    },
-    areaServed: {
-      "@type": "Country",
-      name: "Pakistan",
-    },
-    description: svc.desc,
-    url: absoluteUrl(svc.href),
-    offers: {
-      "@type": "Offer",
-      availability: "https://schema.org/InStock",
-    },
-  })),
-};
+const SERVICE_SCHEMA_INPUTS = SERVICES.map((svc) => ({
+  title: svc.title,
+  description: svc.desc,
+  href: svc.href,
+}));
 
 const PROCESS: ProcessStep[] = [
   { step: "Step 01", title: "Discovery Call", desc: "We start with a free consultation to understand your goals, business, target audience, and timeline. No commitment required — just a conversation." },
@@ -424,25 +412,42 @@ export default function ServicesPage() {
   }, [slugNorm]);
 
   if (slugNorm && !SERVICE_SLUG_SET.has(slugNorm)) {
-    return <Navigate to="/services" replace />;
+    return <Navigate to={ROUTES.services} replace />;
   }
+
+  const activeService =
+    slugNorm && SERVICE_SLUG_SET.has(slugNorm)
+      ? SERVICES.find((s) => s.href === servicePath(slugNorm))
+      : undefined;
+
+  const servicesSchemaGraph =
+    activeService != null
+      ? buildServiceDetailSchemaGraph(
+          {
+            title: activeService.title,
+            description: activeService.desc,
+            href: activeService.href,
+          },
+          SERVICE_SCHEMA_INPUTS,
+        )
+      : buildServicesPageSchemaGraph(SERVICE_SCHEMA_INPUTS);
 
   const breadcrumbItems: BreadcrumbTrailItem[] =
     slugNorm && SERVICE_SLUG_SET.has(slugNorm)
       ? (() => {
-          const svc = SERVICES.find((s) => s.href === `/services/${slugNorm}`);
+          const svc = activeService;
           return [
-            { name: "Home", path: "/" },
-            { name: "Services", path: "/services" },
+            { name: "Home", path: ROUTES.home },
+            { name: "Services", path: ROUTES.services },
             {
               name: svc?.title ?? "Service",
-              path: `/services/${slugNorm}`,
+              path: servicePath(slugNorm),
             },
           ];
         })()
       : [
-          { name: "Home", path: "/" },
-          { name: "Services", path: "/services" },
+          { name: "Home", path: ROUTES.home },
+          { name: "Services", path: ROUTES.services },
         ];
 
   const reviewsLd = {
@@ -456,33 +461,34 @@ export default function ServicesPage() {
   return (
     <>
       <Seo
-        title="Web Development, SEO & Apps | Services | RathiSoft"
-        description="Web development, Shopify & WordPress, SEO, PPC, and apps from one team with a clear process. See services, then request a free project quote."
+        title={PAGE_SEO.services.title}
+        description={PAGE_SEO.services.description}
+        keywords={PAGE_SEO.services.keywords}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(SERVICES_JSON_LD) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsLd) }}
-      />
+      <JsonLd data={servicesSchemaGraph} />
+      <JsonLd data={reviewsLd} />
       <Breadcrumbs items={breadcrumbItems} />
       <style>{styles}</style>
+
+      {slugNorm && SERVICE_SLUG_SET.has(slugNorm) ? (
+        <div className="rs-wrap" style={{ paddingTop: 20, paddingBottom: 8 }}>
+          <RelatedServicesLinks slug={slugNorm} />
+        </div>
+      ) : null}
 
       {/* ── HERO ── */}
       <div className="rs-hero">
         <div className="rs-wrap">
           <div className="rs-label">What We Do</div>
-          <h1>
-            Web &amp; Digital Services<br />
-            <span>From One Team</span>
+          <h1 id="services-hero-heading">
+            Web Development &amp; Digital Marketing Services in Lahore
           </h1>
           <p>
-            RathiSoft covers discovery, design, engineering, and
-            ongoing marketing—so you are not juggling five freelancers. Explore each service below,
-            then view our <Link to="/work">portfolio</Link> or{' '}
-            <Link to="/contact">book a free consultation</Link> when you are ready.
+            Our <strong>web development services in Lahore</strong> cover discovery, design,
+            engineering, and ongoing marketing—so you are not juggling five freelancers. Whether you
+            need a <em>Shopify expert</em>, WordPress build, or SEO retainer, explore each service
+            below, then view our <Link to={ROUTES.portfolio}>portfolio</Link> or{' '}
+            <Link to={ROUTES.contact}>book a free consultation</Link> when you are ready.
           </p>
           <div className="hero-stats">
             <div className="hs"><span className="hs-num">10+</span><span className="hs-label">Services Offered</span></div>
@@ -498,7 +504,7 @@ export default function ServicesPage() {
         <div className="rs-wrap">
           <div className="svc-intro">
             <div className="rs-label">Our Services</div>
-            <h2 className="svc-intro">
+            <h2 id="services-catalog-heading" className="svc-intro">
               Services That Cover<br />Your Full Online Stack
             </h2>
             <p>
@@ -509,7 +515,7 @@ export default function ServicesPage() {
 
           <div className="svc-grid">
             {SERVICES.map((svc) => {
-              const cardSlug = svc.href.replace(/^\/services\//, "");
+              const cardSlug = svc.href.replace(/^\/services\//, "").replace(/\/$/, "");
               return (
                 <Link
                   key={svc.num}
@@ -565,7 +571,7 @@ export default function ServicesPage() {
           <h2>Why Clients<br />Choose RathiSoft</h2>
           <p>
             Five years of shipped work, documented scopes, and support after launch—see{' '}
-            <Link to="/work">case studies from our portfolio</Link>.
+            <Link to={ROUTES.portfolio}>case studies from our portfolio</Link>.
           </p>
 
           <div className="why-grid">
@@ -624,24 +630,19 @@ export default function ServicesPage() {
               We overlap with UK and Gulf hours when needed, share roadmaps in Notion, and record
               walkthroughs for stakeholders who cannot join every call. Store, app, or marketing
               engagements all follow the same clarity standard—see{' '}
-              <Link to="/packages">package pricing</Link> if you want a fixed bundle first.
+              <Link to={ROUTES.packages}>package pricing</Link> if you want a fixed bundle first.
             </p>
           </>
         }
-        links={[
-          { to: "/about", label: "Understand our mission and delivery culture" },
-          { to: "/work", label: "Inspect verified deliveries across industries" },
-          { to: "/packages", label: "Compare sprint-ready pricing bundles before contracting" },
-          { to: "/contact", label: "Schedule a roadmap workshop with senior practitioners" },
-        ]}
+        links={SERVICES_HUB_INTERNAL_LINKS}
       >
         <p>
           We bake in accessible markup, structured data where it helps search, and careful{' '}
-          <a href="https://www.shopify.com/partners/blog" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.shopify.com/partners/blog" target="_blank" rel="noopener noreferrer nofollow">
             Shopify
           </a>{' '}
           /{' '}
-          <a href="https://wordpress.org/documentation/" target="_blank" rel="noopener noreferrer">
+          <a href="https://wordpress.org/documentation/" target="_blank" rel="noopener noreferrer nofollow">
             WordPress
           </a>{' '}
           integrations so marketing and engineering stay aligned when leadership asks for numbers.
@@ -652,16 +653,16 @@ export default function ServicesPage() {
           <a
             href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer nofollow"
           >
             Google&apos;s SEO Starter Guide
           </a>{' '}
           and performance baselines on web.dev.
         </p>
         <p>
-          Not sure which lane fits? Start on our <Link to="/about">about page</Link> for how we
+          Not sure which lane fits? Start on our <Link to={ROUTES.about}>about page</Link> for how we
           hire and mentor the people on your account, then message us from{' '}
-          <Link to="/contact">contact</Link> with your timeline.
+          <Link to={ROUTES.contact}>contact</Link> with your timeline.
         </p>
       </OnPageSeoSection>
 
@@ -670,10 +671,10 @@ export default function ServicesPage() {
         <h2>Ready to Scope<br />Your Project?</h2>
         <p>
           Book a free call—we will map goals to the right mix of{' '}
-          <Link to="/services/web-development">web</Link>, store, or marketing work. No obligation.
+          <Link to={servicePath('web-development')}>web</Link>, store, or marketing work. No obligation.
         </p>
         <div className="cta-btns">
-          <Link to="/contact" className="btn-p">Get a free quote →</Link>
+          <Link to={ROUTES.contact} className="btn-p">Get a free quote →</Link>
           <a href="https://wa.me/923342651544" target="_blank" rel="noopener noreferrer" className="btn-g">
             💬 WhatsApp us now
           </a>

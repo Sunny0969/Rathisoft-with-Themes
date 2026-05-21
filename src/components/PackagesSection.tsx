@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { ROUTES } from '../utils/routes'
 
 const DEFAULT_WA = 'https://wa.me/923342651544'
 
@@ -429,7 +430,7 @@ export function PackagesSection({ waLink = DEFAULT_WA }: { waLink?: string }) {
                 Your idea, your rules. If you need something unique (custom dashboard, booking, marketplace,
                 automation, integrations), I&apos;ll plan the right scope and give you a clear quote.
               </p>
-              <Link to="/contact" className="pkg-btn pkg-btn-ind" style={{ textAlign: 'center' }}>
+              <Link to={ROUTES.contact} className="pkg-btn pkg-btn-ind" style={{ textAlign: 'center' }}>
                 Tell us your idea →
               </Link>
               <a className="pkg-btn pkg-btn-ghost" href={waLink} target="_blank" rel="noopener noreferrer">
