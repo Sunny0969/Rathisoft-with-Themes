@@ -1,17 +1,18 @@
 .rs-breadcrumb-bar {
   background: rgba(19, 19, 26, 0.96);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: var(--header-h, 76px);
 }
 
-/* Fixed header clearance when breadcrumbs sit below the nav */
-.app-main .rs-breadcrumb-bar {
-  padding-top: var(--header-h, 64px);
+/* main.app-main pages: avoid double gap (main offset + breadcrumb offset) */
+.app-main:has(> .rs-breadcrumb-bar:first-child) {
+  padding-top: 0;
 }
 
 .rs-breadcrumb-inner {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 10px 52px;
+  padding: 6px 52px;
 }
 
 .rs-breadcrumb-nav ol {
@@ -57,6 +58,6 @@
 
 @media (max-width: 640px) {
   .rs-breadcrumb-inner {
-    padding: 10px 20px;
+    padding: 6px 20px;
   }
 }

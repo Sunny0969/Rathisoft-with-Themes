@@ -15,10 +15,12 @@ import { ROUTES } from '../utils/routes';
 import { THEMES_STORE_FONT_STYLESHEET } from '../constants/deferredFontUrls';
 import { injectDeferredStylesheet } from '../utils/deferredStylesheet';
 
+import { REL_EXTERNAL_REF } from '../utils/externalLink';
 import {
-  isShopifyDemoSubdomain,
-  resolveDemoEmbedPlan,
-} from '../utils/demoEmbed';
+  trackThemesStoreDemo,
+  trackThemesStoreDownload,
+} from '../utils/themesStoreAnalytics';
+import { ThemesStoreAnalytics } from '../components/ThemesStoreAnalytics';
 import {
   STORE_ITEMS,
   countByCategory,
@@ -34,6 +36,7 @@ const CATEGORY_LABEL: Record<StoreCategory, string> = {
   'shopify-theme': 'Shopify Theme',
   'wordpress-theme': 'WP Theme',
   'wordpress-plugin': 'WP Plugin',
+  'mobile-application': 'Mobile Application',
 };
 
 const FILTER_ORDER: StoreFilter[] = [
@@ -41,6 +44,7 @@ const FILTER_ORDER: StoreFilter[] = [
   'shopify-theme',
   'wordpress-theme',
   'wordpress-plugin',
+  'mobile-application',
 ];
 
 type StoreFaqItem = {
@@ -193,260 +197,21 @@ const Toast: React.FC<ToastProps> = ({ message, onHide }) => {
   );
 };
 
-type LiveDemoPayload = { title: string; url: string | undefined };
-
-// ── LIVE DEMO MODAL (shared, one iframe instance) ─────────────────
-interface LiveDemoModalProps {
-  open: boolean;
-  title: string;
-  embedUrl: string | undefined;
-  onClose: () => void;
-}
-
-const LiveDemoModal: React.FC<LiveDemoModalProps> = ({
-  open,
-  title,
-  embedUrl,
-  onClose,
-}) => {
-  const [frameReady, setFrameReady] = useState(false);
-  const [candidateIndex, setCandidateIndex] = useState(0);
-  const [embedExhausted, setEmbedExhausted] = useState(false);
-  const tabOpenedRef = useRef(false);
-
-  const plan = useMemo(() => resolveDemoEmbedPlan(embedUrl), [embedUrl]);
-  const tabUrl = plan?.tabUrl ?? '';
-  const candidates = plan?.embedCandidates ?? [];
-  const iframeSrc = candidates[candidateIndex] ?? '';
-  const hasMoreCandidates = candidateIndex + 1 < candidates.length;
-
-  const advanceCandidate = useCallback(() => {
-    setCandidateIndex((idx) => {
-      if (idx + 1 < candidates.length) {
-        setFrameReady(false);
-        setEmbedExhausted(false);
-        return idx + 1;
-      }
-      setEmbedExhausted(true);
-      setFrameReady(true);
-      return idx;
-    });
-  }, [candidates.length]);
-
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', onKey);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [open, onClose]);
-
-  useEffect(() => {
-    if (!open) {
-      setFrameReady(false);
-      setCandidateIndex(0);
-      setEmbedExhausted(false);
-      return;
-    }
-    if (!plan) return;
-
-    warmDemoUrlConnection(plan.tabUrl);
-    for (const c of plan.embedCandidates) {
-      warmDemoUrlConnection(c);
-    }
-
-    tabOpenedRef.current = false;
-    setCandidateIndex(0);
-    if (plan.embedCandidates.length === 0) {
-      setEmbedExhausted(true);
-      setFrameReady(true);
-    } else {
-      setEmbedExhausted(false);
-      setFrameReady(false);
-    }
-  }, [open, plan]);
-
-  const openExactTabUrl = useCallback(() => {
-    if (!tabUrl || tabOpenedRef.current) return;
-    tabOpenedRef.current = true;
-    window.open(tabUrl, '_blank', 'noopener,noreferrer');
-  }, [tabUrl]);
-
-  useEffect(() => {
-    if (!open || !embedExhausted || !tabUrl) return;
-    openExactTabUrl();
-  }, [open, embedExhausted, tabUrl, openExactTabUrl]);
-
-  useEffect(() => {
-    if (!open || !iframeSrc || embedExhausted) return;
-
-    const safety = window.setTimeout(() => {
-      if (hasMoreCandidates) {
-        advanceCandidate();
-      } else {
-        setEmbedExhausted(true);
-        setFrameReady(true);
-      }
-    }, 6_000);
-
-    return () => clearTimeout(safety);
-  }, [open, iframeSrc, embedExhausted, hasMoreCandidates, advanceCandidate]);
-
-  const handleIframeLoad = useCallback(() => {
-    try {
-      const host = new URL(iframeSrc).hostname.toLowerCase();
-      if (isShopifyDemoSubdomain(host)) {
-        advanceCandidate();
-        return;
-      }
-    } catch {
-      /* keep loading */
-    }
-    setFrameReady(true);
-  }, [iframeSrc, advanceCandidate]);
-
-  const handleIframeError = useCallback(() => {
-    advanceCandidate();
-  }, [advanceCandidate]);
-
-  if (!open) return null;
-
-  const hasSrc = Boolean(tabUrl);
-
-  return (
-    <div className="live-demo-modal-root" role="presentation">
-      <button
-        type="button"
-        className="live-demo-modal-scrim"
-        aria-label="Close preview"
-        onClick={onClose}
-      />
-      <div
-        className="live-demo-modal-shell"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="live-demo-modal-title"
-      >
-        <div className="live-demo-modal-panel">
-          <header className="live-demo-modal-head">
-            <div className="live-demo-modal-head-main">
-              <h2 id="live-demo-modal-title" className="live-demo-modal-title">
-                Live demo · {title}
-              </h2>
-              {tabUrl ? (
-                <a
-                  href={tabUrl}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  className="live-demo-open-tab"
-                >
-                  Open full demo in new tab ↗
-                </a>
-              ) : null}
-            </div>
-            <button
-              type="button"
-              className="live-demo-modal-close"
-              onClick={onClose}
-              aria-label="Close preview"
-            >
-              ×
-            </button>
-          </header>
-          <div className="live-demo-modal-body">
-            {hasSrc ? (
-              embedExhausted ? (
-                <div className="live-demo-iframe-fallback">
-                  <p className="live-demo-fallback-lead">
-                    Preview opens in a new browser tab
-                  </p>
-                  <p className="live-demo-fallback-text">
-                    This demo can&apos;t load inside our site (the store blocks embedded previews).
-                    We opened your exact link in a new tab—use the button below if it didn&apos;t
-                    appear.
-                  </p>
-                  <a
-                    href={tabUrl}
-                    target="_blank"
-                    rel="noopener noreferrer nofollow"
-                    className="live-demo-fallback-cta"
-                    onClick={() => {
-                      tabOpenedRef.current = true;
-                    }}
-                  >
-                    Open exact demo URL ↗
-                  </a>
-                  <p className="live-demo-fallback-url" title={tabUrl}>
-                    {tabUrl}
-                  </p>
-                </div>
-              ) : (
-                <>
-                  {!frameReady ? (
-                    <div
-                      className="live-demo-iframe-loading"
-                      aria-busy="true"
-                      aria-live="polite"
-                    >
-                      <span className="live-demo-spinner" aria-hidden />
-                      <span className="live-demo-loading-text">
-                        {candidateIndex > 0
-                          ? 'Trying alternate preview URL…'
-                          : 'Loading live preview…'}
-                      </span>
-                    </div>
-                  ) : null}
-                  <iframe
-                    key={`${iframeSrc}-${candidateIndex}`}
-                    className={
-                      frameReady
-                        ? 'live-demo-modal-iframe live-demo-modal-iframe--ready'
-                        : 'live-demo-modal-iframe live-demo-modal-iframe--warming live-demo-modal-iframe--hidden'
-                    }
-                    src={iframeSrc}
-                    title={`Live demo: ${title}`}
-                    allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-                    allowFullScreen
-                    referrerPolicy="no-referrer-when-downgrade"
-                    loading="eager"
-                    onLoad={handleIframeLoad}
-                    onError={handleIframeError}
-                  />
-                </>
-              )
-            ) : (
-              <p className="live-demo-modal-empty">
-                No live preview URL is set for this item yet. Add a{' '}
-                <code>demoUrl</code> field in <code>themesStoreData.ts</code> to
-                load a demo or video embed in this window.
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 // ── CARD COMPONENT ─────────────────────────────────────────────────
 interface CardProps {
   item: StoreItem;
   delay: number;
-  onOpenLiveDemo: (payload: LiveDemoPayload) => void;
 }
 
-const ItemCard: React.FC<CardProps> = ({ item, delay, onOpenLiveDemo }) => {
+const ItemCard: React.FC<CardProps> = ({ item, delay }) => {
   const [downloading, setDownloading] = useState(false);
   const url = buildDownloadUrl(item.driveFileId);
   const demoUrl = item.demoUrl?.trim();
+  const isMobileApp = item.category === 'mobile-application';
+  const detailsUrl = item.detailsUrl?.trim();
 
   const handleDownload = useCallback(() => {
+    trackThemesStoreDownload(item);
     setDownloading(true);
     // Trigger download via hidden anchor
     const a = document.createElement('a');
@@ -457,7 +222,7 @@ const ItemCard: React.FC<CardProps> = ({ item, delay, onOpenLiveDemo }) => {
     a.click();
     document.body.removeChild(a);
     setTimeout(() => setDownloading(false), 2500);
-  }, [url, item.slug]);
+  }, [url, item]);
 
   return (
     <article
@@ -470,11 +235,23 @@ const ItemCard: React.FC<CardProps> = ({ item, delay, onOpenLiveDemo }) => {
       <meta itemProp="name" content={item.name} />
       <meta
         itemProp="applicationCategory"
-        content={item.category === 'wordpress-plugin' ? 'SoftwareApplication' : 'WebApplication'}
+        content={
+          item.category === 'mobile-application'
+            ? 'MobileApplication'
+            : item.category === 'wordpress-plugin'
+              ? 'SoftwareApplication'
+              : 'WebApplication'
+        }
       />
       <meta
         itemProp="operatingSystem"
-        content={item.category === 'shopify-theme' ? 'Shopify' : 'WordPress'}
+        content={
+          item.category === 'mobile-application'
+            ? 'Android, iOS'
+            : item.category === 'shopify-theme'
+              ? 'Shopify'
+              : 'WordPress'
+        }
       />
       <meta itemProp="softwareVersion" content={item.version} />
       <meta itemProp="description" content={item.description} />
@@ -543,29 +320,42 @@ const ItemCard: React.FC<CardProps> = ({ item, delay, onOpenLiveDemo }) => {
         </div>
 
         <div className="card-actions" role="group" aria-label="Preview and download">
-          <button
-            type="button"
-            className="btn-live-demo"
-            {...(demoUrl ? { 'data-demo-url': demoUrl } : {})}
-            onMouseEnter={() => {
-              const plan = resolveDemoEmbedPlan(demoUrl);
-              if (!plan) return;
-              warmDemoUrlConnection(plan.tabUrl);
-              for (const c of plan.embedCandidates) warmDemoUrlConnection(c);
-            }}
-            onFocus={() => {
-              const plan = resolveDemoEmbedPlan(demoUrl);
-              if (!plan) return;
-              warmDemoUrlConnection(plan.tabUrl);
-              for (const c of plan.embedCandidates) warmDemoUrlConnection(c);
-            }}
-            onClick={() =>
-              onOpenLiveDemo({ title: item.name, url: demoUrl || undefined })
-            }
-            aria-label={`Live demo: ${item.name}`}
-          >
-            Live Demo
-          </button>
+          {isMobileApp && detailsUrl ? (
+            <a
+              href={detailsUrl}
+              target="_blank"
+              rel={REL_EXTERNAL_REF}
+              className="btn-live-demo"
+              aria-label={`View details: ${item.name}`}
+              onClick={() => trackThemesStoreDemo(item)}
+            >
+              View Details
+            </a>
+          ) : demoUrl ? (
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel={REL_EXTERNAL_REF}
+              className="btn-live-demo"
+              aria-label={`Live demo: ${item.name}`}
+              onMouseEnter={() => warmDemoUrlConnection(demoUrl)}
+              onFocus={() => warmDemoUrlConnection(demoUrl)}
+              onClick={() => trackThemesStoreDemo(item)}
+            >
+              Live Demo
+            </a>
+          ) : (
+            <button
+              type="button"
+              className="btn-live-demo"
+              disabled
+              aria-disabled="true"
+              aria-label={`Live demo unavailable: ${item.name}`}
+              title="No demo URL configured"
+            >
+              Live Demo
+            </button>
+          )}
           <a
             href={url}
             className={`btn-download${downloading ? ' downloading' : ''}`}
@@ -589,18 +379,21 @@ const ItemCard: React.FC<CardProps> = ({ item, delay, onOpenLiveDemo }) => {
 };
 
 // ── MAIN COMPONENT ─────────────────────────────────────────────────
+type NameSort = 'az' | 'za';
+
 function filterTabLabel(f: StoreFilter): string {
   if (f === 'all') return `🗂 All (${STORE_ITEMS.length})`;
   if (f === 'shopify-theme') return `🛍️ Shopify (${STORE_STATS.shopify})`;
   if (f === 'wordpress-theme') return `🎨 WP themes (${STORE_STATS.wpThemes})`;
-  return `🔌 WP plugins (${STORE_STATS.wpPlugins})`;
+  if (f === 'wordpress-plugin') return `🔌 WP plugins (${STORE_STATS.wpPlugins})`;
+  return `📱 Mobile Application (${STORE_STATS.mobileApps})`;
 }
 
 const ThemesStore: React.FC = () => {
-  const [liveDemo, setLiveDemo] = useState<LiveDemoPayload | null>(null);
-
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<StoreFilter>('all');
+  const [nameSort, setNameSort] = useState<NameSort>('az');
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [faqOpen, setFaqOpen] = useState<Record<number, boolean>>({});
   const searchRef = useRef<HTMLInputElement>(null);
@@ -622,6 +415,28 @@ const ThemesStore: React.FC = () => {
       return matchFilter && matchSearch;
     });
   }, [search, filter]);
+
+  const sortedItems = useMemo(() => {
+    const list = [...filtered];
+    list.sort((a, b) => {
+      const cmp = a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+      return nameSort === 'az' ? cmp : -cmp;
+    });
+    return list;
+  }, [filtered, nameSort]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setShowScrollTop(window.scrollY > window.innerHeight * 0.5);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   // Keyboard shortcut: Ctrl+K or / to focus search
   useEffect(() => {
@@ -713,6 +528,10 @@ const ThemesStore: React.FC = () => {
               <div className="hero-stat-num">{STORE_STATS.wpPlugins}</div>
               <div className="hero-stat-label">WP plugins</div>
             </div>
+            <div className="hero-stat">
+              <div className="hero-stat-num">{STORE_STATS.mobileApps}</div>
+              <div className="hero-stat-label">Mobile apps</div>
+            </div>
           </div>
           </div>
         </section>
@@ -753,9 +572,28 @@ const ThemesStore: React.FC = () => {
 
           <div className="results-meta" aria-live="polite" aria-atomic="true">
             <span>
-              Showing <strong>{filtered.length}</strong> of {STORE_ITEMS.length} items
+              Showing <strong>{sortedItems.length}</strong> of {STORE_ITEMS.length} items
               {search && <> for "<strong>{search}</strong>"</>}
             </span>
+            <div className="sort-control" role="group" aria-label="Sort by name">
+              <span className="sort-control-label">Sort</span>
+              <button
+                type="button"
+                className={`sort-tab${nameSort === 'az' ? ' active' : ''}`}
+                onClick={() => setNameSort('az')}
+                aria-pressed={nameSort === 'az'}
+              >
+                A → Z
+              </button>
+              <button
+                type="button"
+                className={`sort-tab${nameSort === 'za' ? ' active' : ''}`}
+                onClick={() => setNameSort('za')}
+                aria-pressed={nameSort === 'za'}
+              >
+                Z → A
+              </button>
+            </div>
           </div>
         </section>
 
@@ -765,24 +603,22 @@ const ThemesStore: React.FC = () => {
           aria-label="Themes and plugins catalog"
           role="list"
         >
-          {filtered.length === 0 ? (
+          {sortedItems.length === 0 ? (
             <div className="empty-state" role="status">
               <div className="empty-icon">🔍</div>
               <p className="empty-state-title">Nothing found</p>
               <p>Try a different keyword or remove the filter.</p>
             </div>
           ) : (
-            filtered.map((item, idx) => (
+            sortedItems.map((item, idx) => (
               <div key={item.id} role="listitem">
-                <ItemCard
-                  item={item}
-                  delay={idx}
-                  onOpenLiveDemo={(payload) => setLiveDemo(payload)}
-                />
+                <ItemCard item={item} delay={idx} />
               </div>
             ))
           )}
         </section>
+
+        <ThemesStoreAnalytics />
 
         <section className="store-faq" aria-labelledby="store-faq-heading">
           <h2 id="store-faq-heading">WordPress &amp; Shopify Theme FAQs: Downloads, Licences &amp; Updates</h2>
@@ -854,12 +690,17 @@ const ThemesStore: React.FC = () => {
       {/* ── TOAST ── */}
       {toast && <Toast message={toast} onHide={() => setToast(null)} />}
 
-      <LiveDemoModal
-        open={liveDemo !== null}
-        title={liveDemo?.title ?? ''}
-        embedUrl={liveDemo?.url}
-        onClose={() => setLiveDemo(null)}
-      />
+      <button
+        type="button"
+        className={`store-scroll-top${showScrollTop ? ' is-visible' : ''}`}
+        onClick={scrollToTop}
+        aria-label="Back to top"
+        title="Back to top"
+      >
+        <span className="store-scroll-top-icon" aria-hidden="true">
+          ↑
+        </span>
+      </button>
     </>
   );
 };

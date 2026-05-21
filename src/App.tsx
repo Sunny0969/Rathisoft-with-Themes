@@ -1,4 +1,6 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { PageLoader } from './components/PageLoader'
 import { useWwwRedirect } from './hooks/useWwwRedirect'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
@@ -9,7 +11,7 @@ import { Work } from './pages/Work'
 import ContactPage from './pages/contact'
 import TeamSection from './pages/TeamSection'
 import ServicesPage from './pages/services'
-import ThemesStore from './pages/Themesstore'
+const ThemesStore = lazy(() => import('./pages/Themesstore'))
 import { Home } from './pages/Home'
 import { CertificatePage } from './pages/CertificatePage'
 import { CourseDetailPage } from './pages/CourseDetailPage'
@@ -81,8 +83,22 @@ export default function App() {
         <Route path="/services/" element={<ServicesPage />} />
         <Route path="/contact-us" element={<ContactPage />} />
         <Route path="/contact-us/" element={<ContactPage />} />
-        <Route path="/themes-store" element={<ThemesStore />} />
-        <Route path="/themes-store/" element={<ThemesStore />} />
+        <Route
+          path="/themes-store"
+          element={
+            <Suspense fallback={<PageLoader label="Loading themes store" />}>
+              <ThemesStore />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/themes-store/"
+          element={
+            <Suspense fallback={<PageLoader label="Loading themes store" />}>
+              <ThemesStore />
+            </Suspense>
+          }
+        />
         <Route path="/our-team" element={<TeamSection />} />
         <Route path="/our-team/" element={<TeamSection />} />
 

@@ -107,22 +107,22 @@ export function Header() {
           <Link
             to="/"
             title="Rathisoft Home"
-            className="group relative inline-flex h-9 w-9 shrink-0 items-center justify-center outline-none focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[rgba(19,19,26,0.92)]"
+            className="group relative inline-flex h-11 w-11 shrink-0 items-center justify-center overflow-visible outline-none focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[rgba(19,19,26,0.92)]"
           >
             <img
               src="/logo/simpleR.webp"
               alt="RathiSoft logo — Lahore web development agency"
               title="RathiSoft — custom web development Lahore Pakistan"
-              width={36}
-              height={36}
+              width={44}
+              height={44}
               loading="eager"
               fetchPriority="high"
               decoding="async"
-              className="relative z-10 h-9 w-9 object-contain"
+              className="relative z-10 h-11 w-11 object-contain"
               draggable={false}
             />
             <div
-              className="pointer-events-none absolute left-9 top-0 z-[1] h-9 w-[min(260px,calc(100vw-8rem))] overflow-hidden sm:w-60"
+              className="pointer-events-none absolute left-11 top-1/2 z-[1] h-11 w-[min(260px,calc(100vw-8rem))] -translate-y-1/2 overflow-x-hidden overflow-y-visible sm:w-60"
               aria-hidden="true"
             >
               <img
@@ -130,11 +130,11 @@ export function Header() {
                 alt=""
                 aria-hidden
                 width={260}
-                height={36}
+                height={44}
                 loading="lazy"
                 decoding="async"
                 draggable={false}
-                className="h-9 w-auto max-w-[260px] origin-left object-contain object-left will-change-transform transition-transform duration-[450ms] ease-in-out -translate-x-full group-hover:translate-x-0 group-focus-within:translate-x-0"
+                className="h-11 w-auto max-h-11 max-w-[260px] origin-left object-contain object-left will-change-transform transition-transform duration-[450ms] ease-in-out -translate-x-full group-hover:translate-x-0 group-focus-within:translate-x-0"
               />
             </div>
           </Link>

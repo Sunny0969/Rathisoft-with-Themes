@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 import { AiCoreSection } from '../components/AiCoreSection'
 import { AiIndustriesSection } from '../components/AiIndustriesSection'
 import { HowItWorksPanel } from '../components/HowItWorksPanel'
-import { Breadcrumbs } from '../components/Breadcrumbs'
 import { Seo } from '../components/Seo'
 import { ROUTES, servicePath } from '../utils/routes'
 import { PAGE_SEO } from '../data/pageSeo'
@@ -487,8 +486,6 @@ export function Home() {
       <div className="blob blob-1" aria-hidden />
       <div className="blob blob-2" aria-hidden />
       <div className="blob blob-3" aria-hidden />
-
-      <Breadcrumbs items={[{ name: 'Home', path: ROUTES.home }]} />
 
       <div ref={rootRef} className="rathisoft-landing">
         <section

@@ -7,6 +7,7 @@ export type StoreCategory =
   | 'shopify-theme'
   | 'wordpress-theme'
   | 'wordpress-plugin'
+  | 'mobile-application'
 
 export type StoreFilter = 'all' | StoreCategory
 
@@ -28,6 +29,10 @@ export interface StoreItem {
    * then falls back to “open in new tab” when a vendor blocks iframes.
    */
   demoUrl?: string
+  /**
+   * Mobile Application only: "View Details" opens in a new tab (screenshots, Figma, store listing, etc.).
+   */
+  detailsUrl?: string
   tags: string[]
 }
 
@@ -45,22 +50,6 @@ const SHOPIFY_THEMES: StoreItem[] = [
     "driveFileId": "1tWe0aiXdBIQCvMZQGuxIHoQCGNwT6jrN",
     "demoUrl": "https://preview.themeforest.net/item/pomar-fashion-store-shopify-theme-os-30-theme-block/full_screen_preview/63312114",
     "tags": ["shopify", "minimalist", "clean", "beginner"]
-  },
-   
-  {
-    id: 'shopify-adeline',
-    name: 'Adeline',
-    slug: 'shopify-adeline-theme',
-    category: 'shopify-theme',
-    description:
-      'Premium Shopify template by bitcode.com, designed for fashion collections with integrated lookbook sections and promotional layouts.',
-    icon: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=640&q=80',
-    version: '1.x',
-    /** Google Drive ID based on provided file */
-    fileSize: 'Not specified',
-    driveFileId: '146E9Jye7_2vCTR3aZKzU_-AoDSzpZjoF',
-    demoUrl: 'https://themes.shopify.com/themes/avante/presets/adelle',
-    tags: ['shopify', 'fashion', 'lookbook'],
   },
    
   {
@@ -105,20 +94,20 @@ const SHOPIFY_THEMES: StoreItem[] = [
   demoUrl: 'https://triss-demo.myshopify.com/',
   tags: ['shopify', 'beauty', 'fashion'],
 },
-{
-  id: 'shopify-testament-theme',
-  name: 'Testament',
-  slug: 'testament-shopify-theme',
-  category: 'shopify-theme',
-  description:
-    'Designed for high-volume stores. Testament focuses on conversion-driven features like quick view, color swatches, and sticky headers.',
-  icon: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=640&q=80',
-  version: 'Latest',
-  fileSize: '—',
-  driveFileId: '1_uWR8QICt4o6_TV8E4Kz2ayw8mHQdPUo',
-  demoUrl: 'https://themes.shopify.com/themes/testament/presets/testament',
-  tags: ['shopify', 'high-volume', 'conversion'],
-},
+// {
+//   id: 'shopify-testament-theme',
+//   name: 'Testament',
+//   slug: 'testament-shopify-theme',
+//   category: 'shopify-theme',
+//   description:
+//     'Designed for high-volume stores. Testament focuses on conversion-driven features like quick view, color swatches, and sticky headers.',
+//   icon: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=640&q=80',
+//   version: 'Latest',
+//   fileSize: '—',
+//   driveFileId: '1_uWR8QICt4o6_TV8E4Kz2ayw8mHQdPUo',
+//   demoUrl: 'https://themes.shopify.com/themes/testament/presets/testament',
+//   tags: ['shopify', 'high-volume', 'conversion'],
+// },
 {
   id: 'shopify-symmetry-theme',
   name: 'Symmetry',
@@ -147,20 +136,20 @@ const SHOPIFY_THEMES: StoreItem[] = [
   demoUrl: 'https://sunrise-theme.myshopify.com/',
   tags: ['shopify', 'vibrant', 'retail'],
 },
-{
-  id: 'shopify-startup-theme',
-  name: 'Startup',
-  slug: 'startup-shopify-theme',
-  category: 'shopify-theme',
-  description:
-    'The ideal choice for single-product stores or small catalogs. Designed to build trust and tell a brand story on a single page.',
-  icon: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=640&q=80',
-  version: 'Latest',
-  fileSize: '—',
-  driveFileId: '1C8_x34IRJk08QqolAEgpzde1n63jpEyH',
-  demoUrl: 'https://themes.shopify.com/themes/startup/presets/startup',
-  tags: ['shopify', 'single-product', 'clean'],
-},
+// {
+//   id: 'shopify-startup-theme',
+//   name: 'Startup',
+//   slug: 'startup-shopify-theme',
+//   category: 'shopify-theme',
+//   description:
+//     'The ideal choice for single-product stores or small catalogs. Designed to build trust and tell a brand story on a single page.',
+//   icon: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=640&q=80',
+//   version: 'Latest',
+//   fileSize: '—',
+//   driveFileId: '1C8_x34IRJk08QqolAEgpzde1n63jpEyH',
+//   demoUrl: 'https://themes.shopify.com/themes/startup/presets/startup',
+//   tags: ['shopify', 'single-product', 'clean'],
+// },
 {
   id: 'shopify-shoptimized-theme',
   name: 'Shoptimized',
@@ -175,19 +164,6 @@ const SHOPIFY_THEMES: StoreItem[] = [
   tags: ['shopify', 'cro', 'sales-focused'],
 },
 {
-  id: 'shopify-turbo-portland',
-  name: 'Turbo (Portland)',
-  slug: 'shopify-turbo-portland-theme',
-  category: 'shopify-theme',
-  description:
-    'High-performance Shopify theme designed for speed and large inventory stores. Features include predictive search and advanced mega menus.',
-  icon: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=640&q=80',
-  version: '3.2',
-  fileSize: '—',
-  driveFileId: '1mSDaPqUhmhzjcEWgLztSB0d1bp9ainoS',
-  tags: ['shopify', 'speed', 'large-catalog'],
-},
-{
   id: 'shopify-icon-theme',
   name: 'Icon',
   slug: 'shopify-icon-theme',
@@ -200,19 +176,19 @@ const SHOPIFY_THEMES: StoreItem[] = [
   driveFileId: '1brQxtdhl7xrPrA2nbQLo0ZvW3ojCZRkg',
   tags: ['shopify', 'visual-brand', 'photography'],
 },
-{
-  id: 'shopify-retina-theme',
-  name: 'Retina',
-  slug: 'retina-shopify-theme',
-  category: 'shopify-theme',
-  description:
-    'Award-winning theme for polished brands. Focuses on high-quality product imagery and sleek typography for a refined look.',
-  icon: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=640&q=80',
-  version: 'Latest',
-  fileSize: '—',
-  driveFileId: '19oJ799s52hrPoCe83THe0ioEmSDGSX5L',
-  tags: ['shopify', 'premium', 'refined'],
-},
+// {
+//   id: 'shopify-retina-theme',
+//   name: 'Retina',
+//   slug: 'retina-shopify-theme',
+//   category: 'shopify-theme',
+//   description:
+//     'Award-winning theme for polished brands. Focuses on high-quality product imagery and sleek typography for a refined look.',
+//   icon: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=640&q=80',
+//   version: 'Latest',
+//   fileSize: '—',
+//   driveFileId: '19oJ799s52hrPoCe83THe0ioEmSDGSX5L',
+//   tags: ['shopify', 'premium', 'refined'],
+// },
 {
   id: 'shopify-responsive-theme',
   name: 'Responsive',
@@ -266,44 +242,19 @@ const SHOPIFY_THEMES: StoreItem[] = [
   tags: ['shopify', 'multipurpose', 'creative'],
 },
 {
-    "id": "shopify-boosted",
-    "name": "Boosted",
-    "slug": "shopify-boosted-theme",
-    "category": "shopify-theme",
-    "description": "A high-conversion Shopify theme built to maximize sales performance, boasting extreme page speed and optimized checkout flows.",
-    "icon": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=640&q=80",
-    "version": "1.0",
-    "fileSize": "Not specified",
-    "driveFileId": "1CWS_4eUdCUjPX2Z_ikAeCYZDJZl0mfT2",
-    "demoUrl": "https://boostertheme.com/",
-    "tags": ["shopify", "conversion", "speed", "performance"]
+    id: "shopify-boosted",
+    name: "Boosted",
+    slug: "shopify-boosted-theme",
+    category: "shopify-theme",
+    description: "A high-conversion Shopify theme built to maximize sales performance, boasting extreme page speed and optimized checkout flows.",
+    icon: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=640&q=80",
+    version: "1.0",
+    fileSize: "Not specified",
+    driveFileId: "1CWS_4eUdCUjPX2Z_ikAeCYZDJZl0mfT2",
+    demoUrl: "https://boostertheme.com/",
+    tags: ['shopify', 'conversion', 'speed', 'performance']
   },
-  {
-    "id": "shopify-booster-2-2-1",
-    "name": "Booster Theme (v2.2.1)",
-    "slug": "shopify-booster-theme-v2-2-1",
-    "category": "shopify-theme",
-    "description": "A premium, conversion-optimized Shopify theme engineered to boost sales, improve load times, and eliminate the need for extra apps.",
-    "icon": "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=640&q=80",
-    "version": "2.2.1",
-    "fileSize": "Not specified",
-    "driveFileId": "19ykY5HX2Eyt-WyU2LM-vVwJNvRqW56jO",
-    "demoUrl": "https://boostertheme.com/demo",
-    "tags": ["shopify", "booster", "conversion", "marketing"]
-  },
-  {
-    "id": "shopify-booster-2-0-latest",
-    "name": "Booster Theme (v2.0 Latest)",
-    "slug": "shopify-booster-theme-v2-0-latest",
-    "category": "shopify-theme",
-    "description": "The latest stable build of the Booster v2 framework, featuring integrated marketing tools, smart cross-selling, and mobile-first layouts.",
-    "icon": "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=640&q=80",
-    "version": "2.0-latest",
-    "fileSize": "Not specified",
-    "driveFileId": "1XUK9tcheEnw-D12XrPPbnoklNbhfO8p5",
-    "demoUrl": "https://boostertheme.com/demo",
-    "tags": ["shopify", "booster", "marketing", "mobile-optimized"]
-  },
+
 {
   id: 'shopify-minimart-theme',
   name: 'MiniMart',
@@ -381,19 +332,6 @@ const SHOPIFY_THEMES: StoreItem[] = [
   fileSize: '—',
   driveFileId: '1xo64uWUUnL5QfRVwzOijt3LUVRf7wvjR',
   tags: ['shopify', 'fashion', 'apparel'],
-},
-{
-  id: 'shopify-foodly-theme',
-  name: 'Foodly',
-  slug: 'foodly-shopify-theme',
-  category: 'shopify-theme',
-  description:
-    'Award-winning theme for food and grocery stores. Features a clean, organic look with focus on nutritional info and quick checkout.',
-  icon: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=640&q=80',
-  version: '1.8',
-  fileSize: '—',
-  driveFileId: '1E6SP-ovIVp1Oi0NTvpTcKAiGEKRgog4m',
-  tags: ['shopify', 'grocery', 'food'],
 },
 {
   id: 'shopify-envy-theme',
@@ -682,32 +620,6 @@ const SHOPIFY_THEMES: StoreItem[] = [
   tags: ['shopify', 'instruments', 'audio'],
 },
 {
-    "id": "shopify-booster-2-2-1-copy",
-    "name": "Booster Theme (v2.2.1 Copy)",
-    "slug": "shopify-booster-theme-v2-2-1-copy",
-    "category": "shopify-theme",
-    "description": "Backup copy of the premium Booster v2.2.1 Shopify theme engineered to maximize sales and eliminate marketing app costs.",
-    "icon": "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=640&q=80",
-    "version": "2.2.1",
-    "fileSize": "Not specified",
-    "driveFileId": "ive1v16mypsi_nxXeVW41aXYiSEa4yUzEpYl",
-    "demoUrl": "https://booster-demo.myshopify.com/",
-    "tags": ["shopify", "booster", "conversion", "backup"]
-  },
-  {
-    "id": "shopify-booster-2-0-latest-copy",
-    "name": "Booster Theme (v2.0 Latest Copy)",
-    "slug": "shopify-booster-theme-v2-0-latest-copy",
-    "category": "shopify-theme",
-    "description": "Backup copy of the Booster v2.0 framework, featuring integrated marketing widgets and cross-selling layouts.",
-    "icon": "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=640&q=80",
-    "version": "2.0-latest",
-    "fileSize": "Not specified",
-    "driveFileId": "1GuuxbO3yZWkIuPb5rH9oJXxi9e6Nv72z",
-    "demoUrl": "https://booster-demo.myshopify.com/",
-    "tags": ["shopify", "booster", "marketing", "backup"]
-  },
-{
   id: 'shopify-multistore-theme',
   name: 'Multistore',
   slug: 'multistore-shopify-theme',
@@ -727,7 +639,7 @@ const SHOPIFY_THEMES: StoreItem[] = [
   category: 'shopify-theme',
   description:
     'A versatile theme for wellness and lifestyle brands. Features editorial layouts and social media integration to build a community around your products.',
-  icon: 'https://images.unsplash.com/photo-1511556532299-8f660fc26c06?auto=format&fit=crop&w=640&q=80',
+  icon: 'https://images.unsplash.com/photo-1779056904689-ff99fd0045a4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8d2VsbG5lc3MlMjBhbmQlMjBsaWZlc3R5bGUlMjBicmFuZHMufGVufDB8MnwwfHx8Mg%3D%3D',
   version: 'Latest',
   fileSize: '—',
   driveFileId: '18hQnRKpjDkH1FR4j79OmTagCRFy_kDNz',
@@ -892,44 +804,19 @@ const SHOPIFY_THEMES: StoreItem[] = [
   tags: ['shopify', 'coffee', 'cafe'],
 },
   {
-    "id": "shopify-insider",
-    "name": "Insider",
-    "slug": "shopify-insider-theme",
-    "category": "shopify-theme",
-    "description": "A conversion-driven Shopify theme engineered for modern retail brands, featuring section-based homepage builders and smart filter options.",
-    "icon": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=640&q=80",
-    "version": "1.0",
-    "fileSize": "Not specified",
-    "driveFileId": "1Jst97wti12t8fuOwZigbSZZz-qgsHCjP",
-    "demoUrl": "https://insider-demo.myshopify.com/",
-    "tags": ["shopify", "retail", "conversion", "ecommerce"]
+    id: "shopify-insider",
+    name: "Insider",
+    slug: "shopify-insider-theme",
+    category: "shopify-theme",
+    description: "A conversion-driven Shopify theme engineered for modern retail brands, featuring section-based homepage builders and smart filter options.",
+    icon: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=640&q=80",
+    version: "1.0",
+    fileSize: "Not specified",
+    driveFileId: "1Jst97wti12t8fuOwZigbSZZz-qgsHCjP",
+    demoUrl: "https://insider-demo.myshopify.com/",
+    tags: ['shopify', 'retail', 'conversion', 'ecommerce']
   },
-  {
-    "id": "shopify-launch",
-    "name": "Launch (Latest)",
-    "slug": "shopify-launch-theme-latest",
-    "category": "shopify-theme",
-    "description": "A premium Shopify theme designed specifically for scaling single-product stores, crowdfunding campaigns, and startups.",
-    "icon": "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=640&q=80",
-    "version": "latest",
-    "fileSize": "Not specified",
-    "driveFileId": "1uoYthjbypH3TSyRF6OQurDtnMPCNaUNH",
-    "demoUrl": "https://launch-demo.myshopify.com/",
-    "tags": ["shopify", "crowdfunding", "startup", "single-product"]
-  },
-  {
-    "id": "shopify-boosted-copy",
-    "name": "Boosted (Copy)",
-    "slug": "shopify-boosted-theme-copy",
-    "category": "shopify-theme",
-    "description": "Backup copy of the high-conversion Shopify theme optimized for extreme page speed and seamless checkout performance.",
-    "icon": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=640&q=80",
-    "version": "1.0",
-    "fileSize": "Not specified",
-    "driveFileId": "1RkopiT1wT24Wcb_qXKufqvCESom6pTIY",
-    "demoUrl": "https://boosted-demo.myshopify.com/",
-    "tags": ["shopify", "conversion", "speed", "backup"]
-  },
+  
 {
   id: 'shopify-cakeshop-theme',
   name: 'Cake-shop',
@@ -995,31 +882,18 @@ const SHOPIFY_THEMES: StoreItem[] = [
     "demoUrl": "https://prestige-demo.myshopify.com/",
     "tags": ["shopify", "luxury", "prestige", "boutique"]
   },
-  {
-    "id": "shopify-masonry",
-    "name": "Masonry (2018)",
-    "slug": "shopify-masonry-theme-2018",
-    "category": "shopify-theme",
-    "description": "An artistic Shopify theme utilizing a distinctive grid layout, built specifically for showcase-heavy fashion houses and custom makers.",
-    "icon": "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=640&q=80",
-    "version": "2018",
-    "fileSize": "Not specified",
-    "driveFileId": "1ItafzfUTLN27KHEO3q8TKwbAAncBE-2w",
-    "demoUrl": "https://masonry-demo.myshopify.com/",
-    "tags": ["shopify", "masonry", "grid", "creative"]
-  },
     {
-    "id": "shopify-icon",
-    "name": "Icon Theme",
-    "slug": "shopify-icon-theme",
-    "category": "shopify-theme",
-    "description": "A high-conversion premium Shopify theme designed specifically for brands with visually rich content and large multi-category inventories.",
-    "icon": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=640&q=80",
-    "version": "1.0",
-    "fileSize": "Not specified",
-    "driveFileId": "1J61LxZaUY7RtO5EDbBPHCMJy_3DLhFxr",
-    "demoUrl": "https://icon-demo.myshopify.com/",
-    "tags": ["shopify", "icon", "visual-heavy", "retail"]
+    id: "shopify-icon",
+    name: "Icon Theme",
+    slug: "shopify-icon-theme",
+    category: "shopify-theme",
+    description: "A high-conversion premium Shopify theme designed specifically for brands with visually rich content and large multi-category inventories.",
+    icon: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=640&q=80",
+    version: "1.0",
+    fileSize: "Not specified",
+    driveFileId: "1J61LxZaUY7RtO5EDbBPHCMJy_3DLhFxr",
+    demoUrl: "https://icon-demo.myshopify.com/",
+    tags: ['shopify', 'icon', 'visual-heavy', 'retail']
   },
   {
     "id": "shopify-shoptimized",
@@ -1073,19 +947,19 @@ const SHOPIFY_THEMES: StoreItem[] = [
     "demoUrl": "https://testament-demo.myshopify.com/",
     "tags": ["shopify", "testament", "luxury", "fashion"]
   },
-  {
-    "id": "shopify-sunrise",
-    "name": "Sun-Rise Theme",
-    "slug": "shopify-sunrise-theme",
-    "category": "shopify-theme",
-    "description": "A high-conversion, grid-styled premium Shopify theme explicitly built for medical gear, organic products, or large visual collections.",
-    "icon": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=640&q=80",
-    "version": "1.0",
-    "fileSize": "Not specified",
-    "driveFileId": "1IHhHESD0Jn5mNle1y3CpEAIoLQkDuppR",
-    "demoUrl": "https://sunrise-demo.myshopify.com/",
-    "tags": ["shopify", "sunrise", "retail", "grid"]
-  },
+  // {
+  //   "id": "shopify-sunrise",
+  //   "name": "Sun-Rise Theme",
+  //   "slug": "shopify-sunrise-theme",
+  //   "category": "shopify-theme",
+  //   "description": "A high-conversion, grid-styled premium Shopify theme explicitly built for medical gear, organic products, or large visual collections.",
+  //   "icon": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=640&q=80",
+  //   "version": "1.0",
+  //   "fileSize": "Not specified",
+  //   "driveFileId": "1IHhHESD0Jn5mNle1y3CpEAIoLQkDuppR",
+  //   "demoUrl": "https://sunrise-demo.myshopify.com/",
+  //   "tags": ["shopify", "sunrise", "retail", "grid"]
+  // },
   {
     "id": "shopify-ultrastore",
     "name": "UltraStore",
@@ -1159,7 +1033,7 @@ const SHOPIFY_THEMES: StoreItem[] = [
   category: 'shopify-theme',
   description:
     'A vibrant and summery theme for swimwear and beachwear brands. Includes support for high-impact lifestyle videos and dynamic product filters.',
-  icon: 'https://images.unsplash.com/photo-1544944447-1d960854446c?auto=format&fit=crop&w=640&q=80',
+  icon: 'https://images.unsplash.com/photo-1743193143685-d32975dd3a45?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8c3dpbXdlYXIlMjBhbmQlMjBiZWFjaHdlYXIlMjBicmFuZHN8ZW58MHx8MHx8fDI%3D',
   version: 'Latest',
   fileSize: '—',
   driveFileId: '1OKEIS0x6UtUD4yRi0vjsq-HjaLBl-W9O',
@@ -2177,19 +2051,7 @@ const WORDPRESS_THEMES: StoreItem[] = [
     "tags": ["wordpress", "blog", "journal", "news"]
   },
   
-  {
-    "id": "wp-autoplay-copy",
-    "name": "Autoplay (Copy)",
-    "slug": "wordpress-autoplay-plugin-copy",
-    "category": "wordpress-plugin",
-    "description": "Backup copy of the advanced WordPress plugin designed for custom audio streaming and automated video playback.",
-    "icon": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=640&q=80",
-    "version": "1.0",
-    "fileSize": "Not specified",
-    "driveFileId": "1GiKIVtPNtNRSqvEiwmViL1LlIDnDFhtI",
-    "demoUrl": "https://videohive.net/?auto_signin=true",
-    "tags": ["wordpress", "plugin", "video", "backup"]
-  },
+  
   {
     "id": "wp-boxes",
     "name": "Boxes",
@@ -2905,19 +2767,7 @@ const WORDPRESS_THEMES: StoreItem[] = [
     "demoUrl": "https://darrelwilson.com/product/newlife-psychology-and-counseling-elementor-template-kit/?srsltid=AfmBOoqee-uuDoGUR4xceQGsOzv1WPqhQZ9ZAhDgrXJBREJenkFZNjGw",
     "tags": ["wordpress", "elementor-kit", "psychology", "clinic", "health"]
   },
-  {
-    "id": "wp-nextapp-landing-kit",
-    "name": "Nextapp - App Landing Page Template Kit",
-    "slug": "wordpress-nextapp-app-landing-page-template-kit",
-    "category": "wordpress-theme",
-    "description": "A sleek, conversion-driven landing component stack built to showcase iOS/Android apps, custom software products, and modern tech modules.",
-    "icon": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=640&q=80",
-    "version": "1.0",
-    "fileSize": "Not specified",
-    "driveFileId": "YOUR_DRIVE_FILE_ID_HERE",
-    "demoUrl": "https://nextapp-demo.example.com",
-    "tags": ["wordpress", "elementor-kit", "app-landing", "saas", "software"]
-  },
+  
   {
     "id": "wp-nextapp-landing-kit",
     "name": "Nextapp - App Landing Page Template Kit",
@@ -2929,7 +2779,7 @@ const WORDPRESS_THEMES: StoreItem[] = [
     "fileSize": "Not specified",
     "driveFileId": "1ApH55xGIQC78fuYWVIiUecUXvcSbyLq2",
     "demoUrl": "https://designtemplateplace.com/product/nextapp-app-landing-page-template-115393",
-    "tags": ["wordpress", "elementor-kit", "app-landing", "saas", "software"]
+    "tags": ["wordpress", "elementor-kit", "saas", "software"]
   },
   {
     "id": "wp-novely-book-kit",
@@ -3255,6 +3105,32 @@ const WORDPRESS_THEMES: StoreItem[] = [
     "driveFileId": "1qlE982AocHE1bNwPevsBH8xUuGtcNsxS",
     "demoUrl": "https://tekwalks.co.ke/emporium/potopath-digital-agency-elementor-template-kit/",
     "tags": ["wordpress", "elementor-kit", "digital-agency", "marketing"]
+  },
+  {
+    id: 'dokan-pro',
+    name: 'Dokan Pro Multi-Vendor',
+    slug: 'dokan-pro-multi-vendor',
+    category: 'wordpress-plugin',
+    description: 'Build your own online marketplace like Amazon or eBay using WooCommerce with comprehensive independent vendor dashboards.',
+    icon: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&auto=format&fit=crop&q=80',
+    version: '1.0',
+    fileSize: '15.5 MB',
+    driveFileId: '14iT5IeOLLnaHbsN7VTdDYTq8wlcTiXA2',
+    detailsUrl: 'https://wedevs.com/dokan',
+    tags: ['wordpress', 'plugin', 'woocommerce', 'marketplace']
+  },
+{
+    id: 'astra-pro-sites',
+    name: 'Astra Pro Starter Sites',
+    slug: 'astra-pro-starter-sites',
+    category: 'wordpress-plugin',
+    description: 'Gain instant access to hundreds of premium, fully customizable, one-click install layout websites built for fast engines.',
+    icon: 'https://images.unsplash.com/photo-1531538606174-0f90ff5dce83?w=600&auto=format&fit=crop&q=80',
+    version: '1.0',
+    fileSize: '370 KB',
+    driveFileId: '1gV9bHsAcvhQFbyOJ_73xqdBa9YYurbf_',
+    detailsUrl: 'https://wpastra.com/',
+    tags: ['wordpress', 'plugin', 'templates', 'astra']
   },
   {
     "id": "wp-nicdark-hotel-kit",
@@ -5568,18 +5444,163 @@ const WORDPRESS_THEMES: StoreItem[] = [
 
 // ── WordPress paid plugins ────────────────────────────────────────
 const WORDPRESS_PLUGINS: StoreItem[] = [
-   {
-    "id": "wp-autoplay",
-    "name": "Autoplay",
-    "slug": "wordpress-autoplay-plugin",
-    "category": "wordpress-plugin",
-    "description": "An advanced WordPress plugin designed to seamlessly handle background video playback, custom audio streaming, and playlist automation.",
-    "icon": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=640&q=80",
-    "version": "1.0",
-    "fileSize": "Not specified",
-    "driveFileId": "18bcIA0jqc9yil1voqOxf4tpismMR67E",
-    "demoUrl": "https://www.htmlelements.com/demos/carousel/auto-play/",
-    "tags": ["wordpress", "plugin", "video", "media", "autoplay"]
+  {
+    id: 'yoast-seo-premium',
+    name: 'Yoast SEO Premium',
+    slug: 'yoast-seo-premium',
+    category: 'wordpress-plugin',
+    description: 'Optimize your WordPress site structure, target keywords, redirects, and enhance internal linking for higher search engine rankings.',
+    icon: 'https://images.unsplash.com/photo-1432821596592-e2c18b78144f?w=600&auto=format&fit=crop&q=80',
+    version: '1.0',
+    fileSize: '4 MB',
+    driveFileId: '1FATpZKmgKsRzspV8oe_F9bPXzWmDFgSW',
+    demoUrl: 'https://yoast.com/get-yoast-seo-premium/?gad_source=1&gad_campaignid=18415662238&gbraid=0AAAAADFXXRF3XFhQlyLBCHyL8RZomLepI&gclid=CjwKCAjw2rrQBhBuEiwAarLWHaWC82kI37RN1k5FE3J1zMGyiHhx12B0x68s0RwpWW9zsGB7IQYb2RoCargQAvD_BwE',
+    tags: ['wordpress', 'plugin', 'seo', 'marketing']
+  },
+  {
+    id: 'oceanwp-addons',
+    name: 'OceanWP Addons Package',
+    slug: 'oceanwp-addons-package',
+    category: 'wordpress-plugin',
+    description: 'Unlock premium extensions and custom templates for OceanWP theme to build highly responsive layout systems.',
+    icon: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&auto=format&fit=crop&q=80',
+    version: '1.0',
+    fileSize: '7.5 MB',
+    driveFileId: '1cfJD_Y-UZGTqCz0aRDVHolfxqUn_A0r0',
+    demoUrl: 'https://oceanwp.org/',
+    tags: ['wordpress', 'plugin', 'addons', 'theme-extension']
+  },
+  {
+    id: 'ninja-popups',
+    name: 'Ninja Popups',
+    slug: 'ninja-popups',
+    category: 'wordpress-plugin',
+    description: 'Convert visitors into subscribers and customers with professionally designed email opt-in popups and dynamic overlays.',
+    icon: 'https://images.unsplash.com/photo-1557200134-90327ee9fafa?w=600&auto=format&fit=crop&q=80',
+    version: '1.0',
+    fileSize: '6.4 MB',
+    driveFileId: '1kryBdpOlx_aTD_vZdoEVxB4p4i6o4Gdr',
+    demoUrl: 'https://demo.arscode.pro/ninja-popups/',
+    tags: ['wordpress', 'plugin', 'popups', 'lead-generation']
+  },
+  {
+    id: 'elementor-pro-package',
+    name: 'Elementor Pro Package',
+    slug: 'elementor-pro-package',
+    category: 'wordpress-plugin',
+    description: 'Advanced live theme builder with drag-and-drop widgets, pixel-perfect dynamic layouts, and premium wireframe options.',
+    icon: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=600&auto=format&fit=crop&q=80',
+    version: '1.0',
+    fileSize: '10.4 MB',
+    driveFileId: '1qUbeRYdqF_vadqk8QC3-HSkvZkQzEkX2',
+    demoUrl: 'https://elementor.com/pro/',
+    tags: ['wordpress', 'plugin', 'page-builder', 'design']
+  },
+ 
+  {
+    id: 'divi-booster',
+    name: 'Divi Booster',
+    slug: 'divi-booster',
+    category: 'wordpress-plugin',
+    description: 'Boost your website design capabilities with pre-configured configuration shortcuts and tweaks for Elegant Themes Divi layout.',
+    icon: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=600&auto=format&fit=crop&q=80',
+    version: '1.0',
+    fileSize: '700 KB',
+    driveFileId: '1i4Rou7zFLm7awkEKFLud6zTKdGA1WN69',
+    demoUrl: 'https://www.elegantthemes.com/blog/divi-resources/divi-booster',
+    tags: ['wordpress', 'plugin', 'divi', 'optimization']
+  },
+  {
+    id: 'countdown-timer-pro',
+    name: 'Countdown Timer Pro',
+    slug: 'countdown-timer-pro',
+    category: 'wordpress-plugin',
+    description: 'Create urgency and boost sales conversions by creating custom FOMO countdown bars and functional discount triggers.',
+    icon: 'https://images.unsplash.com/photo-1508962914676-134849a727f0?w=600&auto=format&fit=crop&q=80',
+    version: '1.0',
+    fileSize: '1.23 MB',
+    driveFileId: '1rKV0IpDsWIZFYj3p50FWov4SnlJvGJ89',
+    demoUrl: 'https://wordpress.org/plugins/widget-countdown/',
+    tags: ['wordpress', 'plugin', 'marketing', 'timer']
+  },
+  {
+    id: 'convert-pro-package',
+    name: 'Convert Pro Package',
+    slug: 'convert-pro-package',
+    category: 'wordpress-plugin',
+    description: 'High-performance lead generation and email opt-in conversion plugin optimized for minimal loading speeds.',
+    icon: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600&auto=format&fit=crop&q=80',
+    version: '1.0',
+    fileSize: '2.3 MB',
+    driveFileId: '1kxASrLioj9iqW02WWCDmBpwcz07AIiEq',
+    demoUrl: 'https://convertpro.net/',
+    tags: ['wordpress', 'plugin', 'leads', 'marketing']
+  },
+  {
+    id: 'booster-for-woocommerce',
+    name: 'Booster for WooCommerce Plus',
+    slug: 'booster-for-woocommerce-plus',
+    category: 'wordpress-plugin',
+    description: 'Supercharge your digital storefront with global pricing configurations, custom checkout labels, multi-currency modules, and invoicing.',
+    icon: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80',
+    version: '1.0',
+    fileSize: '1.9 MB',
+    driveFileId: '1rgyGVb3ef1HU_RhZlP9BifSJK_tFzcft',
+    demoUrl: 'https://wordpress.org/plugins/woocommerce-jetpack/',
+    tags: ['wordpress', 'plugin', 'woocommerce', 'e-commerce']
+  },
+  
+  {
+    id: 'all-in-one-seo-pack',
+    name: 'All in One SEO Premium',
+    slug: 'all-in-one-seo-premium',
+    category: 'wordpress-plugin',
+    description: 'Comprehensive setup dashboard tracking structural keywords, XML sitemaps, local SEO profiles, and schematic indexing loops.',
+    icon: 'https://images.unsplash.com/photo-1562577309-4932fdd64cd1?w=600&auto=format&fit=crop&q=80',
+    version: '1.0',
+    fileSize: '2.9 MB',
+    driveFileId: '1pB2KNP8YT33o6XCkFTv1kGs0v-wOXVSG',
+    demoUrl: 'https://wordpress.org/plugins/all-in-one-seo-pack/',
+    tags: ['wordpress', 'plugin', 'seo', 'optimization']
+  },
+  {
+    id: 'affiliate-wp-premium',
+    name: 'AffiliateWP Premium',
+    slug: 'affiliate-wp-premium',
+    category: 'wordpress-plugin',
+    description: 'A complete, native affiliate marketing solution tracking dynamic coupon codes, modern referrals, and link networks seamlessly.',
+    icon: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=80',
+    version: '1.0',
+    fileSize: '3.3 MB',
+    driveFileId: '1ws-830zmIVfYkHAGJhLEb8MkpBiSlRjK',
+    demoUrl: 'https://wordpress.org/plugins/affiliates/',
+    tags: ['wordpress', 'plugin', 'affiliate', 'marketing']
+  },
+  {
+    id: 'ads-pro-plugin',
+    name: 'Ads Pro Advanced Manager',
+    slug: 'ads-pro-advanced-manager',
+    category: 'wordpress-plugin',
+    description: 'Manage banner locations, native advertising schedules, geographical targeting, and custom checkout templates on your site.',
+    icon: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=600&auto=format&fit=crop&q=80',
+    version: '1.0',
+    fileSize: '1.1 MB',
+    driveFileId: '1lJJHJ6X8lcR0jMzyP4cRgtZDx_uE2-xW',
+    demoUrl: 'https://wordpress.org/plugins/advanced-ads/',
+    tags: ['wordpress', 'plugin', 'ads', 'monetization']
+  },
+  {
+    id: "wp-autoplay",
+    name: "Autoplay",
+    slug: "wordpress-autoplay-plugin",
+    category: "wordpress-plugin",
+    description: "An advanced WordPress plugin designed to seamlessly handle background video playback, custom audio streaming, and playlist automation.",
+    icon: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=640&q=80",
+    version: "1.0",
+    fileSize: "Not specified",
+    driveFileId: "18bcIA0jqc9yil1voqOxf4tpismMR67E",
+    demoUrl: "https://youtu.be/flkTFMS4tXI?si=R_yGqRre2M3pTMBW",
+    tags: ["wordpress", "plugin", "video", "media", "autoplay"]
   },
   {
     id: 'wp-facebook-feed-plugin',
@@ -5588,10 +5609,11 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
     category: 'wordpress-plugin',
     description:
       'Easily display your Facebook posts, photos, and videos directly on your WordPress site. Seamlessly integrate your social media presence with your website content.',
-    icon: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=640&q=80',
+    icon: 'https://images.unsplash.com/photo-1639335440395-90759e288ddb?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8ZmFjZWJvb2t8ZW58MHwyfDB8fHwy',
     version: '2022.02.21',
     fileSize: '2.8 MB',
     driveFileId: '1GliKJvD5OPmm2nX5Ahqdggerd3zmOe4O',
+    demoUrl: "https://codecanyon.net/item/wordpress-facebook-plugin-facebook-feed-widget/20611532",
     tags: ['plugin', 'facebook', 'social-feed'],
 },
 {
@@ -5605,6 +5627,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: '2022.02.21',
   fileSize: '2.5 MB',
   driveFileId: '1RukouJGTJHjN9uHztMbwDiTCXVLmP-jy',
+  demoUrl: "https://preview.codecanyon.net/item/pinterest-feed-wordpress-pinterest-feed-plugin/full_screen_preview/23389883",
   tags: ['plugin', 'pinterest', 'visual-marketing'],
 },
   {
@@ -5618,6 +5641,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
     version: '7.4.1.2',
     fileSize: '12.4 MB',
     driveFileId: '1VBB481GaLiNtJs75okjsqnlY5vheVSQl',
+    demoUrl:"https://preview.codecanyon.net/item/digits-wordpress-mobile-number-signup-and-login/full_screen_preview/19801105",
     tags: ['wordpress', 'otp-login', 'sms-verification'],
   },
   {
@@ -5631,6 +5655,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
     version: 'Latest',
     fileSize: '15.8 MB',
     driveFileId: '1VBB481GaLiNtJs75okjsqnlY5vheVSQl',
+    demoUrl:"https://getlaralink.com/",
     tags: ['url-shortener', 'marketing', 'link-tracking'],
 },
 {
@@ -5644,6 +5669,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '4.2 MB',
   driveFileId: '1KCsIv604u05d34HISKBWVbu6v0iiqrBM',
+  demoUrl:"https://codecanyon.net/item/woocommerce-attach-me/11975229",
   tags: ['woocommerce', 'attachments', 'order-management'],
 },
 {
@@ -5657,6 +5683,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '3.1 MB',
   driveFileId: '1NcwqbSZy4UBfxPe_LNAUuLJy3mJKGD90',
+  demoUrl:"https://wordpress.org/plugins/woo-product-timer/",
   tags: ['woocommerce', 'scheduling', 'restriction'],
 },
 {
@@ -5666,10 +5693,11 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   category: 'wordpress-plugin',
   description:
     'A complete SEO solution for WordPress. Includes on-page optimization, sitemaps, backlink tracking, and social sharing tools.',
-  icon: 'https://images.unsplash.com/photo-1432888622747-4eb9a8f2c20e?auto=format&fit=crop&w=640&q=80',
+  icon: 'https://images.unsplash.com/photo-1705904506592-d8a0d5392c66?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8QSUyMGNvbXBsZXRlJTIwU0VPJTIwc29sdXRpb24lMjBmb3IlMjBXb3JkUHJlc3MuJTIwSW5jbHVkZXMlMjBvbi1wYWdlJTIwb3B0aW1pemF0aW9ufGVufDB8MnwwfHx8Mg%3D%3D',
   version: 'Latest',
   fileSize: '11.2 MB',
   driveFileId: '1PAQMz8nDm7dPiyUzCmnu1UybcrXfiREA',
+  demoUrl:"https://wordpress.org/support/plugin/premium-seo-pack/",
   tags: ['seo', 'marketing', 'optimization'],
 },
 {
@@ -5683,6 +5711,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '3.5 MB',
   driveFileId: '1jLXUBykjxurew1OqqbgKavKN4hwamNQZ',
+  demoUrl:"https://zuperradioplayer.audioplayerhtml5.com/",
   tags: ['plugin', 'radio', 'shoutcast', 'audio'],
 } ,
 {
@@ -5696,6 +5725,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '4.2 MB',
   driveFileId: '169v8cG4f7Hmu1VaehXy5If_E4am2Rh0Q',
+  demoUrl:"https://wordpress.org/plugins/vimeography/",
   tags: ['plugin', 'video', 'slider', 'youtube'],
 },
 {
@@ -5705,10 +5735,11 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   category: 'wordpress-plugin',
   description:
     'A responsive top bar plugin to display promotions, announcements, or notifications. Includes a unique switcher for multiple messages.',
-  icon: 'https://images.unsplash.com/photo-1502355984994-812f711096ac?auto=format&fit=crop&w=640&q=80',
+  icon: 'https://images.unsplash.com/photo-1744692149284-37652663f21f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGlzcGxheSUyMHByb21vdGlvbnMlMkMlMjBhbm5vdW5jZW1lbnRzJTJDJTIwb3IlMjBub3RpZmljYXRpb25zfGVufDB8MnwwfHx8Mg%3D%3D',
   version: 'Latest',
   fileSize: '1.8 MB',
   driveFileId: '1GNKSCKFo6SyU7uVq0u-7DUbxLpET8AID',
+  demoUrl:"https://www.lambertgroupproductions.com/canyon/xpromoter_wordpress_plugin/index.html",
   tags: ['plugin', 'marketing', 'notification-bar'],
 },
 {
@@ -5722,6 +5753,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '2.4 MB',
   driveFileId: '1QS_gSSIPzfmVI50_L6UPncs00SD-eGUo',
+  demoUrl:"https://wordpress.org/plugins/logo-showcase/",
   tags: ['plugin', 'logos', 'carousel', 'branding'],
 },
 {
@@ -5731,10 +5763,11 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   category: 'wordpress-plugin',
   description:
     'Create stunning full-screen video backgrounds for your website pages or specific sections with this powerful player.',
-  icon: 'https://images.unsplash.com/photo-1492619339714-8c8397e6388a?auto=format&fit=crop&w=640&q=80',
+  icon: 'https://images.unsplash.com/photo-1629711425565-05f7fa97e456?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Q3JlYXRlJTIwc3R1bm5pbmclMjBmdWxsLXNjcmVlbiUyMHZpZGVvJTIwYmFja2dyb3VuZHN8ZW58MHwyfDB8fHwy',
   version: 'Latest',
   fileSize: '5.1 MB',
   driveFileId: '1OZ6DZEOCBRdB0reNhdhVJstgXE4iGu5Q',
+  demoUrl:"https://wordpress.org/plugins/html5-video-player/",
   tags: ['plugin', 'video-background', 'full-screen'],
 },
 {
@@ -5744,7 +5777,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   category: 'wordpress-plugin',
   description:
     'A top-tier video player that supports self-hosted MP4, YouTube, and Vimeo with a customizable interface and skins.',
-  icon: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=640&q=80',
+  icon: 'https://images.unsplash.com/photo-1738694200182-fdb0c63b9cfc?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Q3JlYXRlJTIwc3R1bm5pbmclMjBmdWxsLXNjcmVlbiUyMHZpZGVvJTIwYmFja2dyb3VuZHN8ZW58MHwyfDB8fHwy',
   version: 'Latest',
   fileSize: '4.8 MB',
   driveFileId: '10BiA96jnFMQyBiDOxrRTPtWd9Y7qBh60',
@@ -5757,10 +5790,11 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   category: 'wordpress-plugin',
   description:
     'A multi-layer slider plugin allowing you to add text, images, and buttons over sliding backgrounds with custom animations.',
-  icon: 'https://images.unsplash.com/photo-1454165833767-027ffea9e772?auto=format&fit=crop&w=640&q=80',
+  icon: 'https://images.unsplash.com/photo-1693849055628-87dfdb99baf3?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YWxsb3dpbmclMjB5b3UlMjB0byUyMGFkZCUyMHRleHQlMkMlMjBpbWFnZXMlMkN8ZW58MHwyfDB8fHwy',
   version: 'Latest',
   fileSize: '6.2 MB',
   driveFileId: '1cq7mrCcWQAal8o70n4KmTzyAbAjSqFLe',
+  demoUrl:"https://www.responsivejqueryslider.com/ubersliderwordpressplugin/?storefront=envato-elements",
   tags: ['plugin', 'slider', 'layers', 'animations'],
 },
 {
@@ -5774,6 +5808,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '2.9 MB',
   driveFileId: '1hDCJWYo1RHAGSvBfxS_i5lOSxMfnHnLQ',
+  demoUrl:"https://saus.edu.pk/plugins/sticky-html5-music-player-wordpress-plugin/",
   tags: ['plugin', 'audio', 'sticky', 'music'],
 },
 {
@@ -5787,6 +5822,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '5.5 MB',
   driveFileId: '1RzXnF_EEMWPRsQIFhABupxnHQOO3x3c4',
+  demoUrl:"https://preview.codecanyon.net/item/revolution-video-player-with-bottom-playlist-wordpress-plugin-youtubevimeoselfhosted-support/full_screen_preview/18216139",
   tags: ['plugin', 'video', 'playlist', 'marketing'],
 },
 {
@@ -5800,6 +5836,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '3.1 MB',
   driveFileId: '1Vk5ntvX01JeJnKm6XTAPCWz-pV9L-nZn',
+  demoUrl:"https://zoompanningeffectslider.com/",
   tags: ['plugin', 'slider', 'ken-burns', 'visual'],
 },
 {
@@ -5813,6 +5850,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '3.7 MB',
   driveFileId: '1KEw8OK4oNHBIYOVaDhwix4MgpWCWjIbD',
+  demoUrl:"https://wordpress.org/plugins/html5-audio-player/",
   tags: ['plugin', 'audio', 'pro', 'playlist'],
 },
 {
@@ -5826,6 +5864,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '2.8 MB',
   driveFileId: '1Fipdt365Y9grIag_AviCvrb3qLZBFTfi',
+  demoUrl:"https://wordpress.org/plugins/radio-player-page/",
   tags: ['plugin', 'radio', 'streaming', 'shoutcast'],
 },
 {
@@ -5839,6 +5878,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '4.3 MB',
   driveFileId: '1Y0tvEP0DzMb8XcQVBkSHuV9RAKau6mr6',
+  demoUrl:"https://wordpress.org/plugins/carousel-slider/",
   tags: ['plugin', 'carousel', 'multimedia', '3d'],
 },
 {
@@ -5852,6 +5892,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '3.9 MB',
   driveFileId: '1i-frCSHImI8cSV6kEvVdyixD_AJxd9sV',
+  demoUrl:"https://wordpress.org/plugins/smart-slider-3/",
   tags: ['plugin', 'slider', 'carousel', 'effects'],
 },
 {
@@ -5861,10 +5902,11 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   category: 'wordpress-plugin',
   description:
     'Add a festive touch to your site with an animated Christmas card. Features falling snow and holiday music.',
-  icon: 'https://images.unsplash.com/photo-1543589077-47d81606c1ad?auto=format&fit=crop&w=640&q=80',
+  icon: 'https://images.unsplash.com/photo-1734397470433-f9a0b5e92d7d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YW5pbWF0ZWQlMjBDaHJpc3RtYXMlMjBjYXJkfGVufDB8MnwwfHx8Mg%3D%3D',
   version: 'Latest',
   fileSize: '2.5 MB',
   driveFileId: '1zMM98_1zomUkt9VF1wxYIjuSVly7toni',
+  demoUrl:"https://digifilezone.com/product/magic-christmas-card-with-animation-wp-plugin-2/",
   tags: ['plugin', 'holiday', 'animation', 'christmas'],
 },
 {
@@ -5878,6 +5920,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '1.2 MB',
   driveFileId: '1uVdhgODKdeGhkE-Z7_EtQzOslbj7z2xE',
+  demoUrl:"https://codecanyon.net/item/infinito-custom-css-for-chosen-pages-and-posts-or-for-entire-website-wordpress-plugin/22908708?srsltid=AfmBOorvoBELmCb2e2QzShEbbFuFSgB3z_l2UxwmeDXCoiqkxiwhVMUJ",
   tags: ['plugin', 'css', 'development', 'customization'],
 },
 {
@@ -5891,6 +5934,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '3.3 MB',
   driveFileId: '1tt7AKiZo2Mvym1Q6AHPvadCvbIyAfqw7',
+  demoUrl:"https://wordpress.org/plugins/fullscreen-background/",
   tags: ['plugin', 'background', 'design', 'video'],
 },
 {
@@ -5904,6 +5948,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '2.1 MB',
   driveFileId: '1Wi7jlMT8tYTBOB8ZCT-rkaxdurtWdSXr',
+  demoUrl:"https://wordpress.org/plugins/html5-video-player/",
   tags: ['plugin', 'video', 'html5', 'player'],
 },
 {
@@ -5917,6 +5962,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '1.7 MB',
   driveFileId: '1vLE_cbudwnObmN-IyW4N4WVW1CbphPxi',
+  demoUrl:"https://wordpress.org/plugins/html5-audio-player/",
   tags: ['plugin', 'audio', 'music', 'player'],
 },
 {
@@ -5926,10 +5972,11 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   category: 'wordpress-plugin',
   description:
     'Create a stunning grid of images and videos. Features a lightbox, social sharing, and infinite scroll options.',
-  icon: 'https://images.unsplash.com/photo-1554147090-e11d63561a51?auto=format&fit=crop&w=640&q=80',
+  icon: 'https://images.unsplash.com/photo-1570841512628-a93d7bc5aaf4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c3R1bm5pbmclMjBncmlkJTIwb2YlMjBpbWFnZXMlMjBhbmQlMjB2aWRlb3xlbnwwfDJ8MHx8fDI%3D',
   version: 'Latest',
   fileSize: '3.6 MB',
   driveFileId: '18XKBNd4faeyg9K9rTCQzcQQ-vN4wesdW',
+  demoUrl:"https://wordpress.org/plugins/foogallery/",
   tags: ['plugin', 'gallery', 'grid', 'video'],
 },
 {
@@ -5943,6 +5990,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '4.5 MB',
   driveFileId: '1Z5NsWA-B1FgOs48hsGjflbqBHO1Y7_F_',
+  demoUrl:"https://wordpress.org/plugins/eventilla-events/",
   tags: ['plugin', 'events', 'calendar', 'management'],
 },
 {
@@ -5956,6 +6004,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '1.9 MB',
   driveFileId: '1lKvoj1Av4KdiGAf_zsDDGNWuGTJfC-VZ',
+  demoUrl:"https://wordpress.org/plugins/widget-countdown/",
   tags: ['plugin', 'timer', 'marketing', 'sales'],
 },
 {
@@ -5969,6 +6018,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '3.2 MB',
   driveFileId: '1OscRe3kaA3Vxy9Bu9aC7S6DC1DObuYBB',
+  demoUrl:"https://wordpress.org/plugins/lknwp-radio-browser/",
   tags: ['plugin', 'radio', 'shoutcast', 'history'],
 },
 {
@@ -5982,6 +6032,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '2.3 MB',
   driveFileId: '10hwBGjL8430E02BeU94879gcqM3lC7k8',
+  demoUrl:"https://wordpress.org/plugins/widget-countdown/",
   tags: ['plugin', 'timer', 'countdown', 'clock'],
 },
 {
@@ -5995,6 +6046,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '3.4 MB',
   driveFileId: '1v70Pa-pB0lVoT8-IO86wkbPZdGgXU4Lt',
+  demoUrl:"https://vivathemes.com/wordpress-theme/apollo/",
   tags: ['plugin', 'audio', 'sticky', 'player'],
 },
 {
@@ -6008,6 +6060,7 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '4.7 MB',
   driveFileId: '1MvNLuUS4Fb7xuUmNsrwam2kablGsBfS9',
+  demoUrl:"https://wordpress.org/plugins/ultimate-slider-toolkit/",
   tags: ['plugin', 'slider', 'banner', 'responsive'],
 },
 {
@@ -6021,19 +6074,608 @@ const WORDPRESS_PLUGINS: StoreItem[] = [
   version: 'Latest',
   fileSize: '3.6 MB',
   driveFileId: '1Aa2ZSlz0ieTzWmYn6yOLJgke7qQ6-Z5o',
+  demoUrl:"https://wordpress.org/plugins/accordion-slider/",
   tags: ['plugin', 'slider', 'accordion', 'video'],
 },
-
-
-
-
 ]
 
-/** Full catalog (Shopify themes + WP themes + WP plugins) */
+// ── Mobile applications (Google Drive zip — set driveFileId per item) ──
+const MOBILE_APPLICATIONS: StoreItem[] = [
+  {
+    id: 'youtube-premium',
+    name: 'YouTube Premium',
+    slug: 'youtube-premium',
+    category: 'mobile-application',
+    description: 'Enjoy uninterrupted video streaming with premium features unlocked.',
+    icon: 'https://images.unsplash.com/photo-1521989116480-519a01ffeb2d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8eW91dHViZXxlbnwwfDJ8MHx8fDI%3D',
+    version: '21.16.242',
+    fileSize: '121.5 MB',
+    driveFileId: '1pIdXokus_83qb9YtBB0dCE9G3Iw3sODl',
+    detailsUrl: 'https://support.google.com/youtube/answer/15968883?hl=en',
+    tags: ['mobile', 'android', 'video', 'streaming']
+  },
+  {
+    id: 'zedge-premium',
+    name: 'Zedge Premium',
+    slug: 'zedge-premium',
+    category: 'mobile-application',
+    description: 'Customize your phone with the best HD wallpapers, ringtones, and notification sounds.',
+    icon: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80',
+    version: '9.20.0',
+    fileSize: '54 MB',
+    driveFileId: '1dUpG9THExPyzTBPlye_81cKBjX3hKL1I',
+    detailsUrl: 'https://help.zedge.net/hc/en-us/articles/360024255651-Applying-to-become-a-Zedge-Premium-Marketplace-Verified-Creator',
+    tags: ['mobile', 'android', 'wallpapers', 'customization']
+  },
+  {
+    id: 'xrecorder-premium',
+    name: 'XRecorder Premium',
+    slug: 'xrecorder-premium',
+    category: 'mobile-application',
+    description: 'Smooth and clear screen recorder with video editing features and no watermarks.',
+    icon: 'https://images.unsplash.com/photo-1698913464385-f8f6ecdf1511?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8UmVjb3JkZXJ8ZW58MHwyfDB8fHwy',
+    version: '2.5.1',
+    fileSize: '33.4 MB',
+    driveFileId: '1D3kLZY_sfWFpzbOr1bvsFc8hKHJETEKW',
+    detailsUrl: 'https://xrecorder.net/apk/',
+    tags: ['mobile', 'android', 'tools', 'screen-recorder']
+  },
+  {
+    id: 'wink-premium',
+    name: 'Wink Premium',
+    slug: 'wink-premium',
+    category: 'mobile-application',
+    description: 'Advanced video retouching and editing tool to enhance your facial features and video quality.',
+    icon: 'https://images.unsplash.com/photo-1543336472-fcf478c443db?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8QWR2YW5jZWQlMjB2aWRlbyUyMHJldG91Y2hpbmclMjBhbmQlMjBlZGl0aW5nJTIwdG9vbHxlbnwwfDJ8MHx8fDI%3D',
+    version: '2.22.5',
+    fileSize: '150 MB',
+    driveFileId: '1xQD_62RTBDREFXZd09b4HOo6VlXEtiKi',
+    detailsUrl: 'https://liteapks.com/wink-video-2.html',
+    tags: ['mobile', 'android', 'video-editor', 'beauty']
+  },
+  {
+    id: 'vpn-super-unlimited',
+    name: 'VPN Super Unlimited Proxy',
+    slug: 'vpn-super-unlimited-proxy',
+    category: 'mobile-application',
+    description: 'High-speed, secure, and private internet access with premium proxy servers.',
+    icon: 'https://images.unsplash.com/photo-1601020049429-1005abfc13a7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8VlBOJTIwU3VwZXIlMjBVbmxpbWl0ZWQlMjBQcm94eXxlbnwwfDJ8MHx8fDI%3D',
+    version: '2.26.0',
+    fileSize: '74.2 MB',
+    driveFileId: '13X27nQ7dVsAnMUceSfDoWW-qgXXgSa_C',
+    detailsUrl: 'https://play.google.com/store/apps/details?id=com.free.vpn.super.hotspot.open&hl=en',
+    tags: ['mobile', 'android', 'tools', 'vpn']
+  },
+  {
+    id: 'vivid-ai-editor',
+    name: 'Vivid AI Photo Editor',
+    slug: 'vivid-ai-photo-editor',
+    category: 'mobile-application',
+    description: 'Powerful AI-driven photo editor and art generator for stunning visual enhancements.',
+    icon: 'https://images.unsplash.com/photo-1644577584927-f8c943ed5203?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Vml2aWQlMjBBSSUyMFBob3RvJTIwRWRpdG9yfGVufDB8MnwwfHx8Mg%3D%3D',
+    version: '1.8.0',
+    fileSize: '121 MB',
+    driveFileId: '19YN3PdUET1fnl-cp71lmBCleIwB7E7G-',
+    detailsUrl: 'https://play.google.com/store/apps/details?id=com.wangdao.wd_cutout&hl=en',
+    tags: ['mobile', 'android', 'photography', 'ai']
+  },
+  {
+    id: 'vidmate-premium',
+    name: 'VidMate Premium',
+    slug: 'vidmate-premium',
+    category: 'mobile-application',
+    description: 'Fast and easy HD video and music downloader from various social platforms.',
+    icon: 'https://images.unsplash.com/photo-1597583478028-d40411a20199?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fEZhc3QlMjBhbmQlMjBlYXN5JTIwSEQlMjB2aWRlbyUyMGFuZCUyMG11c2ljJTIwZG93bmxvYWRlcnxlbnwwfDJ8MHx8fDI%3D',
+    version: '5.3602',
+    fileSize: '32.8 MB',
+    driveFileId: '1um_AshgBNmWy16Nkxoiff2h3JCMRUqaa',
+    detailsUrl: 'https://liteapks.com/vidmate.html',
+    tags: ['mobile', 'android', 'downloader', 'video']
+  },
+  {
+    id: 'video-watermark-premium',
+    name: 'Video Watermark Premium',
+    slug: 'video-watermark-premium',
+    category: 'mobile-application',
+    description: 'Easily add or remove watermarks, logos, and text from your videos.',
+    icon: 'https://images.unsplash.com/photo-1642726197531-86f95d494708?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8VmlkZW8lMjBXYXRlcm1hcmslMjBQcmVtaXVtfGVufDB8MnwwfHx8Mg%3D%3D',
+    version: '2.0.7',
+    fileSize: '24.5 MB',
+    driveFileId: '1yN9RJdYsltmqeZdGfd-V8uLRr3DOuTvO',
+    detailsUrl: 'https://liteapks.com/watermark-remover.html',
+    tags: ['mobile', 'android', 'video-editor', 'tools']
+  }, 
+  
+    {
+      id: 'viddo-pro',
+      name: 'Viddo Pro',
+      slug: 'viddo-pro',
+      category: 'mobile-application',
+      description: 'Professional video editing and slideshow creation tool with premium features unlocked.',
+      icon: 'https://images.unsplash.com/photo-1709386263941-43d266635285?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8UHJvZmVzc2lvbmFsJTIwdmlkZW8lMjBlZGl0aW5nJTIwYW5kfGVufDB8MnwwfHx8Mg%3D%3D',
+      version: '4.0.4.1',
+      fileSize: '123 MB',
+      driveFileId: '1DnJ2m_kj7c3NLf97P1GSMRydCWNjXxe3',
+      detailsUrl: 'https://www.videopro.com.au/?srsltid=AfmBOopfUx7en7eg8y4v6LJCG2mo6NHB7QW-UwZN6bMP9ky-FlCHOLch',
+      tags: ['mobile', 'android', 'video-editor', 'tools']
+    },
+    {
+      id: 'truecaller-premium',
+      name: 'Truecaller Premium',
+      slug: 'truecaller-premium',
+      category: 'mobile-application',
+      description: 'Identify unknown calls, block spam messages, and secure your communication.',
+      icon: 'https://images.unsplash.com/photo-1541560052-77ec1bbc09f7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fElkZW50aWZ5JTIwdW5rbm93biUyMGNhbGxzJTJDJTIwYmxvY2slMjBzcGFtJTIwbWVzc2FnZXN8ZW58MHwyfDB8fHwy',
+      version: '26.17.5',
+      fileSize: '104 MB',
+      driveFileId: '1AO5vtTNGZ2ljZDhWE8O7EAVmPPtYfQqf',
+      detailsUrl: 'https://www.truecaller.com/premium',
+      tags: ['mobile', 'android', 'communication', 'tools']
+    },
+    {
+      id: 'turbo-vpn',
+      name: 'Turbo VPN Premium',
+      slug: 'turbo-vpn-premium',
+      category: 'mobile-application',
+      description: 'Secure and high-speed VPN proxy network to unblock sites and secure privacy.',
+      icon: 'https://images.unsplash.com/photo-1496346651079-6ca5cb67f42f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8U2VjdXJlJTIwYW5kJTIwaGlnaC1zcGVlZCUyMFZQTiUyMHByb3h5fGVufDB8MnwwfHx8Mg%3D%3D',
+      version: '4.0.3.1',
+      fileSize: '22 MB',
+      driveFileId: '1GcMDr4C3cvG7s8oauwU-7xSyTKF_XchR',
+      detailsUrl: 'https://turbovpn.com/',
+      tags: ['mobile', 'android', 'vpn', 'tools']
+    },
+    {
+      id: 'vanced-tube',
+      name: 'Vanced Tube Premium',
+      slug: 'vanced-tube-premium',
+      category: 'mobile-application',
+      description: 'Watch tube videos with ad-blocking, background playback, and pop-up mode.',
+      icon: 'https://images.unsplash.com/photo-1551817958-c5b51e7b4a33?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2F0Y2glMjB0dWJlJTIwdmlkZW9zJTIwd2l0aCUyMGFkLWJsb2NraW5nfGVufDB8fDB8fHwy',
+      version: '5.6.80.145',
+      fileSize: '18.2 MB',
+      driveFileId: '1DidhzvAWORM5yuDr6CcnTrXS58M-8-p8',
+      detailsUrl: 'https://vanced.en.uptodown.com/android',
+      tags: ['mobile', 'android', 'video', 'streaming']
+    },
+    {
+      id: 'supervpn-premium',
+      name: 'SuperVPN Premium',
+      slug: 'supervpn-premium',
+      category: 'mobile-application',
+      description: 'Easy-to-use, one-click connection VPN proxy client with unlimited bandwidth.',
+      icon: 'https://images.unsplash.com/photo-1603985529862-9e12198c9a60?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dnBufGVufDB8fDB8fHwy',
+      version: '3.1.4',
+      fileSize: '42.4 MB',
+      driveFileId: '1nTDnia-S-3Y-4N8QBfqERH9wpiw74ujy',
+      detailsUrl: 'https://liteapks.com/supervpn-fast-vpn-client.html',
+      tags: ['mobile', 'android', 'vpn', 'tools']
+    },
+    {
+      id: 'snaptube-vip',
+      name: 'Snaptube VIP',
+      slug: 'snaptube-vip',
+      category: 'mobile-application',
+      description: 'Download online videos and audio directly to your device with VIP features unlocked.',
+      icon: 'https://images.unsplash.com/photo-1694878873245-de1db825e20f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8RG93bmxvYWQlMjBvbmxpbmUlMjB2aWRlb3MlMjBhbmQlMjBhdWRpbyUyMGRpcmVjdGx5fGVufDB8fDB8fHwy',
+      version: '7.59.0.75950110',
+      fileSize: '48.4 MB',
+      driveFileId: '1euQ2dYlewldMu9pvKJJL5MrlzphfCp0A',
+      detailsUrl: 'https://liteapks.com/snaptube.html',
+      tags: ['mobile', 'android', 'downloader', 'video']
+    },
+    {
+      id: 'sketchbook-premium',
+      name: 'Sketchbook Premium',
+      slug: 'sketchbook-premium',
+      category: 'mobile-application',
+      description: 'Professional-grade drawing, painting, and sketching application for artists.',
+      icon: 'https://images.unsplash.com/photo-1589579785835-0a0d54a55a3f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8UHJvZmVzc2lvbmFsLWdyYWRlJTIwZHJhd2luZyUyQyUyMHBhaW50aW5nJTJDJTIwYW5kJTIwc2tldGNoaW5nfGVufDB8fDB8fHwy',
+      version: '6.2.5',
+      fileSize: '59.5 MB',
+      driveFileId: '1A_N2R6j7O07htT49xn5VYRN4cep9ggHs',
+      detailsUrl: 'https://www.sketchbook.com/premium-bundle',
+      tags: ['mobile', 'android', 'drawing', 'art']
+    },
+    {
+      id: 'prime-video',
+      name: 'Prime Video Premium',
+      slug: 'prime-video-premium',
+      category: 'mobile-application',
+      description: 'Stream popular movies, web series, and exclusive Amazon Originals.',
+      icon: 'https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8U3RyZWFtJTIwcG9wdWxhciUyMG1vdmllcyUyQ3xlbnwwfHwwfHx8Mg%3D%3D',
+      version: '3.0.452.257',
+      fileSize: '14 MB',
+      driveFileId: '1_sLiSxpczkDZbRSXxJgoieX_BoXGCf5g',
+      detailsUrl: 'https://www.primevideo.com/addons',
+      tags: ['mobile', 'android', 'movies', 'streaming']
+    },
+    {
+      id: 'remini-premium',
+      name: 'Remini AI Photo Enhancer',
+      slug: 'remini-premium',
+      category: 'mobile-application',
+      description: 'Transform your old, blurry, or pixelated photos into high-definition masterpieces using AI.',
+      icon: 'https://images.unsplash.com/photo-1539150704769-37e817aa73ef?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8VHJhbnNmb3JtJTIweW91ciUyMG9sZCUyQyUyMGJsdXJyeSUyQyUyMG9yJTIwcGl4ZWxhdGVkJTIwcGhvdG9zfGVufDB8fDB8fHwy',
+      version: '3.7.1314.202520815',
+      fileSize: '150 MB',
+      driveFileId: '1bJJH5srbFQcy9Eub57OGddrGCIUJDFNA',
+      detailsUrl: 'https://remini.ai/',
+      tags: ['mobile', 'android', 'photography', 'ai']
+    },
+    {
+      id: 'proxy-master',
+      name: 'Proxy Master Premium',
+      slug: 'proxy-master-premium',
+      category: 'mobile-application',
+      description: 'Secure, private, and unlimited proxy client to safeguard digital data traffic.',
+      icon: 'https://images.unsplash.com/photo-1597915869221-a9eaaa1e7700?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8dnBufGVufDB8fDB8fHwy',
+      version: '5.4.5',
+      fileSize: '64 MB',
+      driveFileId: '1DtZMTd5tf9MDBt6Ijes4ACBehp4y-dMx',
+      detailsUrl: 'https://play.google.com/store/apps/details?id=free.vpn.unblock.proxy.vpn.master.pro&hl=en',
+      tags: ['mobile', 'android', 'vpn', 'tools']
+    },
+    {
+      id: 'playit-vip',
+      name: 'PLAYit VIP Video Player',
+      slug: 'playit-vip',
+      category: 'mobile-application',
+      description: 'All-in-one video and music player with powerful decoding, subtitle, and download functions.',
+      icon: 'https://images.unsplash.com/photo-1615843027885-297f5f4cae1d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dmlkZW8lMjBhbmQlMjBtdXNpYyUyMHBsYXllcnxlbnwwfHwwfHx8Mg%3D%3D',
+      version: '2.7.48.7',
+      fileSize: '29 MB',
+      driveFileId: '1HuNQy6qsqxaatFut43t9_NQ27YvPvjMB',
+      detailsUrl: 'https://play.google.com/store/apps/details?id=com.playit.videoplayer&hl=en',
+      tags: ['mobile', 'android', 'video', 'player']
+    },
+    {
+      id: 'pixlr-premium',
+      name: 'Pixlr Premium Photo Editor',
+      slug: 'pixlr-premium',
+      category: 'mobile-application',
+      description: 'Unleash your creativity with an intuitive photo grid, collage maker, and editing filters.',
+      icon: 'https://images.unsplash.com/photo-1633330399104-bd06f9341bf7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8UHJlbWl1bSUyMFBob3RvJTIwRWRpdG9yJTIwZ2lybHxlbnwwfHwwfHx8Mg%3D%3D',
+      version: '3.8.4',
+      fileSize: '76 MB',
+      driveFileId: '1Qz5_NDe5LFBni9gR0hkZ-B9Lea2DeBv4',
+      detailsUrl: 'https://pixlr.com/pricing/',
+      tags: ['mobile', 'android', 'photography', 'photo-editor']
+    },
+    {
+      id: 'netflix-pro',
+      name: 'Netflix Pro',
+      slug: 'netflix-pro',
+      category: 'mobile-application',
+      description: 'Watch award-winning movies, TV shows, and anime on any device with premium setup.',
+      icon: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmV0ZmxpeHxlbnwwfHwwfHx8Mg%3D%3D',
+      version: '9.64.1',
+      fileSize: '14.3 MB',
+      driveFileId: '1uYznBn9IFsyGnGosS8JnrfYm5iUm9MT1',
+      detailsUrl: 'https://www.netflix.com/pk/',
+      tags: ['mobile', 'android', 'movies', 'streaming']
+    },
+    {
+      id: 'nordvpn-mod',
+      name: 'NordVPN Premium',
+      slug: 'nordvpn-premium',
+      category: 'mobile-application',
+      description: 'Advanced military-grade encrypted internet proxy with global high-speed servers.',
+      icon: 'https://images.unsplash.com/photo-1617453106089-c8e6263c9114?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bm9yZCUyMHZwbnxlbnwwfHwwfHx8Mg%3D%3D',
+      version: '6.30.1',
+      fileSize: '13 MB',
+      driveFileId: '1byv_32tuPzoH0FnAYNFf6r4Pw7-fLId4',
+      detailsUrl: 'https://nordvpn.com/pricing/?srsltid=AfmBOooJvOGjKT7Gmbssikltwl6zv_F8YdwFILfc6VQ8-eY7cQZ-LipW',
+      tags: ['mobile', 'android', 'vpn', 'privacy']
+    },
+    {
+      id: 'photoroom-pro',
+      name: 'Photoroom Pro AI',
+      slug: 'photoroom-pro',
+      category: 'mobile-application',
+      description: 'Studio-quality photo editing and automatic background removal powered by AI.',
+      icon: 'https://images.unsplash.com/photo-1598723978605-183146813fa2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8UGhvdG8lMjByb29tfGVufDB8fDB8fHwy',
+      version: '2026.18.03',
+      fileSize: '133 MB',
+      driveFileId: '1Ssjo_XpOGgOGXTc_6JDea-SME92XNKXC',
+      detailsUrl: 'https://www.photoroom.com/',
+      tags: ['mobile', 'android', 'photography', 'ai']
+    },
+    {
+      id: 'picsart-premium',
+      name: 'Picsart Premium Gold',
+      slug: 'picsart-premium',
+      category: 'mobile-application',
+      description: 'All-in-one AI photo editor, design studio, and video collage maker with ultimate templates.',
+      icon: 'https://images.unsplash.com/photo-1494475673543-6a6a27143fc8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cGhvdG8lMjBlZGl0aW5nJTIwYmFja2dyb3VuZHxlbnwwfHwwfHx8Mg%3D%3D',
+      version: '29.9.1',
+      fileSize: '77 MB',
+      driveFileId: '1q7bKdgf1YEeO_c1I3c5aJHNPDI8kiVOJ',
+      detailsUrl: 'https://picsarthd.com/',
+      tags: ['mobile', 'android', 'photography', 'design']
+    },
+    {
+      id: 'photo-lab-pro',
+      name: 'Photo Lab PRO',
+      slug: 'photo-lab-pro',
+      category: 'mobile-application',
+      description: 'Creative photo effects, montages, and artistic stylized filters for instant portraits.',
+      icon: 'https://images.unsplash.com/photo-1744948961024-66baaafbb5dc?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGhvdG8lMjBlZGl0aW5nfGVufDB8fDB8fHwy',
+      version: '3.13.94',
+      fileSize: '64 MB',
+      driveFileId: '1Y6w2Qf4iQA1Iguthd8RIZsWD8jweUwqj',
+      detailsUrl: 'https://play.google.com/store/apps/details?id=com.vicman.photolabpro&hl=en',
+      tags: ['mobile', 'android', 'photography', 'effects']
+    },
+    {
+      id: 'pixlab-premium',
+      name: 'PixLab Photo Editor',
+      slug: 'pixlab-premium',
+      category: 'mobile-application',
+      description: 'Drip effects, neon shapes, and cool grid layouts to make your photos pop.',
+      icon: 'https://images.unsplash.com/photo-1520599918693-12354ce66a1d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cGhvdG8lMjBlZGl0aW5nfGVufDB8fDB8fHwy',
+      version: '2.1.0',
+      fileSize: '62 MB',
+      driveFileId: '1zEhnDPkbtawvGokR5iWg8SeB1RTv4ZOL',
+      detailsUrl: 'https://play.google.com/store/apps/details?id=com.lyrebirdstudio.magazine&hl=en',
+      tags: ['mobile', 'android', 'photography', 'filters']
+    },
+    {
+      id: 'moviebox-premium',
+      name: 'MovieBox Premium',
+      slug: 'moviebox-premium',
+      category: 'mobile-application',
+      description: 'Discover, track, and watch the latest blockbuster trailers and metadata reviews.',
+      icon: 'https://images.unsplash.com/photo-1747144293265-fc806b5dbc29?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bW92aWUlMjBib3h8ZW58MHx8MHx8fDI%3D',
+      version: '3.0.15.0429.03',
+      fileSize: '54 MB',
+      driveFileId: '1IvN1K9usoWfGKlEe_j-V_4U1Z3LTrqHe',
+      detailsUrl: 'https://moviboxapk.com/moviebox-mod-apk/',
+      tags: ['mobile', 'android', 'movies', 'streaming']
+    },
+    {
+      id: 'mx-player-premium',
+      name: 'MX Player Premium',
+      slug: 'mx-player-premium',
+      category: 'mobile-application',
+      description: 'Powerful offline video player with advanced hardware acceleration and subtitle support.',
+      icon: 'https://images.unsplash.com/photo-1633455678488-ff88d87a369d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8TVglMjBQbGF5ZXJ8ZW58MHx8MHx8fDI%3D',
+      version: '2.13.0',
+      fileSize: '44 MB',
+      driveFileId: '1Ku_3sPp7gLiJW4eQpm0fKSFprarBnqt9',
+      detailsUrl: 'https://play.google.com/store/apps/details?id=com.mxtech.videoplayer.ad&hl=en',
+      tags: ['mobile', 'android', 'video', 'player']
+    },
+    {
+      id: 'pixellab-premium',
+      name: 'PixelLab Text on Pictures',
+      slug: 'pixellab-premium',
+      category: 'mobile-application',
+      description: 'Add stylish 3D text, shapes, stickers, and custom typography to your photos easily.',
+      icon: 'https://images.unsplash.com/photo-1657292026454-a1507f958437?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8VGV4dCUyMG9uJTIwUGljdHVyZXN8ZW58MHx8MHx8fDI%3D',
+      version: '2.1.9',
+      fileSize: '28 MB',
+      driveFileId: '1PX48HsbMlkS1xL3OTAPNAcmoohtXk_Bv',
+      detailsUrl: 'https://play.google.com/store/apps/details?id=com.imaginstudio.imagetools.pixellab&hl=en',
+      tags: ['mobile', 'android', 'graphics', 'typography']
+    },
+    {
+      id: 'inshot-pro',
+      name: 'InShot Pro Video Editor',
+      slug: 'inshot-pro',
+      category: 'mobile-application',
+      description: 'Comprehensive HD video editor and maker with music, transition effects, and blur filters.',
+      icon: 'https://images.unsplash.com/photo-1744686909710-37b9531cbb60?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8UHJvJTIwVmlkZW8lMjBFZGl0b3J8ZW58MHx8MHx8fDI%3D',
+      version: '2.201.1531',
+      fileSize: '84 MB',
+      driveFileId: '1XfrAPWE6o_NWHQUp8a2buW88Z7-3emnT',
+      detailsUrl: 'https://inshot.com/',
+      tags: ['mobile', 'android', 'video-editor', 'tools']
+    },
+    {
+      id: 'lightroom-premium',
+      name: 'Adobe Lightroom Premium',
+      slug: 'lightroom-premium',
+      category: 'mobile-application',
+      description: 'Cloud-based mobile software for editing, organizing, and sharing raw camera photographs.',
+      icon: 'https://images.unsplash.com/photo-1528109966604-5a6a4a964e8d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWRpdG9yfGVufDB8fDB8fHwy',
+      version: '11.3.2',
+      fileSize: '136 MB',
+      driveFileId: '1q-wTSSODmjbBhwDCDxuOTym5Qm3C6Svk',
+      detailsUrl: 'https://www.adobe.com/products/photoshop-lightroom/plans.html',
+      tags: ['mobile', 'android', 'photography', 'editor']
+    },
+    {
+      id: 'mindsync-premium',
+      name: 'MindSync Premium',
+      slug: 'mindsync-premium',
+      category: 'mobile-application',
+      description: 'Guided meditation, ambient noise loops, and cognitive health tracking for daily productivity.',
+      icon: 'https://images.unsplash.com/photo-1627244714766-94dab62ed964?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZWRpdG9yfGVufDB8fDB8fHwy',
+      version: '2.2.2',
+      fileSize: '80 MB',
+      driveFileId: '1lUAXq9r9plMM14_RSg6Jhv78sesl2BtY',
+      detailsUrl: 'https://liteapks.com/mindsync-ai-photo-editor.html',
+      tags: ['mobile', 'android', 'health', 'meditation']
+    },
+    {
+      id: 'koloro-vip',
+      name: 'Koloro VIP Lightroom Presets',
+      slug: 'koloro-vip',
+      category: 'mobile-application',
+      description: 'Over 1000+ premium filters and presets designed exclusively for Lightroom and video tuning.',
+      icon: 'https://images.unsplash.com/photo-1509475826633-fed577a2c71b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGVkaXRvcnxlbnwwfHwwfHx8Mg%3D%3D',
+      version: '6.2.8',
+      fileSize: '59 MB',
+      driveFileId: '13vAwZZO7EWnyRpisu7csp3HKJBqt4v_t',
+      detailsUrl: 'https://presets-for-lightroom-mobile-koloro.en.softonic.com/android',
+      tags: ['mobile', 'android', 'photography', 'presets']
+    },
+    {
+      id: 'imagitor-premium',
+      name: 'Imagitor Urdu Design',
+      slug: 'imagitor-premium',
+      category: 'mobile-application',
+      description: 'Create social posters, Urdu typography, graphic designs, and custom poetry layers.',
+      icon: 'https://images.unsplash.com/photo-1633952095574-c5ec6803990d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8VXJkdSUyMERlc2lnbnxlbnwwfHwwfHx8Mg%3D%3D',
+      version: '1.9.7',
+      fileSize: '36 MB',
+      driveFileId: '1QIdJampN04cFk55__8gaU3nj8lJFa69T',
+      detailsUrl: 'https://play.google.com/store/apps/details?id=com.booleanbites.imagitor&hl=en',
+      tags: ['mobile', 'android', 'design', 'typography']
+    },
+    {
+      id: 'microg-services',
+      name: 'microG Services',
+      slug: 'microg-services',
+      category: 'mobile-application',
+      description: 'A free-software clone of Google’s proprietary core libraries for customized systems.',
+      icon: 'https://images.unsplash.com/photo-1726066012698-bb7a3abce786?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8QSUyMGZyZWUtc29mdHdhcmUlMjBjbG9uZSUyMG9mJTIwR29vZ2xlJUUyJTgwJTk5cyUyMHByb3ByaWV0YXJ5fGVufDB8fDB8fHwy',
+      version: '0.3.1.4.240913',
+      fileSize: '37 MB',
+      driveFileId: '1QQdHpgzKqqezYfQHOc1O9p4chbDpG3_4',
+      detailsUrl: 'https://microg-services-gmscore.en.uptodown.com/android',
+      tags: ['mobile', 'android', 'system', 'tools']
+    },
+    {
+      id: 'ilovepdf-premium',
+      name: 'iLovePDF Premium',
+      slug: 'ilovepdf-premium',
+      category: 'mobile-application',
+      description: 'All document tools in one place: read, convert, merge, split, and compress PDF files.',
+      icon: 'https://images.unsplash.com/photo-1658203897406-9ef9e2af686c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cGRmJTIwY29udmVydGVyfGVufDB8fDB8fHwy',
+      version: '3.12.2',
+      fileSize: '132 MB',
+      driveFileId: '1J9bGVhP0lsrCy2ojOTs-DLAmfYtzAyB6',
+      detailsUrl: 'https://www.ilovepdf.com/pricing',
+      tags: ['mobile', 'android', 'tools', 'documents']
+    },
+    {
+      id: 'diskdigger-pro',
+      name: 'DiskDigger Pro File Recovery',
+      slug: 'diskdigger-pro',
+      category: 'mobile-application',
+      description: 'Undelete and recover lost photos, documents, and videos from your memory card or internal memory.',
+      icon: 'https://images.unsplash.com/photo-1625296276397-3bc8839c688f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8UHJvJTIwRmlsZSUyMFJlY292ZXJ5fGVufDB8fDB8fHwy',
+      version: '1.0-pro-2026-03-28',
+      fileSize: '6.4 MB',
+      driveFileId: '1HIs1jVCYec0FIvK0sSU9ecUo_VEv6or-',
+      detailsUrl: 'https://play.google.com/store/apps/details?id=com.defianttech.diskdiggerpro&hl=en',
+      tags: ['mobile', 'android', 'tools', 'recovery']
+    },
+    {
+      id: 'faceapp-premium',
+      name: 'FaceApp Premium',
+      slug: 'faceapp-premium',
+      category: 'mobile-application',
+      description: 'Transform your portraits using AI filters, backgrounds, and professional-grade face editing tools.',
+      icon: 'https://images.unsplash.com/photo-1638730647755-1bf55b465e67?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8VHJhbnNmb3JtJTIweW91ciUyMHBvcnRyYWl0cyUyMHVzaW5nJTIwQUklMjBmaWx0ZXJzfGVufDB8fDB8fHwy',
+      version: '11.5.1',
+      fileSize: '62 MB',
+      driveFileId: '1x7MXNtSwKFaLUVPqWnnucqQ5ARHvfwhE',
+      detailsUrl: 'https://play.google.com/store/apps/details?id=io.faceapp&hl=en',
+      tags: ['mobile', 'android', 'photography', 'ai']
+    },
+    {
+      id: 'crunchyroll-premium',
+      name: 'Crunchyroll Premium',
+      slug: 'crunchyroll-premium',
+      category: 'mobile-application',
+      description: 'Stream the world’s largest anime library featuring new episodes immediately after airing in Japan.',
+      icon: 'https://images.unsplash.com/photo-1747762323695-eae327c2896f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8U3RyZWFtJTIwdGhlJTIwd29ybGQlRTIlODAlOTlzJTIwbGFyZ2VzdCUyMGFuaW1lJTIwbGlicmFyeSUyMGZlYXR1cmluZyUyMG5ldyUyMGVwaXNvZGVzfGVufDB8fDB8fHwy',
+      version: '3.58.1',
+      fileSize: '17 MB',
+      driveFileId: '1W187ftDIPTBzJqZ3RsBkdQIvKiBqyR9y',
+      detailsUrl: 'https://www.crunchyroll.com/premium?srsltid=AfmBOor9ISVfsi4d5y7NHJTfpmiqezGqoC0RYubr_xekJcfFo60q4q08',
+      tags: ['mobile', 'android', 'anime', 'streaming']
+    },
+    {
+      id: 'cricfy-tv-premium',
+      name: 'CRICFy TV Premium',
+      slug: 'cricfy-tv-premium',
+      category: 'mobile-application',
+      description: 'Watch live sports, cricket matches, and entertainment channels globally without ad interruptions.',
+      icon: 'https://images.unsplash.com/photo-1512719994953-eabf50895df7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8V2F0Y2glMjBsaXZlJTIwc3BvcnRzJTJDJTIwY3JpY2tldCUyMG1hdGNoZXMlMkN8ZW58MHx8MHx8fDI%3D',
+      version: '5.8',
+      fileSize: '19 MB',
+      driveFileId: '147wJ8mrsUpFt93KxUmMCvNNtEJMdJ5Qy',
+      detailsUrl: 'https://cricfyap.com/',
+      tags: ['mobile', 'android', 'sports', 'live-tv']
+    },
+    {
+      id: 'az-screen-recorder',
+      name: 'AZ Screen Recorder Premium',
+      slug: 'az-screen-recorder-premium',
+      category: 'mobile-application',
+      description: 'High-quality screen recording app with internal audio support, livestreaming, and built-in editor.',
+      icon: 'https://images.unsplash.com/photo-1576379278672-c1664525be40?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c2NyZWVuJTIwcmVjb3JkaW5nfGVufDB8fDB8fHwy',
+      version: '6.8.7',
+      fileSize: '81 MB',
+      driveFileId: '1TpXGK-A_SqKubOpChJxzyFUCsBHbJ9nP',
+      detailsUrl: 'https://play.google.com/store/apps/details?id=com.hecorat.screenrecorder.free&hl=en',
+      tags: ['mobile', 'android', 'tools', 'screen-recorder']
+    },
+    {
+      id: 'all-pdf-reader',
+      name: 'All PDF Reader Premium',
+      slug: 'all-pdf-reader-premium',
+      category: 'mobile-application',
+      description: 'Fast and lightweight PDF management utility to read, scan, view, and print multi-page documents.',
+      icon: 'https://images.unsplash.com/photo-1599687267899-09999a5d92fb?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHBkZiUyMHJlYWRlcnxlbnwwfHwwfHx8Mg%3D%3D',
+      version: '3.2.9',
+      fileSize: '46 MB',
+      driveFileId: '13UOeiv7OulRCxunQKNhq1vuxai2wqDDe',
+      detailsUrl: 'https://liteapks.com/all-pdf-reader.html ',
+      tags: ['mobile', 'android', 'tools', 'documents']
+    },
+    {
+      id: 'all-documents-reader',
+      name: 'All Documents Reader Premium',
+      slug: 'all-documents-reader-premium',
+      category: 'mobile-application',
+      description: 'Comprehensive office file viewer compatible with Word, Excel, PowerPoint, and text structures.',
+      icon: 'https://images.unsplash.com/photo-1710168410153-601bc6e3e569?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8ZG9jdW1lbnQlMjAncmVhZGVyfGVufDB8fDB8fHwy',
+      version: '3.1.3',
+      fileSize: '72 MB',
+      driveFileId: '1u0l3J0HCQAgROVNAMtuIna6uWN_dSXL9',
+      detailsUrl: 'https://play.google.com/store/apps/details?id=com.digitalblue.alldocument&hl=en',
+      tags: ['mobile', 'android', 'tools', 'documents']
+    },
+    {
+      id: 'alight-motion',
+      name: 'Alight Motion Pro',
+      slug: 'alight-motion-pro',
+      category: 'mobile-application',
+      description: 'Professional motion graphics, visual effects, video editing, and complex vector animation suite.',
+      icon: 'https://images.unsplash.com/photo-1551269901-5c5e14c25df7?w=600&auto=format&fit=crop&q=80',
+      version: '5.0.278',
+      fileSize: '',
+      driveFileId: '',
+      detailsUrl: 'https://play.google.com/store/apps/details?id=com.alightcreative.motion',
+      tags: ['mobile', 'android', 'video-editor', 'animation']
+    },
+    {
+      id: 'photoshop-express',
+      name: 'Adobe Photoshop Express Premium',
+      slug: 'adobe-photoshop-express',
+      category: 'mobile-application',
+      description: 'Quick, powerful, and easy photo editing capabilities with advanced collage creations and custom filters.',
+      icon: 'https://images.unsplash.com/photo-1758933067991-db3979cad1ec?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bW90aW9uJTIwcHJvfGVufDB8MnwwfHx8Mg%3D%3D',
+      version: '18.0.25',
+      fileSize: '103 MB',
+      driveFileId: '1jdQ3EC-_oLHRvD-tTeBzpKdNwpeS9_0B',
+      detailsUrl: 'https://alightmotionsapps.com/ ',
+      tags: ['mobile', 'android', 'photography', 'editor']
+    },
+  
+]
+
+/** Full catalog (Shopify themes + WP themes + WP plugins + mobile apps) */
 export const STORE_ITEMS: StoreItem[] = [
   ...SHOPIFY_THEMES,
   ...WORDPRESS_THEMES,
   ...WORDPRESS_PLUGINS,
+  ...MOBILE_APPLICATIONS,
 ]
 
 export function countByCategory(items: StoreItem[]) {
@@ -6041,6 +6683,7 @@ export function countByCategory(items: StoreItem[]) {
     shopify: items.filter((i) => i.category === 'shopify-theme').length,
     wpThemes: items.filter((i) => i.category === 'wordpress-theme').length,
     wpPlugins: items.filter((i) => i.category === 'wordpress-plugin').length,
+    mobileApps: items.filter((i) => i.category === 'mobile-application').length,
   }
 }
 

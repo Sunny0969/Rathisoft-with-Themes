@@ -19,12 +19,7 @@
   padding-top: 0;
 }
 
-.page-courses .rs-breadcrumb-bar,
-.rs-breadcrumb-bar:has(+ .lms-page),
-.rs-breadcrumb-bar:has(+ .lms-quiz-shell),
-.rs-breadcrumb-bar:has(+ .lms-cert-page) {
-  padding-top: var(--header-h, 64px);
-}
+/* Header clearance handled in Breadcrumbs.css */
 
 .rs-breadcrumb-bar + .lms-page--flush-top {
   padding-top: 0;
