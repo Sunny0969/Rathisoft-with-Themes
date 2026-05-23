@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   CATEGORY_ANALYTICS_LABEL,
-  clearThemesStoreAnalytics,
-  exportThemesStoreAnalyticsJson,
+  getCachedThemesStoreSnapshot,
   getThemesStoreClickRows,
   getThemesStoreClickTotals,
+  refreshThemesStoreAnalytics,
   THEMES_STORE_ANALYTICS_EVENT,
   type ThemesStoreClickEntry,
 } from '../utils/themesStoreAnalytics'
@@ -12,6 +12,8 @@ import type { StoreCategory } from '../pages/themesStoreData'
 import './ThemesStoreAnalytics.css'
 
 type StatsSort = 'total' | 'demo' | 'download' | 'name'
+
+const POLL_MS = 20_000
 
 function formatWhen(iso?: string): string {
   if (!iso) return '—'
@@ -30,16 +32,33 @@ export function ThemesStoreAnalytics() {
   const [tick, setTick] = useState(0)
   const [statsSort, setStatsSort] = useState<StatsSort>('total')
   const [statsCategory, setStatsCategory] = useState<StoreCategory | 'all'>('all')
+  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    const refresh = () => setTick((n) => n + 1)
-    window.addEventListener(THEMES_STORE_ANALYTICS_EVENT, refresh)
-    return () => window.removeEventListener(THEMES_STORE_ANALYTICS_EVENT, refresh)
+  const refresh = useCallback(async () => {
+    await refreshThemesStoreAnalytics()
+    setTick((n) => n + 1)
+    setLoading(false)
   }, [])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- tick forces re-read from localStorage
+  useEffect(() => {
+    void refresh()
+    const onUpdate = () => {
+      void refresh()
+    }
+    window.addEventListener(THEMES_STORE_ANALYTICS_EVENT, onUpdate)
+    const poll = window.setInterval(() => {
+      void refresh()
+    }, POLL_MS)
+    return () => {
+      window.removeEventListener(THEMES_STORE_ANALYTICS_EVENT, onUpdate)
+      window.clearInterval(poll)
+    }
+  }, [refresh])
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- tick forces re-read from server cache
   const totals = useMemo(() => getThemesStoreClickTotals(), [tick])
   const rows = useMemo(() => getThemesStoreClickRows(), [tick])
+  const storageLabel = getCachedThemesStoreSnapshot().storage
 
   const filteredRows = useMemo(() => {
     let list =
@@ -58,28 +77,6 @@ export function ThemesStoreAnalytics() {
     })
     return list
   }, [rows, statsSort, statsCategory])
-
-  const handleExport = useCallback(() => {
-    const json = exportThemesStoreAnalyticsJson()
-    const blob = new Blob([json], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `rathisoft-themes-clicks-${Date.now()}.json`
-    a.click()
-    URL.revokeObjectURL(url)
-  }, [])
-
-  const handleClear = useCallback(() => {
-    if (
-      !window.confirm(
-        'Clear all Live Demo / View Details and Download click counts for this browser?',
-      )
-    ) {
-      return
-    }
-    clearThemesStoreAnalytics()
-  }, [])
 
   return (
     <section className="store-analytics" aria-labelledby="store-analytics-heading">
@@ -101,22 +98,11 @@ export function ThemesStoreAnalytics() {
             <div>
               <h2 id="store-analytics-heading">Themes store clicks</h2>
               <p className="store-analytics-note">
-                Counts are saved in this browser only (localStorage). Use the same device/browser
-                you use to manage the store. Live Demo, View Details, and Free Download are tracked
-                per theme, plugin, or app.
+                Live totals for everyone on this site—each Live Demo, View Details, and Free
+                Download is counted on the server and continues across visits and deploys.
+                {storageLabel === 'local-file' ? ' (Local dev file: .data/themes-store-clicks.json)' : null}
+                {storageLabel === 'live' ? ' (Synced via Vercel KV)' : null}
               </p>
-            </div>
-            <div className="store-analytics-actions">
-              <button type="button" className="store-analytics-btn" onClick={handleExport}>
-                Export JSON
-              </button>
-              <button
-                type="button"
-                className="store-analytics-btn store-analytics-btn--danger"
-                onClick={handleClear}
-              >
-                Reset counts
-              </button>
             </div>
           </div>
 
@@ -168,7 +154,11 @@ export function ThemesStoreAnalytics() {
             </label>
           </div>
 
-          {filteredRows.length === 0 ? (
+          {loading ? (
+            <p className="store-analytics-empty" role="status">
+              Loading live statistics…
+            </p>
+          ) : filteredRows.length === 0 ? (
             <p className="store-analytics-empty" role="status">
               No clicks recorded yet. Open Live Demo or Free Download on any card to start
               counting.

@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
 import { teraboxMediaDevPlugin } from './vite-plugins/teraboxMediaDev'
+import { themesStoreClicksDevPlugin } from './vite-plugins/themesStoreClicksDev'
 
 /** Collapse HTML whitespace in production builds (smaller index.html). */
 function htmlMinifyPlugin() {
@@ -27,6 +28,7 @@ export default defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] }),
     teraboxMediaDevPlugin(),
+    themesStoreClicksDevPlugin(),
     htmlMinifyPlugin(),
   ],
   build: {

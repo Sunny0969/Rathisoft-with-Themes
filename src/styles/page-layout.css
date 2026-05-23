@@ -1,0 +1,54 @@
+/**
+ * Shared breadcrumb + hero spacing (matches /blog/ layout on every page).
+ */
+
+.app-main:has(> .rs-breadcrumb-bar:first-child),
+.page-blog.lms-page,
+.page-work.lms-page,
+.page-packages.lms-page,
+.page-about.lms-page,
+.page-themes.lms-page,
+.page-services.lms-page {
+  padding-top: 0;
+}
+
+/* Hero under breadcrumb (direct sibling OR after Seo/JsonLd/style nodes) */
+.rs-breadcrumb-bar + .hero,
+.rs-breadcrumb-bar + section.hero,
+.rs-breadcrumb-bar + .rs-hero,
+.rs-breadcrumb-bar + .rathi-hero,
+.rs-breadcrumb-bar + .post-hero,
+.app-main:has(> .rs-breadcrumb-bar:first-child) > .hero,
+.app-main:has(> .rs-breadcrumb-bar:first-child) > section.hero {
+  padding-top: 48px;
+  padding-bottom: 60px;
+}
+
+.rs-breadcrumb-bar + .lms-page--flush-top,
+.rs-breadcrumb-bar + .lms-page {
+  padding-top: 0;
+}
+
+.app-main.lms-quiz-shell:has(> .rs-breadcrumb-bar:first-child),
+.app-main:has(> .rs-breadcrumb-bar:first-child) > .lms-quiz-shell,
+.app-main:has(> .rs-breadcrumb-bar:first-child) > .lms-cert-page {
+  padding-top: 0;
+}
+
+.rs-breadcrumb-bar + .lms-page--flush-top > .lms-hero:first-child,
+.rs-breadcrumb-bar + .lms-page > .lms-hero:first-child {
+  padding-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .rs-breadcrumb-bar + .hero,
+  .rs-breadcrumb-bar + section.hero,
+  .rs-breadcrumb-bar + .rs-hero,
+  .rs-breadcrumb-bar + .rathi-hero,
+  .rs-breadcrumb-bar + .post-hero,
+  .app-main:has(> .rs-breadcrumb-bar:first-child) > .hero,
+  .app-main:has(> .rs-breadcrumb-bar:first-child) > section.hero {
+    padding-top: 32px;
+    padding-bottom: 40px;
+  }
+}

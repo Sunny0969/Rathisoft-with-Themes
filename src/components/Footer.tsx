@@ -1,5 +1,10 @@
 import { Link } from 'react-router-dom'
-import { ROUTES, servicePath } from '../utils/routes'
+import {
+  FOOTER_SERVICES_MORE,
+  FOOTER_SERVICES_PRIMARY,
+} from '../data/homepageServices'
+import { FOOTER_COMPANY_LINKS } from '../data/footerNav'
+import { ROUTES } from '../utils/routes'
 import './Footer.css'
 
 const YEAR = new Date().getFullYear()
@@ -40,30 +45,29 @@ export function Footer() {
 
           <div className="ft-col">
             <p className="ft-col-title">Services</p>
-            <Link to={servicePath('web-development')}>Web Development</Link>
-            <Link to={servicePath('seo-services')}>SEO Optimization</Link>
-            <Link to={servicePath('app-development')}>App Development</Link>
-            <Link to={servicePath('wordpress-shopify')}>WordPress & Shopify</Link>
-            <Link to={servicePath('video-editing')}>Video Editing</Link>
+            {FOOTER_SERVICES_PRIMARY.map((item) => (
+              <Link key={item.href} to={item.href}>
+                {item.label}
+              </Link>
+            ))}
           </div>
 
           <div className="ft-col">
             <p className="ft-col-title">More Services</p>
-            <Link to={servicePath('social-media-marketing')}>Social Media</Link>
-            <Link to={servicePath('content-marketing')}>Content Marketing</Link>
-            <Link to={servicePath('ppc-advertising')}>PPC Advertising</Link>
-            <Link to={servicePath('email-marketing')}>Email Marketing</Link>
-            <Link to={servicePath('branding-design')}>Branding & Design</Link>
+            {FOOTER_SERVICES_MORE.map((item) => (
+              <Link key={`${item.href}-${item.label}`} to={item.href}>
+                {item.label}
+              </Link>
+            ))}
           </div>
 
           <div className="ft-col">
             <p className="ft-col-title">Company</p>
-            <Link to={ROUTES.about}>About Us</Link>
-            <Link to={ROUTES.portfolio}>Portfolio</Link>
-            <Link to={ROUTES.packages}>Packages</Link>
-            <Link to={ROUTES.themes}>Themes</Link>
-            <Link to={ROUTES.courses}>E-Learning</Link>
-            <Link to={ROUTES.contact}>Contact</Link>
+            {FOOTER_COMPANY_LINKS.map((item) => (
+              <Link key={item.href} to={item.href}>
+                {item.label}
+              </Link>
+            ))}
           </div>
         </div>
 
@@ -71,6 +75,10 @@ export function Footer() {
           <div className="ft-copy">
             © {YEAR} Rathisoft Innovation | Suneel Pirkash | All rights
             reserved.
+            {' · '}
+            <Link to={ROUTES.termsOfService} className="ft-humans-link">
+              Terms of Service
+            </Link>
             {' · '}
             <a href="/humans.txt" className="ft-humans-link">
               humans.txt

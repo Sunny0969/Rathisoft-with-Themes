@@ -7,8 +7,7 @@
 import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import './Themesstore.css';
 import { Breadcrumbs } from '../components/Breadcrumbs';
-import { InternalLinksNav } from '../components/InternalLinksNav';
-import { THEMES_INTERNAL_LINKS } from '../data/internalLinks';
+import { Link } from 'react-router-dom';
 import { Seo, SITE_ORIGIN } from '../components/Seo';
 import { PAGE_SEO } from '../data/pageSeo';
 import { ROUTES } from '../utils/routes';
@@ -488,11 +487,11 @@ const ThemesStore: React.FC = () => {
       <div className="bg-blob bg-blob-2" aria-hidden="true" />
       <div className="bg-blob bg-blob-3" aria-hidden="true" />
 
-      <main className="page-themes app-main">
+      <main className="page-themes lms-page app-main">
         <Breadcrumbs
           items={[
             { name: 'Home', path: ROUTES.home },
-            { name: 'Themes store', path: ROUTES.themes },
+            { name: 'Themes Store', path: ROUTES.themes },
           ]}
         />
         <section className="hero" aria-labelledby="themes-hero-heading">
@@ -672,16 +671,14 @@ const ThemesStore: React.FC = () => {
           </div>
         </section>
 
-        <InternalLinksNav links={THEMES_INTERNAL_LINKS} heading="Related pages" />
-
         {/* ── FOOTER ── */}
         <footer className="store-footer">
           <p>
-            All files are shared for <strong>educational purposes</strong>. 
-            Support developers by purchasing official licenses. &nbsp;|&nbsp;
-            <a href="mailto:your@email.com" rel="noopener noreferrer">
-              Contact Us
-            </a>
+            All files are shared for <strong>educational purposes</strong>. Support developers by
+            purchasing official licenses. Need a live store? See our{' '}
+            <Link to={ROUTES.packages}>WordPress and Shopify packages</Link> or{' '}
+            <Link to={ROUTES.portfolio}>portfolio</Link>. &nbsp;|&nbsp;
+            <Link to={ROUTES.contact}>Contact us</Link>
           </p>
         </footer>
         </div>

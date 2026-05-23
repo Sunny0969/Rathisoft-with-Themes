@@ -18,6 +18,9 @@ import { CourseDetailPage } from './pages/CourseDetailPage'
 import { CoursesPage } from './pages/CoursesPage'
 import { LecturePage } from './pages/LecturePage'
 import { QuizPage } from './pages/QuizPage'
+import { BlogPage } from './pages/BlogPage'
+import { BlogPostPage } from './pages/BlogPostPage'
+import { TermsOfService } from './pages/TermsOfService'
 import { NotFound } from './pages/NotFound'
 import {
   LEGACY_SERVICE_SLUGS,
@@ -83,6 +86,12 @@ export default function App() {
         <Route path="/services/" element={<ServicesPage />} />
         <Route path="/contact-us" element={<ContactPage />} />
         <Route path="/contact-us/" element={<ContactPage />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
+        <Route path="/terms-of-service/" element={<TermsOfService />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/" element={<BlogPage />} />
+        <Route path="/blog/:slug" element={<BlogPostPage />} />
+        <Route path="/blog/:slug/" element={<BlogPostPage />} />
         <Route
           path="/themes-store"
           element={

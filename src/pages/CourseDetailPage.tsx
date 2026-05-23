@@ -3,11 +3,9 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { EnrollmentModal } from '../components/EnrollmentModal';
 import { TeraboxLecturePlayer } from '../components/TeraboxLecturePlayer';
 import { Breadcrumbs } from '../components/Breadcrumbs';
-import { InternalLinksNav } from '../components/InternalLinksNav';
 import { Seo } from '../components/Seo';
 import { JsonLd } from '../components/JsonLd';
 import { SCHEMA_CONTEXT, buildCourseSchema } from '../data/schemaMarkup';
-import { courseDetailInternalLinks } from '../data/internalLinks';
 import { ROUTES, coursePath } from '../utils/routes';
 import coursesJson from '../data/courses.json';
 import type { Course, Lecture } from '../types/lms';
@@ -162,6 +160,7 @@ export function CourseDetailPage() {
         />
       ) : null}
 
+      <main className="app-main">
       <Breadcrumbs
         items={[
           { name: 'Home', path: ROUTES.home },
@@ -417,14 +416,10 @@ export function CourseDetailPage() {
               </Link>
             ) : null}
 
-            <InternalLinksNav
-              links={courseDetailInternalLinks(course.title)}
-              heading="Related pages"
-              className="internal-links--sidebar internal-links--compact"
-            />
           </aside>
         </div>
       </div>
+      </main>
     </>
   );
 }

@@ -6,8 +6,6 @@ import type { Course, QuizQuestion } from '../types/lms';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { useProgress } from '../hooks/useProgress';
 import { Breadcrumbs } from '../components/Breadcrumbs';
-import { InternalLinksNav } from '../components/InternalLinksNav';
-import { courseDetailInternalLinks } from '../data/internalLinks';
 import { ROUTES, coursePath } from '../utils/routes';
 
 const courses = coursesJson as Course[];
@@ -112,8 +110,8 @@ export function QuizPage() {
           title={`Quiz results — ${course.title}`}
           description={`You scored ${resultPercent}% on the ${course.title} quiz.`}
         />
+        <main className="app-main lms-quiz-shell">
         <Breadcrumbs items={quizBreadcrumbs} />
-        <main className="lms-quiz-shell">
           <div className="lms-container-narrow lms-mt-6">
             <div className="lms-result-card">
               <p className="lms-emoji-xl" aria-hidden>
@@ -128,6 +126,11 @@ export function QuizPage() {
               </p>
               <p className="lms-text-muted lms-text-sm lms-mt-4">
                 Passing score: {passingScore}%
+              </p>
+              <p className="lms-text-muted lms-text-sm lms-mt-4">
+                Next step for a live project: browse our{' '}
+                <Link to={ROUTES.portfolio}>portfolio</Link> or{' '}
+                <Link to={ROUTES.contact}>request a quote</Link>.
               </p>
 
               <div className="lms-actions-row lms-mt-10">
@@ -149,11 +152,6 @@ export function QuizPage() {
                 )}
               </div>
             </div>
-            <InternalLinksNav
-              links={courseDetailInternalLinks(course.title)}
-              heading="Related pages"
-              className="internal-links--compact"
-            />
           </div>
         </main>
       </>
@@ -173,8 +171,8 @@ export function QuizPage() {
         title={`Quiz — ${course.title}`}
         description={`Knowledge check for ${course.title}. Pass at ${passingScore}%.`}
       />
+      <main className="app-main lms-quiz-shell">
       <Breadcrumbs items={quizBreadcrumbs} />
-      <main className="lms-quiz-shell">
         <div className="lms-quiz-topbar">
           <div className="lms-quiz-topbar-inner">
             <div className="lms-quiz-grow">
@@ -281,13 +279,9 @@ export function QuizPage() {
             <button type="button" onClick={goToCourse} className="lms-link">
               ← Back to course
             </button>
+            {' · '}
+            <Link to={ROUTES.packages}>View packages</Link>
           </p>
-
-          <InternalLinksNav
-            links={courseDetailInternalLinks(course.title)}
-            heading="Related pages"
-            className="internal-links--compact"
-          />
         </div>
       </main>
     </>

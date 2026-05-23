@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client'
 import './styles/fonts.css'
 import './index.css'
 import './styles/lms-pages.css'
+import './styles/blog-pages.css'
+import './styles/page-layout.css'
 import App from './App.tsx'
 import { loadDeferredAnalytics } from './utils/loadAnalytics'
 

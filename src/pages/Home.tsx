@@ -7,7 +7,10 @@ import { AiCoreSection } from '../components/AiCoreSection'
 import { AiIndustriesSection } from '../components/AiIndustriesSection'
 import { HowItWorksPanel } from '../components/HowItWorksPanel'
 import { Seo } from '../components/Seo'
-import { ROUTES, servicePath } from '../utils/routes'
+import { BLOG_POSTS } from '../data/blogPosts'
+import { HomepageServicesGrid } from '../components/HomepageServicesGrid'
+import { ROUTES, blogPath, servicePath } from '../utils/routes'
+import { HOMEPAGE_SERVICE_CARDS } from '../data/homepageServiceCards'
 import { PAGE_SEO } from '../data/pageSeo'
 import { JsonLd } from '../components/JsonLd'
 import { buildHomePageSchemaGraph } from '../data/schemaMarkup'
@@ -32,47 +35,6 @@ const TRUST_AVATARS = [
   'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face&fm=webp&q=75',
   'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&crop=face&fm=webp&q=75',
   'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&crop=face&fm=webp&q=75',
-] as const
-
-/** Unsplash sources: https://unsplash.com/photos/{id} — optimized for card headers */
-const SERVICE_IMAGES = {
-  web: 'https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=800&h=500&fit=crop&fm=webp&q=75',
-  seo: 'https://images.unsplash.com/photo-1686061594225-3e92c0cd51b0?w=800&h=500&fit=crop&fm=webp&q=75',
-  app: 'https://images.unsplash.com/photo-1618761714954-0b8cd0026356?w=800&h=500&fit=crop&fm=webp&q=75',
-  wpShopify: 'https://images.unsplash.com/photo-1560472354-0088b5dc9d8d?w=800&h=500&fit=crop&fm=webp&q=75',
-  video: 'https://images.unsplash.com/photo-1605826832916-d0ea9d6fe71e?w=800&h=500&fit=crop&fm=webp&q=75',
-  social: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=800&h=500&fit=crop&fm=webp&q=75',
-  content: 'https://images.unsplash.com/photo-1519337265831-281ec6cc8514?w=800&h=500&fit=crop&fm=webp&q=75',
-  ppc: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&h=500&fit=crop&fm=webp&q=75',
-  branding: 'https://images.unsplash.com/photo-1770010735791-f7c377534c1c?w=800&h=500&fit=crop&fm=webp&q=75',
-  genAi: 'https://images.unsplash.com/photo-1677691824304-279660ceece3?w=800&h=500&fit=crop&fm=webp&q=75',
-  dynamicsErp: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=800&h=500&fit=crop&fm=webp&q=75',
-  cyber: 'https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?w=800&h=500&fit=crop&fm=webp&q=75',
-  gameDev: 'https://images.unsplash.com/photo-1556438064-2d7646166914?w=800&h=500&fit=crop&fm=webp&q=75',
-  saas: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=500&fit=crop&fm=webp&q=75',
-  support: 'https://images.unsplash.com/photo-1758780691544-d11ce61aae47?w=800&h=500&fit=crop&fm=webp&q=75',
-  automation: 'https://images.unsplash.com/photo-1607292803026-3b9d9b3d0fe7?w=800&h=500&fit=crop&fm=webp&q=75',
-} as const
-
-const SERVICES = [
-  { icon: '💻', title: 'Web Development', desc: 'Fast, responsive sites built to turn visitors into leads.', tags: ['UI/UX', 'React'], img: SERVICE_IMAGES.web, href: servicePath('web-development') },
-  { icon: '🔍', title: 'SEO Optimization', desc: 'Technical and on-page SEO so the right customers find you on Google.', tags: ['On-Page', 'Technical'], img: SERVICE_IMAGES.seo, href: servicePath('seo-services') },
-  { icon: '📲', title: 'App Development', desc: 'Custom mobile apps for iOS and Android that feel fast and reliable.', tags: ['iOS', 'Android'], img: SERVICE_IMAGES.app, href: servicePath('app-development') },
-  { icon: '🛒', title: 'WordPress & Shopify', desc: 'Commerce stores that look sharp and guide buyers to checkout.', tags: ['WordPress', 'Shopify'], img: SERVICE_IMAGES.wpShopify, href: servicePath('wordpress-shopify') },
-  { icon: '🎬', title: 'Video Editing', desc: 'Reels, ads, and short clips edited for attention and clarity.', tags: ['Reels', 'Ads'], img: SERVICE_IMAGES.video, href: servicePath('video-editing') },
-  { icon: '📱', title: 'Social Media Marketing', desc: 'Monthly content and posting so your brand stays visible.', tags: ['Instagram', 'Facebook'], img: SERVICE_IMAGES.social, href: servicePath('social-media-marketing') },
-  { icon: '✍️', title: 'Content Marketing', desc: 'Blogs and copy that bring traffic and support sales.', tags: ['Blogs', 'Copywriting'], img: SERVICE_IMAGES.content, href: servicePath('content-marketing') },
-  { icon: '🎯', title: 'PPC Advertising', desc: 'Paid search and social campaigns tuned for measurable ROI.', tags: ['Google Ads', 'Meta Ads'], img: SERVICE_IMAGES.ppc, href: servicePath('ppc-advertising') },
-  { icon: '🎨', title: 'Branding and UI/UX Design', desc: 'Logos, layouts, and brand systems that look credible on every screen.', tags: ['UI/UX', 'Brand Kit'], img: SERVICE_IMAGES.branding, href: servicePath('branding-design') },
-
-  // New technologies / services
-  { icon: '🤖', title: 'Generative AI', desc: 'Practical AI features that save time on support, content, and ops.', tags: ['LLMs', 'Automation'], img: SERVICE_IMAGES.genAi, href: '/services' },
-  { icon: '🏢', title: 'Dynamics 365 ERP', desc: 'ERP setup and tweaks so finance and ops teams work from one source of truth.', tags: ['ERP', 'Microsoft'], img: SERVICE_IMAGES.dynamicsErp, href: '/services' },
-  { icon: '🛡️', title: 'Cybersecurity', desc: 'Hardening, reviews, and secure-by-default builds for live products.', tags: ['Security', 'Compliance'], img: SERVICE_IMAGES.cyber, href: '/services' },
-  { icon: '🎮', title: 'Game Development', desc: 'Game builds with stable performance and polished player flows.', tags: ['Unity', '2D/3D'], img: SERVICE_IMAGES.gameDev, href: '/services' },
-  { icon: '📦', title: 'SaaS Products', desc: 'SaaS products with clear UX and architecture you can extend later.', tags: ['SaaS', 'Scalable'], img: SERVICE_IMAGES.saas, href: '/services' },
-  { icon: '🧰', title: 'Maintenance & Support', desc: 'Updates, fixes, and monitoring after go-live so nothing drifts.', tags: ['Support', 'Updates'], img: SERVICE_IMAGES.support, href: ROUTES.contact },
-  { icon: '⚙️', title: 'Automation & Apps', desc: 'Internal tools and automations that cut manual work across teams.', tags: ['Automation', 'Integrations'], img: SERVICE_IMAGES.automation, href: '/services' },
 ] as const
 
 const TRUST_CARDS = [
@@ -268,7 +230,6 @@ export function Home() {
   const rx = useRef(0)
   const ry = useRef(0)
   const [showPreloader, setShowPreloader] = useState(true)
-  const [showAllServices, setShowAllServices] = useState(false)
 
   const onContactLeadSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -456,8 +417,6 @@ export function Home() {
     }
   }, [showPreloader])
 
-  const visibleServices = showAllServices ? SERVICES : SERVICES.slice(0, 4)
-
   return (
     <main className="app-main">
       <Seo
@@ -579,7 +538,7 @@ export function Home() {
           {[
             ['59', '+', 'Projects completed'],
             ['5', '+', 'Years experience'],
-            [`${SERVICES.length}`, '+', 'Services offered'],
+            [`${HOMEPAGE_SERVICE_CARDS.length}`, '+', 'Services offered'],
             ['4.8', '★', 'Average client rating'],
           ].map(([n, em, l]) => (
             <div key={l} className="nb">
@@ -666,41 +625,7 @@ export function Home() {
                 aimed at leads and sales—scoped to your budget and reported in plain language.
               </p>
             </div>
-            <div className="svc-grid">
-              {visibleServices.map((s) => (
-                <article key={s.title} className="svc" style={{ ['--svc-img' as never]: `url(${s.img})` }}>
-                  <div className="svc-media" aria-hidden>
-                    <Link to={ROUTES.portfolio} className="svc-view">
-                      View work ↗
-                    </Link>
-                  </div>
-                  <div className="svc-body">
-                    <h3>
-                      <Link to={s.href}>{s.title}</Link>
-                    </h3>
-                    <p>{s.desc}</p>
-                    <div className="svc-tags" aria-label="Service tags">
-                      {s.tags.map((t) => (
-                        <span key={t} className="svc-tag">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                    <a href="#contact" className="svc-btn">
-                      Get a custom →
-                    </a>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            {SERVICES.length > 4 ? (
-              <div className="svc-more">
-                <button className="svc-more-btn" type="button" onClick={() => setShowAllServices((v) => !v)}>
-                  {showAllServices ? 'Show fewer services' : 'See more services'}
-                </button>
-              </div>
-            ) : null}
+            <HomepageServicesGrid collapsible interactive ctaToContact />
           </div>
         </section>
 
@@ -713,7 +638,15 @@ export function Home() {
               <h2>Why Do Teams Stick With RathiSoft?</h2>
               <p className="home-lead">
                 Real launches, clean handoffs, and support after go-live—see the{' '}
-                <Link to={ROUTES.about}>story behind our studio</Link> and how we work.
+                <Link to={ROUTES.about}>story behind our studio</Link>, our{' '}
+                <Link to={ROUTES.blog}>software insights blog</Link>
+                {BLOG_POSTS[0] ? (
+                  <>
+                    , and the guide{' '}
+                    <Link to={blogPath(BLOG_POSTS[0].slug)}>{BLOG_POSTS[0].h1}</Link>
+                  </>
+                ) : null}
+                .
               </p>
             </div>
             <div className="tc-grid">
@@ -821,6 +754,7 @@ export function Home() {
             />
           </div>
         </div>
+
       </div>
 
     </main>

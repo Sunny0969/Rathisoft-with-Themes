@@ -8,9 +8,10 @@ import {
   SITE_TESTIMONIALS,
   buildOrganizationReviewProperties,
 } from './testimonials'
+import type { BlogPost } from '../types/blog'
 import type { Course } from '../types/lms'
 import { SITE_ORIGIN } from '../components/Seo'
-import { ROUTES, coursePath } from '../utils/routes'
+import { ROUTES, blogPath, coursePath } from '../utils/routes'
 
 export const SCHEMA_CONTEXT = 'https://schema.org' as const
 
@@ -379,6 +380,101 @@ export function buildContactPageSchemaGraph() {
       },
       buildOrganizationSchema(),
       buildLocalBusinessSchema(),
+    ],
+  }
+}
+
+export function buildBlogIndexSchemaGraph() {
+  return {
+    '@context': SCHEMA_CONTEXT,
+    '@graph': [
+      {
+        '@type': 'Blog',
+        '@id': `${SITE_ORIGIN}${ROUTES.blog}#blog`,
+        name: 'RathiSoft Insights',
+        url: `${SITE_ORIGIN}${ROUTES.blog}`,
+        description:
+          'Guides on software development vendors, custom web and mobile delivery, and IT engagement models.',
+        publisher: { '@id': ORGANIZATION_ID },
+        isPartOf: { '@id': `${SITE_ORIGIN}/#website` },
+      },
+      buildOrganizationSchema(),
+    ],
+  }
+}
+
+export function buildBlogArticleSchemaGraph(post: BlogPost) {
+  const url = `${SITE_ORIGIN}${blogPath(post.slug)}`
+  const faqPage = {
+    '@type': 'FAQPage',
+    '@id': `${url}#faq`,
+    mainEntity: post.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: f.answer,
+      },
+    })),
+  }
+
+  return {
+    '@context': SCHEMA_CONTEXT,
+    '@graph': [
+      {
+        '@type': 'Article',
+        '@id': `${url}#article`,
+        headline: post.h1,
+        name: post.seoTitle,
+        description: post.metaDescription,
+        url,
+        datePublished: post.publishedAt,
+        dateModified: post.updatedAt,
+        author: {
+          '@type': 'Organization',
+          name: post.author,
+          url: SITE_ORIGIN,
+        },
+        publisher: { '@id': ORGANIZATION_ID },
+        image:
+          post.coverImage ??
+          `${SITE_ORIGIN}/og-image.webp`,
+        mainEntityOfPage: { '@id': `${url}#webpage` },
+        isPartOf: { '@id': `${SITE_ORIGIN}${ROUTES.blog}#blog` },
+      },
+      {
+        '@type': 'WebPage',
+        '@id': `${url}#webpage`,
+        url,
+        name: post.seoTitle,
+        isPartOf: { '@id': `${SITE_ORIGIN}/#website` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: `${SITE_ORIGIN}/`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Blog',
+            item: `${SITE_ORIGIN}${ROUTES.blog}`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: post.h1,
+            item: url,
+          },
+        ],
+      },
+      faqPage,
+      buildOrganizationSchema(),
     ],
   }
 }

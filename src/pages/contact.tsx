@@ -6,8 +6,8 @@ import { JsonLd } from "../components/JsonLd";
 import { Seo } from "../components/Seo";
 import { buildContactPageSchemaGraph } from "../data/schemaMarkup";
 import { PAGE_SEO } from "../data/pageSeo";
-import { CONTACT_INTERNAL_LINKS } from "../data/internalLinks";
-import { ROUTES, servicePath } from "../utils/routes";
+import { BLOG_POSTS } from "../data/blogPosts";
+import { ROUTES, blogPath, servicePath } from "../utils/routes";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const MONTHS = [
@@ -661,6 +661,7 @@ export default function ContactPage() {
       <JsonLd data={buildContactPageSchemaGraph()} />
       <style>{styles}</style>
 
+      <main className="app-main page-contact">
       <Breadcrumbs
         items={[
           { name: "Home", path: ROUTES.home },
@@ -739,11 +740,20 @@ export default function ContactPage() {
             <p>
               Expect a short recap of goals, timeline, and stack (WordPress, Shopify, custom web, or
               ads), plus a suggested first milestone. Review our{' '}
-              <Link to={ROUTES.portfolio}>portfolio</Link> anytime while you wait for the reply.
+              <Link to={ROUTES.portfolio}>portfolio</Link>,{' '}
+              <Link to={ROUTES.packages}>web development packages</Link>, or
+              {BLOG_POSTS[0] ? (
+                <>
+                  {' '}
+                  <Link to={blogPath(BLOG_POSTS[0].slug)}>{BLOG_POSTS[0].h1}</Link>
+                </>
+              ) : (
+                ' our blog'
+              )}{' '}
+              while you wait for the reply.
             </p>
           </>
         }
-        links={CONTACT_INTERNAL_LINKS}
       >
         <p>
           Need an NDA first? Say so in your message. We can share sandbox access and a responsibility
@@ -762,6 +772,7 @@ export default function ContactPage() {
           practices we follow on live builds.
         </p>
       </OnPageSeoSection>
+      </main>
     </>
   );
 }

@@ -1,18 +1,21 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { ROUTES } from '../utils/routes'
+import { isNavLinkActive } from '../utils/navActive'
 import './Header.css'
 
 const HERO_SELECTOR =
-  '#hero, main .hero, .page-about .hero, .page-packages .hero, .page-work .hero, .page-team .hero, .page-themes .hero, .page-courses .hero'
+  '#hero, main .hero, .page-about .hero, .page-packages .hero, .page-work .hero, .page-team .hero, .page-themes .hero, .page-courses .hero, .page-blog .hero, .page-blog-post .post-hero, .page-legal .hero, .page-services .rs-hero'
 
 function findPageHero(): HTMLElement | null {
   return document.querySelector<HTMLElement>(HERO_SELECTOR)
 }
 
 const NAV_LINKS = [
+  { label: 'Services', href: ROUTES.services },
   { label: 'Portfolio', href: ROUTES.portfolio },
   { label: 'Packages', href: ROUTES.packages },
+  { label: 'Blog', href: ROUTES.blog },
   { label: 'About Us', href: ROUTES.about },
   { label: 'Themes', href: ROUTES.themes },
 ] as const
@@ -139,11 +142,16 @@ export function Header() {
             </div>
           </Link>
           <ul className="nav-links">
-            {NAV_LINKS.map(({ href, label }) => (
-              <li key={href}>
-                <Link to={href}>{label}</Link>
-              </li>
-            ))}
+            {NAV_LINKS.map(({ href, label }) => {
+              const active = isNavLinkActive(pathname, href)
+              return (
+                <li key={href}>
+                  <Link to={href} className={active ? 'is-active' : undefined} aria-current={active ? 'page' : undefined}>
+                    {label}
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
           <Link to={ROUTES.contact} className="nav-btn">
             Get a free quote →
@@ -169,11 +177,20 @@ export function Header() {
         <Link to="/" onClick={closeMobile}>
           Home
         </Link>
-        {NAV_LINKS.map(({ href, label }) => (
-          <Link key={href} to={href} onClick={closeMobile}>
-            {label}
-          </Link>
-        ))}
+        {NAV_LINKS.map(({ href, label }) => {
+          const active = isNavLinkActive(pathname, href)
+          return (
+            <Link
+              key={href}
+              to={href}
+              onClick={closeMobile}
+              className={active ? 'is-active' : undefined}
+              aria-current={active ? 'page' : undefined}
+            >
+              {label}
+            </Link>
+          )
+        })}
       </div>
     </header>
   )

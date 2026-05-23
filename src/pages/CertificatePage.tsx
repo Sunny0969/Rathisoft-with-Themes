@@ -5,8 +5,6 @@ import coursesJson from '../data/courses.json';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import type { Course } from '../types/lms';
 import { Breadcrumbs } from '../components/Breadcrumbs';
-import { InternalLinksNav } from '../components/InternalLinksNav';
-import { courseDetailInternalLinks } from '../data/internalLinks';
 import { ROUTES, coursePath } from '../utils/routes';
 
 const courses = coursesJson as Course[];
@@ -95,6 +93,7 @@ export function CertificatePage() {
         title={`Certificate — ${course.title}`}
         description={`Certificate of completion for ${course.title}.`}
       />
+      <main className="app-main">
       <Breadcrumbs
         items={[
           { name: 'Home', path: ROUTES.home },
@@ -103,7 +102,7 @@ export function CertificatePage() {
           { name: 'Certificate', path: coursePath(course.id, 'certificate') },
         ]}
       />
-      <main className="lms-cert-page">
+      <div className="lms-cert-page">
         <div className="lms-cert-page-inner">
           <h1 className="lms-heading-xl">🎉 You did it!</h1>
           <p className="lms-lead lms-lead--center lms-lead-narrow lms-mt-2">
@@ -146,6 +145,12 @@ export function CertificatePage() {
             </div>
           </div>
 
+          <p className="lms-text-muted lms-text-sm lms-mt-6">
+            Hiring for production work? See our{' '}
+            <Link to={ROUTES.portfolio}>portfolio</Link> or{' '}
+            <Link to={ROUTES.contact}>request a project quote</Link>.
+          </p>
+
           <div className="lms-actions-row lms-mt-10">
             <button
               type="button"
@@ -159,12 +164,8 @@ export function CertificatePage() {
               Explore More Courses
             </Link>
           </div>
-
-          <InternalLinksNav
-            links={courseDetailInternalLinks(course.title)}
-            heading="Related pages"
-          />
         </div>
+      </div>
       </main>
     </>
   );

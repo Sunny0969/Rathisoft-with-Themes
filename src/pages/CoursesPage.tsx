@@ -1,8 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Breadcrumbs } from '../components/Breadcrumbs';
-import { InternalLinksNav } from '../components/InternalLinksNav';
-import { COURSES_INTERNAL_LINKS } from '../data/internalLinks';
 import { JsonLd } from '../components/JsonLd';
 import { Seo } from '../components/Seo';
 import { buildCoursesPageSchemaGraph } from '../data/schemaMarkup';
@@ -205,7 +203,6 @@ export function CoursesPage() {
             </p>
           ) : null}
 
-          <InternalLinksNav links={COURSES_INTERNAL_LINKS} heading="Related pages" />
         </div>
       </main>
     </>

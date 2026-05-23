@@ -60,6 +60,9 @@
     { "source": "/content-marketing", "destination": "/services/content-marketing/", "permanent": true },
     { "source": "/ppc-advertising", "destination": "/services/ppc-advertising/", "permanent": true },
     { "source": "/email-marketing", "destination": "/services/email-marketing/", "permanent": true },
-    { "source": "/branding-design", "destination": "/services/branding-design/", "permanent": true }
+    { "source": "/branding-design", "destination": "/services/branding-design/", "permanent": true },
+    { "source": "/terms-of-service", "destination": "/terms-of-service/", "permanent": true },
+    { "source": "/blog/:slug", "destination": "/blog/:slug/", "permanent": true },
+    { "source": "/services", "destination": "/services/", "permanent": true }
   ]
 }

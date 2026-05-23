@@ -14,7 +14,14 @@ export const ROUTES = {
   contact: '/contact-us/',
   team: '/our-team/',
   services: '/services/',
+  blog: '/blog/',
+  termsOfService: '/terms-of-service/',
 } as const
+
+export function blogPath(slug: string): string {
+  const clean = slug.replace(/^\/+|\/+$/g, '').toLowerCase()
+  return `/blog/${clean}/`
+}
 
 /** Keyword-rich service slugs under /services/{slug}/ */
 export const SERVICE_SLUGS = [
@@ -74,6 +81,7 @@ export const LEGACY_TOP_LEVEL: Record<string, string> = {
   '/team': ROUTES.team,
   '/our-team-lahore': ROUTES.team,
   '/services': ROUTES.services,
+  '/blog': ROUTES.blog,
 }
 
 const TRACKING_PARAM_PREFIXES = [

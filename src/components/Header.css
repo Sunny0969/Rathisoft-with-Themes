@@ -97,6 +97,27 @@
   width: 100%;
 }
 
+/* Current page — orange underline */
+.rs-header .nav-links a.is-active {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.rs-header .nav-links a.is-active::after {
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #f59e0b, #fb923c);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.45);
+}
+
+.rs-header .nav-links a.is-active:hover {
+  color: #ffffff;
+}
+
+.rs-header .nav-links a.is-active:hover::after {
+  background: linear-gradient(90deg, #f59e0b, #fb923c);
+}
+
 .rs-header .nav-btn {
   background: #6366f1;
   color: #fff;
@@ -188,6 +209,14 @@
 
 .rs-header .rs-mob-overlay a:hover {
   color: #818cf8;
+}
+
+.rs-header .rs-mob-overlay a.is-active {
+  color: #f59e0b;
+  text-decoration: underline;
+  text-decoration-color: #fb923c;
+  text-underline-offset: 8px;
+  text-decoration-thickness: 3px;
 }
 
 @media (max-width: 960px) {

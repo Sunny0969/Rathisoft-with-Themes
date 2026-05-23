@@ -1,5 +1,9 @@
 import { Fragment, useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
+import {
+  isPortfolioFilterId,
+  type PortfolioFilterId,
+} from '../data/servicePortfolioLinks'
 import { Breadcrumbs } from '../components/Breadcrumbs'
 import { CaseStudiesSection } from '../components/CaseStudiesSection'
 import { Seo } from '../components/Seo'
@@ -8,7 +12,8 @@ import { PAGE_SEO } from '../data/pageSeo'
 import { JsonLd } from '../components/JsonLd'
 import { buildPortfolioItemListSchema } from '../data/schemaMarkup'
 import { portfolioScreenshotAlt, toWebpSrc } from '../utils/imageAssets'
-import { ROUTES } from '../utils/routes'
+import { BLOG_POSTS } from '../data/blogPosts'
+import { ROUTES, blogPath } from '../utils/routes'
 
 const WA = 'https://wa.me/923342651544'
 
@@ -136,7 +141,7 @@ const WORK_STYLES = `
   background: linear-gradient(90deg, var(--indigo), transparent);
 }
 .page-work .hero {
-  padding: 80px 0 60px;
+  padding: 48px 0 60px;
   border-bottom: 1px solid var(--border);
   background: linear-gradient(135deg, var(--bg), var(--bg2));
   position: relative;
@@ -673,7 +678,7 @@ const WORK_STYLES = `
 }
 `
 
-const FILTER_BTNS: { id: string; label: string }[] = [
+const FILTER_BTNS: { id: PortfolioFilterId; label: string }[] = [
   { id: 'all', label: 'All Projects' },
   { id: 'custom', label: 'Custom Web' },
   { id: 'wordpress', label: 'WordPress' },
@@ -1301,11 +1306,30 @@ const SECTIONS: WorkSection[] = [
 ]
 
 export function Work() {
-  const [filter, setFilter] = useState('all')
+  const [searchParams] = useSearchParams()
+  const filterFromUrl = searchParams.get('filter') ?? ''
+  const [filter, setFilter] = useState<PortfolioFilterId>(() =>
+    isPortfolioFilterId(filterFromUrl) ? filterFromUrl : 'all',
+  )
+
+  useEffect(() => {
+    const q = searchParams.get('filter') ?? ''
+    if (isPortfolioFilterId(q)) setFilter(q)
+    else if (!q) setFilter('all')
+  }, [searchParams])
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  useEffect(() => {
+    const hash = window.location.hash.replace(/^#/, '')
+    if (!hash) return
+    const t = window.setTimeout(() => {
+      document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 200)
+    return () => window.clearTimeout(t)
+  }, [filter])
 
   const sectionsVisible = useMemo(() => {
     return SECTIONS.map((sec) => ({
@@ -1315,22 +1339,23 @@ export function Work() {
   }, [filter])
 
   return (
-    <main className="page-work app-main">
-      <Breadcrumbs
-        items={[
-          { name: 'Home', path: ROUTES.home },
-          { name: 'Work', path: ROUTES.portfolio },
-        ]}
-      />
+    <>
       <Seo
         title={PAGE_SEO.work.title}
         description={PAGE_SEO.work.description}
         keywords={PAGE_SEO.work.keywords}
       />
       <JsonLd data={buildPortfolioItemListSchema()} />
-      <style>{WORK_STYLES}</style>
+      <main className="page-work lms-page app-main">
+        <Breadcrumbs
+          items={[
+            { name: 'Home', path: ROUTES.home },
+            { name: 'Portfolio', path: ROUTES.portfolio },
+          ]}
+        />
+        <style>{WORK_STYLES}</style>
 
-      <div className="hero">
+        <div className="hero">
         <div className="wrap">
           <div className="label">Our Work</div>
           <h1 id="work-hero-heading">Prove Our Craft with <br></br>Case Studies | RathiSoft</h1>
@@ -1499,7 +1524,14 @@ export function Work() {
         <h2>Want Results Like These?</h2>
         <p>
           Share your URL and goals—we will reply with a realistic plan and quote, usually within one
-          business day.
+          business day. Compare our <Link to={ROUTES.packages}>web development packages</Link>, read
+          {BLOG_POSTS[0] ? (
+            <>
+              {' '}
+              <Link to={blogPath(BLOG_POSTS[0].slug)}>{BLOG_POSTS[0].h1}</Link>, or
+            </>
+          ) : null}{' '}
+          <Link to={ROUTES.contact}>request a free project quote</Link>.
         </p>
         <div className="cta-btns">
           <Link to={ROUTES.contact} className="btn-p">
@@ -1515,6 +1547,7 @@ export function Work() {
           </a>
         </div>
       </div>
-    </main>
+      </main>
+    </>
   )
 }

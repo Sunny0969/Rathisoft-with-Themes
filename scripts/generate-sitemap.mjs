@@ -15,19 +15,6 @@ const srcDir = join(root, 'src')
 
 const SITE = 'https://www.rathisoft.com'
 
-const SERVICE_SLUGS = [
-  'web-development',
-  'seo-services',
-  'app-development',
-  'wordpress-shopify',
-  'video-editing',
-  'social-media-marketing',
-  'content-marketing',
-  'ppc-advertising',
-  'email-marketing',
-  'branding-design',
-]
-
 function todayYyyyMmDd() {
   const d = new Date()
   const y = d.getFullYear()
@@ -70,15 +57,18 @@ const courses = JSON.parse(
   readFileSync(join(srcDir, 'data', 'courses.json'), 'utf8'),
 )
 
+/** Slugs from src/data/blogPosts.ts — not listed in sitemap manually */
+function readBlogSlugs() {
+  const src = readFileSync(join(srcDir, 'data', 'blogPosts.ts'), 'utf8')
+  return [...src.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1])
+}
+
+const BLOG_SLUGS = readBlogSlugs()
+
 /** @type {{ path: string; changefreq: string; priority: string }[]} */
+/** /services/* pages are intentionally omitted — not submitted to Google. */
 const pages = [
   { path: '/', changefreq: 'weekly', priority: '1.0' },
-  { path: '/services/', changefreq: 'weekly', priority: '0.9' },
-  ...SERVICE_SLUGS.map((slug) => ({
-    path: `/services/${slug}/`,
-    changefreq: 'weekly',
-    priority: '0.9',
-  })),
   { path: '/portfolio/', changefreq: 'monthly', priority: '0.8' },
   { path: '/packages/', changefreq: 'monthly', priority: '0.8' },
   { path: '/themes-store/', changefreq: 'monthly', priority: '0.8' },
@@ -90,7 +80,14 @@ const pages = [
   })),
   { path: '/about-us/', changefreq: 'monthly', priority: '0.5' },
   { path: '/contact-us/', changefreq: 'monthly', priority: '0.5' },
+  { path: '/terms-of-service/', changefreq: 'yearly', priority: '0.3' },
   { path: '/our-team/', changefreq: 'monthly', priority: '0.6' },
+  { path: '/blog/', changefreq: 'weekly', priority: '0.8' },
+  ...BLOG_SLUGS.map((slug) => ({
+    path: `/blog/${slug}/`,
+    changefreq: 'weekly',
+    priority: '0.8',
+  })),
 ]
 
 const lastmod = todayYyyyMmDd()
@@ -220,6 +217,7 @@ writeFileSync(join(publicDir, 'sitemap-images.xml'), imageSitemapXml, {
 const robotsPath = join(publicDir, 'robots.txt')
 const robotsBase = `User-agent: *
 Allow: /
+Disallow: /services/
 
 User-agent: GPTBot
 Disallow: /

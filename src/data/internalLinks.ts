@@ -1,4 +1,11 @@
-import { ROUTES, servicePath, type ServiceSlug } from '../utils/routes'
+import coursesData from './courses.json'
+import { BLOG_POSTS } from './blogPosts'
+import { ROUTES, blogPath, coursePath, servicePath, type ServiceSlug } from '../utils/routes'
+
+const COURSE_SPOKE_LINKS: InternalLinkItem[] = coursesData.map((course) => ({
+  to: coursePath(course.id),
+  label: `Start the free ${course.title}`,
+}))
 
 export type InternalLinkItem = {
   to: string
@@ -9,7 +16,9 @@ export const HOME_INTERNAL_LINKS: InternalLinkItem[] = [
   { to: ROUTES.packages, label: 'View Our Web Development Packages' },
   { to: ROUTES.portfolio, label: 'Browse the RathiSoft Web Development Portfolio' },
   { to: ROUTES.services, label: 'Explore Digital Marketing & Web Services' },
+  { to: ROUTES.blog, label: 'Read Software & Web Insights on Our Blog' },
   { to: ROUTES.about, label: 'Meet the RathiSoft Team' },
+  { to: ROUTES.team, label: 'Meet Specialists on Our Team Page' },
   { to: ROUTES.contact, label: 'Request a Free Web Development Quote' },
 ]
 
@@ -22,17 +31,21 @@ export const ABOUT_INTERNAL_LINKS: InternalLinkItem[] = [
 ]
 
 export const PORTFOLIO_INTERNAL_LINKS: InternalLinkItem[] = [
-  { to: ROUTES.services, label: 'Map Projects to Our Service Offerings' },
   { to: ROUTES.packages, label: 'Start a Scoped Build with Package Pricing' },
-  { to: servicePath('web-development'), label: 'Plan a Custom Web Development Project' },
+  { to: ROUTES.blog, label: 'Read Software & Web Insights on Our Blog' },
+  ...(BLOG_POSTS[0]
+    ? [{ to: blogPath(BLOG_POSTS[0].slug), label: BLOG_POSTS[0].h1 }]
+    : []),
   { to: ROUTES.about, label: 'Learn How We Document Delivery & Transparency' },
   { to: ROUTES.contact, label: 'Reference a Portfolio Case in Your Brief' },
 ]
 
 export const PACKAGES_INTERNAL_LINKS: InternalLinkItem[] = [
-  { to: ROUTES.services, label: 'Explore All Web & Marketing Services' },
   { to: ROUTES.portfolio, label: 'Browse Client Portfolio & Case Studies' },
-  { to: servicePath('wordpress-shopify'), label: 'See WordPress & Shopify Development Services' },
+  { to: ROUTES.blog, label: 'Read Software & Web Insights on Our Blog' },
+  ...(BLOG_POSTS[0]
+    ? [{ to: blogPath(BLOG_POSTS[0].slug), label: BLOG_POSTS[0].h1 }]
+    : []),
   { to: ROUTES.themes, label: 'Download WordPress & Shopify Theme Resources' },
   { to: ROUTES.contact, label: 'Ask for a Custom Package Quote' },
 ]
@@ -46,25 +59,31 @@ export const THEMES_INTERNAL_LINKS: InternalLinkItem[] = [
 ]
 
 export const COURSES_INTERNAL_LINKS: InternalLinkItem[] = [
+  ...COURSE_SPOKE_LINKS,
   { to: servicePath('web-development'), label: 'Upgrade to Professional Web Development' },
   { to: servicePath('seo-services'), label: 'Pair Learning with RathiSoft SEO Services' },
   { to: ROUTES.about, label: 'Learn About the RathiSoft Training Team' },
-  { to: ROUTES.portfolio, label: 'See Projects Built by Our Graduates' },
   { to: ROUTES.contact, label: 'Ask About Corporate Training Workshops' },
 ]
 
 export const CONTACT_INTERNAL_LINKS: InternalLinkItem[] = [
   { to: ROUTES.packages, label: 'Review Web Development Packages Before You Write' },
   { to: ROUTES.portfolio, label: 'Share Portfolio Examples Relevant to Your Brief' },
-  { to: ROUTES.services, label: 'Pick a Service Lane for Your Project' },
+  { to: ROUTES.blog, label: 'Read Software & Web Insights on Our Blog' },
+  ...(BLOG_POSTS[0]
+    ? [{ to: blogPath(BLOG_POSTS[0].slug), label: BLOG_POSTS[0].h1 }]
+    : []),
   { to: ROUTES.about, label: 'Understand Our Delivery Culture First' },
   { to: ROUTES.courses, label: 'Browse Free E-Learning Courses While You Wait' },
 ]
 
 export const TEAM_INTERNAL_LINKS: InternalLinkItem[] = [
   { to: ROUTES.about, label: 'Read Leadership & Company Story' },
-  { to: ROUTES.services, label: 'See Service Lanes Each Specialist Supports' },
   { to: ROUTES.portfolio, label: 'Study Cross-Functional Portfolio Outcomes' },
+  { to: ROUTES.blog, label: 'Read Software & Web Insights on Our Blog' },
+  ...(BLOG_POSTS[0]
+    ? [{ to: blogPath(BLOG_POSTS[0].slug), label: BLOG_POSTS[0].h1 }]
+    : []),
   { to: ROUTES.packages, label: 'Align Team Capacity with Package Tiers' },
   { to: ROUTES.contact, label: 'Request a Pod Matched to Your Procurement Rules' },
 ]
@@ -156,5 +175,34 @@ export function courseDetailInternalLinks(courseTitle: string): InternalLinkItem
     { to: servicePath('seo-services'), label: 'Grow Traffic with RathiSoft SEO Services' },
     { to: ROUTES.packages, label: 'View Web Development Packages & Pricing' },
     { to: ROUTES.contact, label: `Ask About Training Beyond ${courseTitle}` },
+  ]
+}
+
+export const BLOG_INTERNAL_LINKS: InternalLinkItem[] = [
+  ...BLOG_POSTS.map((post) => ({
+    to: blogPath(post.slug),
+    label: post.h1,
+  })),
+  { to: ROUTES.services, label: 'Browse All Web & Marketing Services' },
+  { to: servicePath('web-development'), label: 'Plan Custom Web Application Development' },
+  { to: servicePath('app-development'), label: 'Explore Mobile App Development Services' },
+  { to: ROUTES.packages, label: 'Compare Software Project Packages & Pricing' },
+  { to: ROUTES.portfolio, label: 'Review Delivery Proof in Our Portfolio' },
+  { to: ROUTES.contact, label: 'Run Your Vendor Shortlist Past Our Team' },
+]
+
+export function BLOG_POST_INTERNAL_LINKS(slug: string): InternalLinkItem[] {
+  const post = BLOG_POSTS.find((p) => p.slug === slug)
+  return [
+    { to: ROUTES.blog, label: 'Back to All Software Insights Articles' },
+    ...(post
+      ? [{ to: ROUTES.services, label: 'Compare RathiSoft Services Before You Buy' }]
+      : []),
+    { to: servicePath('web-development'), label: 'Scope Custom Web Development with RathiSoft' },
+    { to: servicePath('app-development'), label: 'Pair Guides with App Development Services' },
+    { to: ROUTES.portfolio, label: 'Review Delivery Proof in Our Portfolio' },
+    { to: ROUTES.about, label: 'Meet the Lahore Delivery Team Behind Our Builds' },
+    { to: ROUTES.team, label: 'See Specialists on Our Team Page' },
+    { to: ROUTES.contact, label: 'Request a Quote Using the 10-Point Checklist' },
   ]
 }

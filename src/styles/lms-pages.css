@@ -25,15 +25,7 @@
   padding-top: 0;
 }
 
-/* Breadcrumb already clears the header; hero only needs section spacing */
-.page-courses .rs-breadcrumb-bar + .hero {
-  padding-top: 48px;
-}
-
-/* Fallback if breadcrumbs are omitted */
-.page-courses > .hero:first-child {
-  padding-top: calc(var(--header-h, 64px) + 48px);
-}
+/* Breadcrumb + hero spacing: see styles/page-layout.css */
 
 /* Hero — same structure as Packages / Themes (full width, left-aligned) */
 .page-courses .hero {
@@ -151,7 +143,8 @@
   padding-top: 0;
 }
 
-.lms-page.lms-page--flush-top > .lms-hero:first-child {
+/* Header offset via .rs-breadcrumb-bar; fallback when no breadcrumbs */
+.app-main:not(:has(> .rs-breadcrumb-bar)) .lms-page.lms-page--flush-top > .lms-hero:first-child {
   padding-top: calc(var(--header-h, 64px) + 1.25rem);
 }
 

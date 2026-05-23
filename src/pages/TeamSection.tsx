@@ -7,9 +7,9 @@ import { Seo } from "../components/Seo";
 import { TEAM_SECTION_FONT_STYLESHEET } from "../constants/deferredFontUrls";
 import { TEAM_MEMBERS, type TeamMember } from "../data/teamMembers";
 import { teamMemberAlt } from "../utils/imageAssets";
-import { ROUTES } from "../utils/routes";
+import { BLOG_POSTS } from "../data/blogPosts";
+import { ROUTES, blogPath } from "../utils/routes";
 import { injectDeferredStylesheet } from "../utils/deferredStylesheet";
-import { TEAM_INTERNAL_LINKS } from "../data/internalLinks";
 
 const DEPARTMENTS = ["All", "Leadership", "Engineering", "Design", "Marketing"];
 
@@ -256,11 +256,20 @@ const TeamSection: React.FC = () => {
           <p>
             Continuity matters on commerce launches and SEO retainers. We keep the same leads when
             possible so context is not lost mid-sprint—see{' '}
-            <Link to={ROUTES.portfolio}>shipped work</Link> from these disciplines.
+            <Link to={ROUTES.portfolio}>shipped work</Link>, our{' '}
+            <Link to={ROUTES.packages}>package pricing</Link>, or
+            {BLOG_POSTS[0] ? (
+              <>
+                {' '}
+                <Link to={blogPath(BLOG_POSTS[0].slug)}>{BLOG_POSTS[0].h1}</Link>
+              </>
+            ) : (
+              ' the blog'
+            )}{' '}
+            for how we think about delivery.
           </p>
         </>
       }
-      links={TEAM_INTERNAL_LINKS}
     >
       <p>
         We reference public standards such as{' '}

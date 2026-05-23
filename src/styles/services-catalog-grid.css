@@ -1,0 +1,122 @@
+/* Homepage-style service cards on /services/ */
+
+.services-catalog-grid--display .svc {
+  cursor: default;
+}
+
+.services-catalog-grid--portfolio .svc--portfolio-link {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.services-catalog-grid--portfolio .svc--portfolio-link:focus-visible {
+  outline: 2px solid rgba(129, 140, 248, 0.9);
+  outline-offset: 3px;
+}
+
+.services-catalog-grid--portfolio .svc:target {
+  border-color: rgba(129, 140, 248, 0.75);
+  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.35), 0 12px 48px rgba(0, 0, 0, 0.4);
+}
+
+.services-catalog-grid--portfolio .svc:hover {
+  border-color: rgba(99, 102, 241, 0.45);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+}
+
+.services-catalog-grid--portfolio .svc:hover .svc-media::before {
+  background:
+    linear-gradient(180deg, rgba(19, 19, 26, 0.02) 0%, rgba(19, 19, 26, 0.78) 100%),
+    radial-gradient(circle at 25% 20%, rgba(99, 102, 241, 0.28), transparent 55%);
+}
+
+.services-catalog-grid--portfolio .svc h3 {
+  color: #fff;
+}
+
+.services-catalog-grid--portfolio .svc:hover .svc-chip {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.35);
+}
+
+.services-catalog-grid--portfolio .svc:hover .svc-footnote {
+  color: #c7d2fe;
+}
+
+.services-catalog-grid--display .svc:target {
+  border-color: rgba(129, 140, 248, 0.75);
+  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.35), 0 12px 48px rgba(0, 0, 0, 0.4);
+}
+
+.services-catalog-grid--display .svc:hover {
+  border-color: rgba(99, 102, 241, 0.45);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+}
+
+.services-catalog-grid--display .svc:hover .svc-media::before {
+  background:
+    linear-gradient(180deg, rgba(19, 19, 26, 0.02) 0%, rgba(19, 19, 26, 0.78) 100%),
+    radial-gradient(circle at 25% 20%, rgba(99, 102, 241, 0.28), transparent 55%);
+}
+
+.services-catalog-grid--display .svc h3 {
+  color: #fff;
+}
+
+.services-catalog-grid--display .svc-chip {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  padding: 6px 10px;
+  border-radius: 999px;
+  pointer-events: none;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.services-catalog-grid--display .svc:hover .svc-chip {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.35);
+}
+
+.services-catalog-grid--display .svc-footnote {
+  margin-top: auto;
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(129, 140, 248, 0.85);
+  padding-top: 4px;
+  transition: color 0.2s;
+}
+
+.services-catalog-grid--display .svc:hover .svc-footnote {
+  color: #c7d2fe;
+}
+
+.services-catalog-grid .svc-grid--cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 1200px) {
+  .services-catalog-grid .svc-grid--cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .services-catalog-grid .svc-grid--cols-3 {
+    grid-template-columns: 1fr;
+  }
+}

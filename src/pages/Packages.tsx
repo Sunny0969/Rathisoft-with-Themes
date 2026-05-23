@@ -2,8 +2,6 @@ import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Breadcrumbs } from '../components/Breadcrumbs'
-import { InternalLinksNav } from '../components/InternalLinksNav'
-import { PACKAGES_INTERNAL_LINKS } from '../data/internalLinks'
 import { PackagesSection } from '../components/PackagesSection'
 import { Seo } from '../components/Seo'
 import { PAGE_SEO } from '../data/pageSeo'
@@ -92,7 +90,7 @@ const PACKAGES_STYLES = `
   background: linear-gradient(90deg, var(--indigo), transparent);
 }
 .page-packages .hero {
-  padding: 80px 0 60px;
+  padding: 48px 0 60px;
   border-bottom: 1px solid var(--border);
   background: linear-gradient(135deg, var(--bg), var(--bg2));
   position: relative;
@@ -629,8 +627,8 @@ const FAQ_ITEMS: { q: string; a: ReactNode }[] = [
     a: (
       <>
         We step into bespoke scope with the same clarity. Review{' '}
-        <Link to={ROUTES.services}>all services</Link>, benchmark outcomes on our{' '}
-        <Link to={ROUTES.portfolio}>portfolio</Link>, read{' '}
+        benchmark outcomes on our <Link to={ROUTES.portfolio}>portfolio</Link>, read our{' '}
+        <Link to={ROUTES.blog}>software insights blog</Link>, see{' '}
         <Link to={ROUTES.about}>how we operate</Link>, or{' '}
         <Link to={ROUTES.contact}>contact us</Link> for procurement questionnaires, signatures, or NDAs.
       </>
@@ -657,21 +655,22 @@ export function Packages() {
   }
 
   return (
-    <main className="page-packages app-main">
-      <Breadcrumbs
-        items={[
-          { name: 'Home', path: ROUTES.home },
-          { name: 'Packages', path: ROUTES.packages },
-        ]}
-      />
+    <>
       <Seo
         title={PAGE_SEO.packages.title}
         description={PAGE_SEO.packages.description}
         keywords={PAGE_SEO.packages.keywords}
       />
-      <style>{PACKAGES_STYLES}</style>
+      <main className="page-packages lms-page app-main">
+        <Breadcrumbs
+          items={[
+            { name: 'Home', path: ROUTES.home },
+            { name: 'Packages', path: ROUTES.packages },
+          ]}
+        />
+        <style>{PACKAGES_STYLES}</style>
 
-      <div className="hero">
+        <div className="hero">
         <div className="wrap">
           <div className="label">Pricing</div>
           <h1 id="packages-hero-heading">
@@ -712,7 +711,6 @@ export function Packages() {
           ))}
         </div>
 
-        <InternalLinksNav links={PACKAGES_INTERNAL_LINKS} heading="Related pages" />
       </div>
 
       <div className="cta-wrap">
@@ -735,6 +733,7 @@ export function Packages() {
           </a>
         </div>
       </div>
-    </main>
+      </main>
+    </>
   )
 }

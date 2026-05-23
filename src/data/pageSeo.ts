@@ -78,4 +78,20 @@ export const PAGE_SEO = {
     keywords:
       'contact RathiSoft, web development quote Lahore, Shopify consultation, free project quote, WhatsApp agency Pakistan, Johar Town office, hire developers, get in touch',
   },
+  blog: {
+    path: '/blog/',
+    title: 'Blog | Software Development Guides | RathiSoft',
+    description:
+      'Software development company guides, custom web and mobile insights, and vendor checklists from RathiSoft Lahore—read free, then request a quote.',
+    keywords:
+      'software development blog, custom web development guide, mobile app vendor selection, IT staff augmentation, RathiSoft insights, software services',
+  },
+  termsOfService: {
+    path: '/terms-of-service/',
+    title: 'Terms of Service | RathiSoft',
+    description:
+      'Terms of Service for www.rathisoft.com and RathiSoft web, Shopify, app, and marketing projects. Read our policies before you engage our team.',
+    keywords:
+      'RathiSoft terms of service, web development agreement, software agency terms Pakistan, Lahore IT company legal',
+  },
 } as const satisfies Record<string, PageSeoEntry>

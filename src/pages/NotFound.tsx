@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Breadcrumbs } from '../components/Breadcrumbs'
-import { HOME_INTERNAL_LINKS } from '../data/internalLinks'
 import { ROUTES } from '../utils/routes'
 import {
   SITE_ORIGIN,
@@ -52,23 +51,16 @@ export function NotFound() {
         </p>
         <h1 className="nf-title">Page not found</h1>
         <p className="nf-lead">
-          That URL doesn&apos;t exist or may have moved. Head back to a main section below—no broken ends.
+          That URL doesn&apos;t exist or may have moved. Try our{' '}
+          <Link to={ROUTES.portfolio}>portfolio</Link>,{' '}
+          <Link to={ROUTES.packages}>packages</Link>,{' '}
+          <Link to={ROUTES.blog}>blog</Link>, or{' '}
+          <Link to={ROUTES.contact}>contact page</Link>.
         </p>
 
         <nav className="nf-nav" aria-label="Helpful pages on RathiSoft">
           <Link className="nf-btn nf-btn-primary" to={ROUTES.home}>
             Return to the RathiSoft Homepage
-          </Link>
-          {HOME_INTERNAL_LINKS.map((l) => (
-            <Link key={l.to} className="nf-btn" to={l.to}>
-              {l.label}
-            </Link>
-          ))}
-          <Link className="nf-btn" to={ROUTES.themes}>
-            Browse WordPress &amp; Shopify Theme Downloads
-          </Link>
-          <Link className="nf-btn" to={ROUTES.team}>
-            Meet Our Lahore Software Team
           </Link>
         </nav>
       </div>

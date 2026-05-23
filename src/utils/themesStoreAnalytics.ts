@@ -1,7 +1,8 @@
 import type { StoreCategory, StoreItem } from '../pages/themesStoreData'
 
-export const THEMES_STORE_ANALYTICS_KEY = 'rathisoft-themes-store-clicks'
 export const THEMES_STORE_ANALYTICS_EVENT = 'themes-store-analytics'
+
+const API_PATH = '/api/themes-store-clicks'
 
 export type ThemesStoreClickEntry = {
   id: string
@@ -13,116 +14,114 @@ export type ThemesStoreClickEntry = {
   lastDownloadAt?: string
 }
 
-type AnalyticsBlob = {
-  v: 1
-  items: Record<string, ThemesStoreClickEntry>
-}
-
-function readBlob(): AnalyticsBlob {
-  if (typeof window === 'undefined') return { v: 1, items: {} }
-  try {
-    const raw = localStorage.getItem(THEMES_STORE_ANALYTICS_KEY)
-    if (!raw) return { v: 1, items: {} }
-    const parsed = JSON.parse(raw) as AnalyticsBlob
-    if (!parsed?.items || typeof parsed.items !== 'object') return { v: 1, items: {} }
-    return parsed
-  } catch {
-    return { v: 1, items: {} }
+export type ThemesStoreAnalyticsSnapshot = {
+  totals: {
+    demoClicks: number
+    downloadClicks: number
+    itemsWithActivity: number
   }
+  items: ThemesStoreClickEntry[]
+  storage?: string
 }
 
-function writeBlob(blob: AnalyticsBlob): void {
+let cachedSnapshot: ThemesStoreAnalyticsSnapshot | null = null
+let inflightRefresh: Promise<ThemesStoreAnalyticsSnapshot> | null = null
+
+function notifyAnalyticsUpdated(): void {
   if (typeof window === 'undefined') return
-  localStorage.setItem(THEMES_STORE_ANALYTICS_KEY, JSON.stringify(blob))
   window.dispatchEvent(new Event(THEMES_STORE_ANALYTICS_EVENT))
 }
 
-function upsertEntry(
-  item: Pick<StoreItem, 'id' | 'name' | 'category'>,
-  field: 'demoClicks' | 'downloadClicks',
-  tsField: 'lastDemoAt' | 'lastDownloadAt',
-): void {
-  const blob = readBlob()
-  const now = new Date().toISOString()
-  const prev = blob.items[item.id]
-  const next: ThemesStoreClickEntry = {
-    id: item.id,
-    name: item.name,
-    category: item.category,
-    demoClicks: prev?.demoClicks ?? 0,
-    downloadClicks: prev?.downloadClicks ?? 0,
-    lastDemoAt: prev?.lastDemoAt,
-    lastDownloadAt: prev?.lastDownloadAt,
+function emptySnapshot(): ThemesStoreAnalyticsSnapshot {
+  return {
+    totals: { demoClicks: 0, downloadClicks: 0, itemsWithActivity: 0 },
+    items: [],
   }
-  next[field] += 1
-  next[tsField] = now
-  blob.items[item.id] = next
-  writeBlob(blob)
+}
+
+export function getCachedThemesStoreSnapshot(): ThemesStoreAnalyticsSnapshot {
+  return cachedSnapshot ?? emptySnapshot()
+}
+
+export async function refreshThemesStoreAnalytics(): Promise<ThemesStoreAnalyticsSnapshot> {
+  if (inflightRefresh) return inflightRefresh
+
+  inflightRefresh = (async () => {
+    try {
+      const res = await fetch(API_PATH, {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+        cache: 'no-store',
+      })
+      if (!res.ok) {
+        return cachedSnapshot ?? emptySnapshot()
+      }
+      const data = (await res.json()) as ThemesStoreAnalyticsSnapshot & { ok?: boolean }
+      cachedSnapshot = {
+        totals: data.totals,
+        items: data.items as ThemesStoreClickEntry[],
+        storage: data.storage,
+      }
+      return cachedSnapshot
+    } catch {
+      return cachedSnapshot ?? emptySnapshot()
+    } finally {
+      inflightRefresh = null
+    }
+  })()
+
+  return inflightRefresh
+}
+
+async function postClick(
+  item: Pick<StoreItem, 'id' | 'name' | 'category'>,
+  event: 'demo' | 'download',
+): Promise<void> {
+  try {
+    const res = await fetch(API_PATH, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        id: item.id,
+        name: item.name,
+        category: item.category,
+        event,
+      }),
+    })
+    if (!res.ok) return
+    const data = (await res.json()) as ThemesStoreAnalyticsSnapshot & { ok?: boolean }
+    cachedSnapshot = {
+      totals: data.totals,
+      items: data.items as ThemesStoreClickEntry[],
+      storage: data.storage,
+    }
+  } catch {
+    /* network error — dashboard will refresh on next poll */
+  }
 }
 
 export function trackThemesStoreDemo(
   item: Pick<StoreItem, 'id' | 'name' | 'category'>,
 ): void {
-  upsertEntry(item, 'demoClicks', 'lastDemoAt')
+  void postClick(item, 'demo').then(() => {
+    notifyAnalyticsUpdated()
+  })
 }
 
 export function trackThemesStoreDownload(
   item: Pick<StoreItem, 'id' | 'name' | 'category'>,
 ): void {
-  upsertEntry(item, 'downloadClicks', 'lastDownloadAt')
+  void postClick(item, 'download').then(() => {
+    notifyAnalyticsUpdated()
+  })
 }
 
-export function getThemesStoreClickTotals(): {
-  demoClicks: number
-  downloadClicks: number
-  itemsWithActivity: number
-} {
-  const entries = Object.values(readBlob().items)
-  let demoClicks = 0
-  let downloadClicks = 0
-  for (const e of entries) {
-    demoClicks += e.demoClicks
-    downloadClicks += e.downloadClicks
-  }
-  return {
-    demoClicks,
-    downloadClicks,
-    itemsWithActivity: entries.filter(
-      (e) => e.demoClicks > 0 || e.downloadClicks > 0,
-    ).length,
-  }
+export function getThemesStoreClickTotals(): ThemesStoreAnalyticsSnapshot['totals'] {
+  return getCachedThemesStoreSnapshot().totals
 }
 
 export function getThemesStoreClickRows(): ThemesStoreClickEntry[] {
-  return Object.values(readBlob().items)
-    .filter((e) => e.demoClicks > 0 || e.downloadClicks > 0)
-    .sort((a, b) => {
-      const totalA = a.demoClicks + a.downloadClicks
-      const totalB = b.demoClicks + b.downloadClicks
-      if (totalB !== totalA) return totalB - totalA
-      return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
-    })
-}
-
-export function clearThemesStoreAnalytics(): void {
-  if (typeof window === 'undefined') return
-  localStorage.removeItem(THEMES_STORE_ANALYTICS_KEY)
-  window.dispatchEvent(new Event(THEMES_STORE_ANALYTICS_EVENT))
-}
-
-export function exportThemesStoreAnalyticsJson(): string {
-  const blob = readBlob()
-  const totals = getThemesStoreClickTotals()
-  return JSON.stringify(
-    {
-      exportedAt: new Date().toISOString(),
-      totals,
-      items: getThemesStoreClickRows(),
-      raw: blob.items,
-    },
-    null,
-    2,
-  )
+  return getCachedThemesStoreSnapshot().items
 }
 
 export const CATEGORY_ANALYTICS_LABEL: Record<StoreCategory, string> = {

@@ -1,0 +1,81 @@
+/* “What We Do” band on inner pages (blog, etc.) — sits above site footer */
+
+.wwd-band.rathisoft-landing {
+  width: 100%;
+  background: #1c1c27;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.wwd-band.rathisoft-landing .wwd-section {
+  padding: 72px 0 80px;
+  border-bottom: none;
+  margin: 0;
+}
+
+.wwd-band .wwd-hub-links {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.wwd-band .wwd-hub-links a {
+  color: #818cf8;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.wwd-band .wwd-hub-links a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.wwd-band .wwd-all-services {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.wwd-band .wwd-all-services-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #818cf8;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  background: rgba(99, 102, 241, 0.08);
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.wwd-band .wwd-all-services-link:hover {
+  color: #fff;
+  border-color: rgba(99, 102, 241, 0.55);
+  background: rgba(99, 102, 241, 0.18);
+}
+
+@media (max-width: 1200px) {
+  .wwd-band.rathisoft-landing .svc-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .wwd-band.rathisoft-landing .wwd-section {
+    padding: 48px 0 56px;
+  }
+
+  .wwd-band.rathisoft-landing .home-wrap {
+    padding: 0 20px;
+  }
+
+  .wwd-band.rathisoft-landing .svc-grid {
+    grid-template-columns: 1fr;
+  }
+}

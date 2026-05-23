@@ -1,8 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Breadcrumbs } from '../components/Breadcrumbs'
-import { InternalLinksNav } from '../components/InternalLinksNav'
-import { ABOUT_INTERNAL_LINKS } from '../data/internalLinks'
 import { JsonLd } from '../components/JsonLd'
 import { Seo } from '../components/Seo'
 import { buildAboutPageSchemaGraph } from '../data/schemaMarkup'
@@ -95,7 +93,7 @@ const ABOUT_STYLES = `
   background: linear-gradient(90deg, var(--indigo), transparent);
 }
 .page-about .hero {
-  padding: 80px 0 60px;
+  padding: 48px 0 60px;
   border-bottom: 1px solid var(--border);
   background: linear-gradient(135deg, var(--bg), var(--bg2));
   position: relative;
@@ -694,22 +692,23 @@ export function AboutUs() {
   }, [])
 
   return (
-    <main className="page-about app-main">
-      <Breadcrumbs
-        items={[
-          { name: 'Home', path: ROUTES.home },
-          { name: 'About', path: ROUTES.about },
-        ]}
-      />
+    <>
       <Seo
         title={PAGE_SEO.about.title}
         description={PAGE_SEO.about.description}
         keywords={PAGE_SEO.about.keywords}
       />
       <JsonLd data={buildAboutPageSchemaGraph()} />
-      <style>{ABOUT_STYLES}</style>
+      <main className="page-about lms-page app-main">
+        <Breadcrumbs
+          items={[
+            { name: 'Home', path: ROUTES.home },
+            { name: 'About Us', path: ROUTES.about },
+          ]}
+        />
+        <style>{ABOUT_STYLES}</style>
 
-      <div className="hero">
+        <div className="hero">
         <div className="wrap">
           <div className="label">About Rathisoft</div>
           <h1>About RathiSoft — Software Agency in Lahore, Pakistan</h1>
@@ -1024,9 +1023,7 @@ export function AboutUs() {
         </div>
       </div>
 
-      <div className="wrap" style={{ paddingBottom: 48 }}>
-        <InternalLinksNav links={ABOUT_INTERNAL_LINKS} heading="Continue exploring RathiSoft" />
-      </div>
-    </main>
+      </main>
+    </>
   )
 }

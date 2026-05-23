@@ -31,6 +31,8 @@ export type SeoProps = {
   imageAlt?: string
   /** When set, overrides path-based hreflang from src/data/hreflang.ts */
   alternates?: import('../data/hreflang').HreflangAlternate[]
+  /** Defaults to index, follow; use noindex for pages excluded from Google (e.g. /services/*). */
+  robots?: string
 }
 
 export type SocialMetaInput = {
@@ -129,6 +131,7 @@ export function removeCanonicalLink(): void {
 
 export const SEO_AUTHOR = 'RathiSoft'
 export const SEO_ROBOTS_INDEX = 'index, follow'
+export const SEO_ROBOTS_NOINDEX = 'noindex, follow'
 export const SEO_GEO_REGION = 'PK-PB'
 export const SEO_GEO_PLACENAME = 'Lahore'
 export const SEO_GEO_POSITION = '31.5497;74.3436'
@@ -179,6 +182,7 @@ export function Seo({
   locale = OG_LOCALE,
   imageAlt = OG_IMAGE_ALT,
   alternates,
+  robots = SEO_ROBOTS_INDEX,
 }: SeoProps): null {
   const { pathname } = useLocation()
 
@@ -186,7 +190,12 @@ export function Seo({
     document.title = title
 
     upsertMeta('name', 'description', description)
-    applyGlobalSeoMeta()
+    upsertMeta('name', 'robots', robots)
+    if (robots === SEO_ROBOTS_INDEX) {
+      applyGlobalSeoMeta()
+    } else {
+      upsertMeta('name', 'author', SEO_AUTHOR)
+    }
 
     const kwEl = document.querySelector('meta[name="keywords"]')
     if (keywords && keywords.trim()) {
@@ -230,6 +239,7 @@ export function Seo({
     locale,
     imageAlt,
     alternates,
+    robots,
   ])
 
   return null

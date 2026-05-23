@@ -4,36 +4,31 @@ import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { Breadcrumbs, type BreadcrumbTrailItem } from "../components/Breadcrumbs";
 import { OnPageSeoSection } from "../components/OnPageSeoSection";
-import { RelatedServicesLinks } from "../components/RelatedServicesLinks";
-import { SERVICES_HUB_INTERNAL_LINKS } from "../data/internalLinks";
 import { JsonLd } from "../components/JsonLd";
-import { Seo, SITE_ORIGIN } from "../components/Seo";
+import { Seo, SEO_ROBOTS_NOINDEX, SITE_ORIGIN } from "../components/Seo";
 import {
   buildServiceDetailSchemaGraph,
   buildServicesPageSchemaGraph,
 } from "../data/schemaMarkup";
 import { PAGE_SEO } from "../data/pageSeo";
+import { HomepageServicesGrid } from "../components/HomepageServicesGrid";
+import {
+  HOMEPAGE_CORE_SERVICES,
+  HOMEPAGE_TECHNOLOGY_SERVICES,
+} from "../data/homepageServiceCards";
 import {
   ROUTES,
   SERVICE_SLUG_SET,
   SERVICE_SLUGS,
   servicePath,
 } from "../utils/routes";
+import "../styles/services-catalog-grid.css";
 import {
   SITE_TESTIMONIALS,
   buildOrganizationReviewProperties,
 } from "../data/testimonials";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-interface Service {
-  num: string;
-  icon: string;
-  title: string;
-  desc: string;
-  tags: string[];
-  href: string;
-}
-
 interface ProcessStep {
   step: string;
   title: string;
@@ -48,72 +43,9 @@ interface WhyCard {
 }
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
-const SERVICES: Service[] = [
-  {
-    num: "01", icon: "💻", title: "Web Development",
-    desc: "Fast, responsive, conversion-optimized websites built with clean code. Custom themes, landing pages, and full multi-page sites tailored to your brand.",
-    tags: ["UI/UX", "HTML/CSS", "JavaScript"],
-    href: servicePath("web-development"),
-  },
-  {
-    num: "02", icon: "🔍", title: "SEO Optimization",
-    desc: "Rank higher on Google with proven on-page and technical SEO strategies. Keyword research, speed optimization, and structured data — all included.",
-    tags: ["On-Page", "Technical", "Local SEO"],
-    href: servicePath("seo-services"),
-  },
-  {
-    num: "03", icon: "📲", title: "App Development",
-    desc: "Custom mobile apps for iOS and Android. From simple tools to fully featured platforms — built with performance and user experience at the core.",
-    tags: ["iOS", "Android", "React Native"],
-    href: servicePath("app-development"),
-  },
-  {
-    num: "04", icon: "🛒", title: "WordPress & Shopify",
-    desc: "Stores that look great and convert visitors into buyers. Full setup — theme, plugins, payment gateways, product pages, and ongoing support included.",
-    tags: ["WordPress", "Shopify", "WooCommerce"],
-    href: servicePath("wordpress-shopify"),
-  },
-  {
-    num: "05", icon: "🎬", title: "Video Editing",
-    desc: "Reels, ads, YouTube videos, and short-form clips that stop the scroll. Professional cuts, captions, transitions, and brand-consistent visuals.",
-    tags: ["Reels", "Ads", "YouTube"],
-    href: servicePath("video-editing"),
-  },
-  {
-    num: "06", icon: "📱", title: "Social Media Marketing",
-    desc: "Done-for-you monthly content strategy and posting across all platforms. Graphics, captions, scheduling, and analytics — we handle it all.",
-    tags: ["Instagram", "Facebook", "LinkedIn"],
-    href: servicePath("social-media-marketing"),
-  },
-  {
-    num: "07", icon: "✍️", title: "Content Marketing",
-    desc: "Strategic blogs, web copy, and long-form content that attracts traffic and converts readers into leads. SEO-optimized writing for every industry.",
-    tags: ["Blogs", "Copywriting", "Web Copy"],
-    href: servicePath("content-marketing"),
-  },
-  {
-    num: "08", icon: "🎯", title: "PPC Advertising",
-    desc: "High-converting paid campaigns on Google and Meta. Precise targeting, compelling ad copy, and constant A/B testing to maximise your ROI.",
-    tags: ["Google Ads", "Meta Ads", "Retargeting"],
-    href: servicePath("ppc-advertising"),
-  },
-  {
-    num: "09", icon: "📧", title: "Email Marketing",
-    desc: "Automated email sequences that nurture leads and drive repeat sales. Welcome flows, drip campaigns, newsletters, and list management all handled.",
-    tags: ["Automation", "Campaigns", "Klaviyo"],
-    href: servicePath("email-marketing"),
-  },
-  {
-    num: "10", icon: "🎨", title: "Branding & Design",
-    desc: "Logos, brand kits, colour palettes, and complete visual identity systems that leave a lasting impression and build brand trust from first glance.",
-    tags: ["Logo", "Brand Kit", "UI Design"],
-    href: servicePath("branding-design"),
-  },
-];
-
 export { SERVICE_SLUGS };
 
-const SERVICE_SCHEMA_INPUTS = SERVICES.map((svc) => ({
+const SERVICE_SCHEMA_INPUTS = HOMEPAGE_CORE_SERVICES.map((svc) => ({
   title: svc.title,
   description: svc.desc,
   href: svc.href,
@@ -175,9 +107,9 @@ const styles = `
     background: linear-gradient(90deg, var(--indigo), transparent);
   }
 
-  /* HERO */
+  /* HERO — top padding from page-layout.css (breadcrumb sibling) */
   .rs-hero {
-    padding: 80px 0 64px; border-bottom: 1px solid var(--border);
+    padding-bottom: 60px; border-bottom: 1px solid var(--border);
     background: linear-gradient(135deg, var(--bg), var(--bg2));
     position: relative; overflow: hidden;
   }
@@ -215,7 +147,13 @@ const styles = `
 
   /* SERVICES SECTION */
   .svc-section { padding: 72px 0; }
-  .svc-intro { margin-bottom: 52px; }
+  .svc-intro { margin-bottom: 40px; }
+  .svc-category-block { margin-bottom: 48px; }
+  .svc-category-block:last-child { margin-bottom: 0; }
+  .svc-category-title {
+    font-family: var(--fh); font-size: 20px; font-weight: 600;
+    color: rgba(255,255,255,0.92); margin: 0 0 20px; letter-spacing: -0.3px;
+  }
   .svc-intro h2 {
     font-family: var(--fh); font-size: clamp(26px, 3vw, 40px);
     font-weight: 600; color: #fff; letter-spacing: -0.5px;
@@ -417,7 +355,7 @@ export default function ServicesPage() {
 
   const activeService =
     slugNorm && SERVICE_SLUG_SET.has(slugNorm)
-      ? SERVICES.find((s) => s.href === servicePath(slugNorm))
+      ? HOMEPAGE_CORE_SERVICES.find((s) => s.slug === slugNorm)
       : undefined;
 
   const servicesSchemaGraph =
@@ -464,17 +402,13 @@ export default function ServicesPage() {
         title={PAGE_SEO.services.title}
         description={PAGE_SEO.services.description}
         keywords={PAGE_SEO.services.keywords}
+        robots={SEO_ROBOTS_NOINDEX}
       />
       <JsonLd data={servicesSchemaGraph} />
       <JsonLd data={reviewsLd} />
-      <Breadcrumbs items={breadcrumbItems} />
-      <style>{styles}</style>
-
-      {slugNorm && SERVICE_SLUG_SET.has(slugNorm) ? (
-        <div className="rs-wrap" style={{ paddingTop: 20, paddingBottom: 8 }}>
-          <RelatedServicesLinks slug={slugNorm} />
-        </div>
-      ) : null}
+      <main className="app-main page-services lms-page">
+        <Breadcrumbs items={breadcrumbItems} />
+        <style>{styles}</style>
 
       {/* ── HERO ── */}
       <div className="rs-hero">
@@ -491,7 +425,7 @@ export default function ServicesPage() {
             <Link to={ROUTES.contact}>book a free consultation</Link> when you are ready.
           </p>
           <div className="hero-stats">
-            <div className="hs"><span className="hs-num">10+</span><span className="hs-label">Services Offered</span></div>
+            <div className="hs"><span className="hs-num">{HOMEPAGE_CORE_SERVICES.length + HOMEPAGE_TECHNOLOGY_SERVICES.length}+</span><span className="hs-label">Services Offered</span></div>
             <div className="hs"><span className="hs-num">59+</span><span className="hs-label">Projects Delivered</span></div>
             <div className="hs"><span className="hs-num">5+</span><span className="hs-label">Years Experience</span></div>
             <div className="hs"><span className="hs-num">4.8★</span><span className="hs-label">Client Rating</span></div>
@@ -499,45 +433,39 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      {/* ── ALL SERVICES ── */}
-      <section className="svc-section">
+      {/* ── ALL SERVICES (homepage-style grid, display-only) ── */}
+      <section className="svc-section" aria-labelledby="services-catalog-heading">
         <div className="rs-wrap">
           <div className="svc-intro">
             <div className="rs-label">Our Services</div>
-            <h2 id="services-catalog-heading" className="svc-intro">
+            <h2 id="services-catalog-heading">
               Services That Cover<br />Your Full Online Stack
             </h2>
             <p>
-              Open a card for scope, deliverables, and how we run the work—web, stores, apps, and
-              growth under one roof.
+              The same capabilities we highlight on our homepage—web, stores, apps, marketing, and
+              technology—delivered by one Lahore team. Browse categories below, then{' '}
+              <Link to={ROUTES.contact}>request a quote</Link> when you are ready.
             </p>
           </div>
 
-          <div className="svc-grid">
-            {SERVICES.map((svc) => {
-              const cardSlug = svc.href.replace(/^\/services\//, "").replace(/\/$/, "");
-              return (
-                <Link
-                  key={svc.num}
-                  id={`service-${cardSlug}`}
-                  className="svc-card"
-                  to={svc.href}
-                >
-                  <div className="svc-card-top">
-                    <div className="svc-icon-wrap">{svc.icon}</div>
-                    <span className="svc-num">{svc.num}</span>
-                  </div>
-                  <h3>{svc.title}</h3>
-                  <p>{svc.desc}</p>
-                  <div className="svc-tags">
-                    {svc.tags.map((t) => (
-                      <span key={t} className="svc-tag">{t}</span>
-                    ))}
-                  </div>
-                  <span className="svc-link">View service details →</span>
-                </Link>
-              );
-            })}
+          <div className="svc-category-block">
+            <h3 className="svc-category-title">Web, stores &amp; growth</h3>
+            <HomepageServicesGrid
+              items={HOMEPAGE_CORE_SERVICES}
+              interactive={false}
+              linkToPortfolio
+              columns={3}
+            />
+          </div>
+
+          <div className="svc-category-block">
+            <h3 className="svc-category-title">Technology &amp; support</h3>
+            <HomepageServicesGrid
+              items={HOMEPAGE_TECHNOLOGY_SERVICES}
+              interactive={false}
+              linkToPortfolio
+              columns={3}
+            />
           </div>
         </div>
       </section>
@@ -630,11 +558,12 @@ export default function ServicesPage() {
               We overlap with UK and Gulf hours when needed, share roadmaps in Notion, and record
               walkthroughs for stakeholders who cannot join every call. Store, app, or marketing
               engagements all follow the same clarity standard—see{' '}
-              <Link to={ROUTES.packages}>package pricing</Link> if you want a fixed bundle first.
+              <Link to={ROUTES.packages}>package pricing</Link>, our{' '}
+              <Link to={ROUTES.portfolio}>portfolio</Link>, or the{' '}
+              <Link to={ROUTES.blog}>software insights blog</Link> if you want context before a call.
             </p>
           </>
         }
-        links={SERVICES_HUB_INTERNAL_LINKS}
       >
         <p>
           We bake in accessible markup, structured data where it helps search, and careful{' '}
@@ -681,6 +610,7 @@ export default function ServicesPage() {
         </div>
       </div>
 
+      </main>
     </>
   );
 }

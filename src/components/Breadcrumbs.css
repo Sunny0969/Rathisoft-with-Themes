@@ -2,17 +2,13 @@
   background: rgba(19, 19, 26, 0.96);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   padding-top: var(--header-h, 76px);
-}
-
-/* main.app-main pages: avoid double gap (main offset + breadcrumb offset) */
-.app-main:has(> .rs-breadcrumb-bar:first-child) {
-  padding-top: 0;
+  width: 100%;
 }
 
 .rs-breadcrumb-inner {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 6px 52px;
+  padding: 10px 52px 12px;
 }
 
 .rs-breadcrumb-nav ol {
@@ -56,8 +52,8 @@
   font-weight: 500;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .rs-breadcrumb-inner {
-    padding: 6px 20px;
+    padding: 10px 20px 12px;
   }
 }
