@@ -4,7 +4,7 @@
   --nav: rgba(19, 19, 26, 0.92);
   --border: rgba(255, 255, 255, 0.07);
   --header-h: 76px;
-  --header-glass-blur: blur(64px) saturate(1.45) brightness(0.72);
+  --header-glass-blur: blur(72px) saturate(1.5) brightness(0.88);
   position: fixed;
   top: 0;
   left: 0;
@@ -32,13 +32,14 @@
     -webkit-backdrop-filter 0.45s ease;
 }
 
+/* Top: lighter glass (more blur + more see-through) */
 .rs-header--overlay .rs-header-glass {
-  background: rgba(10, 10, 18, 0.58);
+  background: rgba(8, 8, 16, 0.32);
 }
 
+/* Scrolled: slightly stronger tint so text behind stays unreadable */
 .rs-header--solid .rs-header-glass {
-  background: rgba(14, 14, 22, 0.88);
-  --header-glass-blur: blur(56px) saturate(1.35) brightness(0.75);
+  background: rgba(12, 12, 20, 0.55);
 }
 
 @supports not (

@@ -299,10 +299,10 @@ body.cur-hover #cursor-ring {
   font-size: 15px;
 }
 
-/* Hero — pull under fixed header so transparent nav shows video/gradient */
+/* Hero — content starts just below fixed header (no overlap under nav) */
 .rathisoft-landing .hero-side {
   position: absolute;
-  top: 54%;
+  top: calc(50% + 24px);
   right: 8px;
   transform: translateY(-50%);
   height: min(68vh, 68%);
@@ -319,13 +319,9 @@ body.cur-hover #cursor-ring {
 }
 
 .rathisoft-landing #hero {
-  margin-top: calc(-1 * var(--header-h, 60px) + 39px);
-  padding-top: calc(var(--header-h, 60px) + 39px);
-
-
-
-
-  min-height: calc(66svh + var(--header-h, 64px));
+  margin-top: 0;
+  padding-top: calc(var(--header-h, 76px) + 10px);
+  min-height: calc(66svh + var(--header-h, 76px));
 }
 
 /* Hero shell: min-height + border come from Tailwind on #hero in Home.tsx */
@@ -362,7 +358,7 @@ body.cur-hover #cursor-ring {
   z-index: 2;
 }
 .rathisoft-landing .hero-l {
-  padding: 20px 64px 4px 52px;
+  padding: 0 64px 4px 52px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1587,8 +1583,11 @@ body.cur-hover #cursor-ring {
   .rathisoft-landing .home-wrap {
     padding: 0 20px;
   }
+  .rathisoft-landing #hero {
+    padding-top: calc(var(--header-h, 76px) + 8px);
+  }
   .rathisoft-landing .hero-l {
-    padding: 52px 20px 60px;
+    padding: 0 20px 60px;
   }
   .rathisoft-landing section {
     padding: 52px 0;
@@ -1685,7 +1684,7 @@ body.cur-hover #cursor-ring {
     grid-template-columns: 1fr 1fr;
   }
   .rathisoft-landing .hero-l {
-    padding: 44px 20px 52px;
+    padding: 0 20px 52px;
   }
   .rathisoft-landing section {
     padding: 44px 0;
