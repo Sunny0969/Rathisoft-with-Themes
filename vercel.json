@@ -1,5 +1,9 @@
 {
   "trailingSlash": true,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ],
   "redirects": [
     {
       "source": "/(.*)",
@@ -19,6 +23,7 @@
     { "source": "/contact", "destination": "/contact-us/", "permanent": true },
     { "source": "/contact-us-lahore", "destination": "/contact-us/", "permanent": true },
     { "source": "/team", "destination": "/our-team/", "permanent": true },
+    { "source": "/team/", "destination": "/our-team/", "permanent": true },
     { "source": "/our-team-lahore", "destination": "/our-team/", "permanent": true },
     { "source": "/services/web-development-lahore", "destination": "/services/web-development/", "permanent": true },
     { "source": "/services/seo-services-lahore", "destination": "/services/seo-services/", "permanent": true },

@@ -101,6 +101,7 @@ export function Header() {
 
   return (
     <header className={`rs-header ${headerMode}`}>
+      <div className="rs-header-glass" aria-hidden />
       <nav ref={navRef} id="mainNav">
         <div className="nav-in">
           {/*

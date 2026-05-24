@@ -474,8 +474,8 @@ export function Home() {
               Scale Your Brand · High-Performance Web · Global Reach
             </div>
             <h1 id="hero-heading" className="hero-h">
-              Web, Apps &amp; Growth <br />
-              <span className="hero-h-accent">Built to Perform</span>
+             Software Services  <br />
+              <span className="hero-h-accent"> Built to Perform</span>
             </h1>
             <p className="hero-p">
               RathiSoft is a <strong>Pakistan software house</strong> and{' '}

@@ -26,8 +26,27 @@ export function TermsOfService() {
         <section className="hero" aria-labelledby="terms-hero-heading">
           <div className="wrap">
             <div className="label">Legal</div>
-            <h1 id="terms-hero-heading">Terms of Service</h1>
-            <p className="legal-updated">Last updated: {LAST_UPDATED}</p>
+            <h1 id="terms-hero-heading">Terms of Service | RathiSoft</h1>
+            <p>
+              How we scope web and marketing work, handle payments and milestones, protect your IP,
+              and limit liability when you use <strong>www.rathisoft.com</strong> or hire our Lahore
+              team. Read the sections below or reach us on the{' '}
+              <Link to={ROUTES.contact}>contact page</Link> if something is unclear.
+            </p>
+            <div className="hero-stats" role="region" aria-label="Terms overview">
+              <div className="hero-stat">
+                <div className="hero-stat-num">2026</div>
+                <div className="hero-stat-label">Updated {LAST_UPDATED}</div>
+              </div>
+              <div className="hero-stat">
+                <div className="hero-stat-num">SOW</div>
+                <div className="hero-stat-label">Written scopes</div>
+              </div>
+              <div className="hero-stat">
+                <div className="hero-stat-num">PK</div>
+                <div className="hero-stat-label">Lahore · global clients</div>
+              </div>
+            </div>
           </div>
         </section>
 

@@ -12,7 +12,7 @@
   RewriteBase /
 
   # Crawlers: serve sitemap and robots as static files (never SPA index.html)
-  RewriteRule ^(?:sitemap\.xml|robots\.txt)$ - [L]
+  RewriteRule ^(?:sitemap\.xml|sitemap-images\.xml|robots\.txt)$ - [L]
 
   # 301: apex → www (never redirect www away)
   RewriteCond %{HTTP_HOST} ^rathisoft\.com$ [NC]
@@ -23,7 +23,10 @@
   RewriteCond %{HTTP_HOST} ^www\.rathisoft\.com$ [NC]
   RewriteRule ^ https://www.rathisoft.com%{REQUEST_URI} [R=301,L,QSA]
 
-  # Paths only: drop trailing slash except site root (matches canonical URLs)
+  # Legacy /team → canonical (before slash strip so /team and /team/ both land on /our-team/)
+  RewriteRule ^team/?$ /our-team/ [R=301,L,NC]
+
+  # Paths only: drop trailing slash except site root (matches UrlNormalize + canonical)
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_URI} ^/(.+)/$
   RewriteRule .* /%1 [R=301,L,QSA]
@@ -34,9 +37,33 @@
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
-  # Legacy service URLs → descriptive /services/{slug} (lowercase, hyphenated)
+  # ── Legacy top-level → canonical (no trailing slash after rule above) ──
+  RewriteRule ^about$ /about-us [R=301,L,NC]
+  RewriteRule ^work$ /portfolio [R=301,L,NC]
+  RewriteRule ^portfolio-lahore$ /portfolio [R=301,L,NC]
+  RewriteRule ^packages-lahore$ /packages [R=301,L,NC]
+  RewriteRule ^contact$ /contact-us [R=301,L,NC]
+  RewriteRule ^contact-us-lahore$ /contact-us [R=301,L,NC]
+  RewriteRule ^our-team-lahore$ /our-team [R=301,L,NC]
+  RewriteRule ^themes$ /themes-store [R=301,L,NC]
+  RewriteRule ^themes-store-lahore$ /themes-store [R=301,L,NC]
+  RewriteRule ^courses$ /e-learning-courses [R=301,L,NC]
+  RewriteRule ^courses/(.*)$ /e-learning-courses/$1 [R=301,L,NC]
+
+  # Legacy root service slugs → /services/{slug}
+  RewriteRule ^web-development-lahore$ /services/web-development [R=301,L,NC]
+  RewriteRule ^seo-services-lahore$ /services/seo-services [R=301,L,NC]
+  RewriteRule ^seo-optimization-lahore$ /services/seo-services [R=301,L,NC]
+  RewriteRule ^app-development-lahore$ /services/app-development [R=301,L,NC]
+  RewriteRule ^wordpress-shopify-lahore$ /services/wordpress-shopify [R=301,L,NC]
+  RewriteRule ^video-editing-lahore$ /services/video-editing [R=301,L,NC]
+  RewriteRule ^social-media-marketing-lahore$ /services/social-media-marketing [R=301,L,NC]
+  RewriteRule ^content-marketing-lahore$ /services/content-marketing [R=301,L,NC]
+  RewriteRule ^ppc-advertising-lahore$ /services/ppc-advertising [R=301,L,NC]
+  RewriteRule ^email-marketing-lahore$ /services/email-marketing [R=301,L,NC]
+  RewriteRule ^branding-design-lahore$ /services/branding-design [R=301,L,NC]
   RewriteRule ^web-development$ /services/web-development [R=301,L,NC]
-  RewriteRule ^seo-optimization$ /services/seo-optimization [R=301,L,NC]
+  RewriteRule ^seo-optimization$ /services/seo-services [R=301,L,NC]
   RewriteRule ^app-development$ /services/app-development [R=301,L,NC]
   RewriteRule ^wordpress-shopify$ /services/wordpress-shopify [R=301,L,NC]
   RewriteRule ^video-editing$ /services/video-editing [R=301,L,NC]
@@ -46,20 +73,36 @@
   RewriteRule ^email-marketing$ /services/email-marketing [R=301,L,NC]
   RewriteRule ^branding-design$ /services/branding-design [R=301,L,NC]
 
-  # SPA routes only → index.html (HTTP 200). Unknown paths fall through → real 404 + ErrorDocument below.
-  RewriteRule ^$ /index.html [L]
-  RewriteRule ^about/?$ /index.html [L]
-  RewriteRule ^packages/?$ /index.html [L]
-  RewriteRule ^work/?$ /index.html [L]
-  RewriteRule ^contact/?$ /index.html [L]
-  RewriteRule ^themes/?$ /index.html [L]
-  RewriteRule ^courses/?$ /index.html [L]
-  RewriteRule ^courses/[^/]+/?$ /index.html [L]
-  RewriteRule ^courses/[^/]+/(quiz|certificate)/?$ /index.html [L]
-  RewriteRule ^team/?$ /index.html [L]
-  RewriteRule ^services/?$ /index.html [L]
-  RewriteRule ^services/(web-development|seo-optimization|app-development|wordpress-shopify|video-editing|social-media-marketing|content-marketing|ppc-advertising|email-marketing|branding-design)/?$ /index.html [L,NC]
-</IfModule>
+  # Legacy /services/* lahore + seo-optimization slug
+  RewriteRule ^services/web-development-lahore$ /services/web-development [R=301,L,NC]
+  RewriteRule ^services/seo-services-lahore$ /services/seo-services [R=301,L,NC]
+  RewriteRule ^services/seo-optimization-lahore$ /services/seo-services [R=301,L,NC]
+  RewriteRule ^services/seo-optimization$ /services/seo-services [R=301,L,NC]
+  RewriteRule ^services/app-development-lahore$ /services/app-development [R=301,L,NC]
+  RewriteRule ^services/wordpress-shopify-lahore$ /services/wordpress-shopify [R=301,L,NC]
+  RewriteRule ^services/video-editing-lahore$ /services/video-editing [R=301,L,NC]
+  RewriteRule ^services/social-media-marketing-lahore$ /services/social-media-marketing [R=301,L,NC]
+  RewriteRule ^services/content-marketing-lahore$ /services/content-marketing [R=301,L,NC]
+  RewriteRule ^services/ppc-advertising-lahore$ /services/ppc-advertising [R=301,L,NC]
+  RewriteRule ^services/email-marketing-lahore$ /services/email-marketing [R=301,L,NC]
+  RewriteRule ^services/branding-design-lahore$ /services/branding-design [R=301,L,NC]
 
-# Real HTTP 404 for unknown URLs while still serving the SPA shell (React Router shows NotFound).
-ErrorDocument 404 /index.html
+  # ── SPA routes → index.html (HTTP 200). Keep in sync with src/App.tsx + routes.ts ──
+  RewriteRule ^$ /index.html [L]
+  RewriteRule ^about-us$ /index.html [L,NC]
+  RewriteRule ^portfolio$ /index.html [L,NC]
+  RewriteRule ^packages$ /index.html [L,NC]
+  RewriteRule ^themes-store$ /index.html [L,NC]
+  RewriteRule ^contact-us$ /index.html [L,NC]
+  RewriteRule ^our-team$ /index.html [L,NC]
+  RewriteRule ^terms-of-service$ /index.html [L,NC]
+  RewriteRule ^blog$ /index.html [L,NC]
+  RewriteRule ^blog/[a-z0-9-]+$ /index.html [L,NC]
+  RewriteRule ^services$ /index.html [L,NC]
+  RewriteRule ^services/(web-development|seo-services|app-development|wordpress-shopify|video-editing|social-media-marketing|content-marketing|ppc-advertising|email-marketing|branding-design)$ /index.html [L,NC]
+  RewriteRule ^e-learning-courses$ /index.html [L,NC]
+  RewriteRule ^e-learning-courses/[^/]+$ /index.html [L,NC]
+  RewriteRule ^e-learning-courses/[^/]+/lecture/[^/]+$ /index.html [L,NC]
+  RewriteRule ^e-learning-courses/[^/]+/quiz$ /index.html [L,NC]
+  RewriteRule ^e-learning-courses/[^/]+/certificate$ /index.html [L,NC]
+</IfModule>
